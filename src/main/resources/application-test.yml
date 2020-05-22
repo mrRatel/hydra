@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://129.204.172.25:3306/ratel_singleton?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    username: root
+    password: 'Root@0804'
+    dbcp2:
+      min-idle: 5 #数据库连接池最小维持连接数
+      initial-size: 5 #初始化连接数
+      max-total: 5 #最大连接数
+      max-wait-millis: 200 #等待获取连接的最大超时时间
+
