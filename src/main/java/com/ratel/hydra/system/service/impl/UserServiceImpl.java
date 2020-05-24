@@ -1,5 +1,6 @@
 package com.ratel.hydra.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.system.mapper.UserMapper;
 import com.ratel.hydra.system.po.User;
@@ -22,5 +23,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User po = new User();
         BeanUtils.copyProperties(add,po);
         baseMapper.insert(po);
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username));
     }
 }

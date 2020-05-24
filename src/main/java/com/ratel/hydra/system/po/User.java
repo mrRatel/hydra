@@ -60,7 +60,7 @@ public class User {
      */
     @TableField(value = "sex")
     @ApiModelProperty(value="性别")
-    private Boolean sex;
+    private Integer sex;
 
     /**
      * 年龄
