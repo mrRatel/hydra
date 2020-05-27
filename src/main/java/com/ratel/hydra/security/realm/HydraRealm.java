@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ratel.hydra.system.mapper.UserMapper;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -17,6 +18,7 @@ import static com.ratel.hydra.common.constant.ExceptionEnum.AUTH1005;
  * @author ratel
  * @date 2020-05-22
  */
+@Slf4j
 public class HydraRealm extends AuthorizingRealm  {
 
     @Autowired
@@ -31,6 +33,7 @@ public class HydraRealm extends AuthorizingRealm  {
      **/
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        log.info("授权中、、、、");
         return null;
     }
 

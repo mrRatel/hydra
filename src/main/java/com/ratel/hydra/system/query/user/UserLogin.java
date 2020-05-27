@@ -16,4 +16,6 @@ public class UserLogin {
     private String password;
 //    @NotEmpty(message = "验证码不能为空")
     private String authCode;
+
+    private boolean rememberMe;
 }

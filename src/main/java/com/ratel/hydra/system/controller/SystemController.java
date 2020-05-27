@@ -3,17 +3,16 @@ package com.ratel.hydra.system.controller;
 import com.ratel.hydra.common.utils.WebUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author ratel
  * @date 2020-05-24
  */
 @Controller
-public class SystemController {
+public class SystemController extends BaseController{
 
     @GetMapping("/")
     public String index(){
-        return "index.html";
+        return WebUtil.getRedirectUrl("/admin/index.html");
     }
 }

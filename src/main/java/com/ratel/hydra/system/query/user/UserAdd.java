@@ -64,17 +64,4 @@ public class UserAdd {
      */
     @ApiModelProperty(value="注册来源")
     private String registerFrom;
-
-    public static void main(String[] args) {
-        UserAdd userAdd = new UserAdd();
-        userAdd.setUsername("");
-        userAdd.setPassword("");
-        userAdd.setRealName("");
-        userAdd.setEmail("");
-        userAdd.setPhone("");
-        userAdd.setSex(1);
-        userAdd.setAge(0);
-        userAdd.setRegisterFrom("");
-        System.out.println(JSON.toJSONString(userAdd));
-    }
 }

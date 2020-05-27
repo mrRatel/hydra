@@ -31,7 +31,7 @@ import static com.ratel.hydra.common.constant.ExceptionEnum.AUTH1005;
 @Slf4j
 @RestController
 @RequestMapping("user")
-public class UserController {
+public class UserController extends BaseController{
 
     @Autowired
     private UserService service;
@@ -47,9 +47,7 @@ public class UserController {
     @PostMapping("login")
     @ApiOperation("登录")
     public WebResult login(@RequestBody @Valid UserLogin userLogin){
-//        User user = service.getByUsername(userLogin.getUsername());
-//        Assert.notNull(user,AUTH1005.getMsg());
-        UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(), userLogin.getPassword());
+        UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(), userLogin.getPassword(),userLogin.isRememberMe());
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);
         return WebResultFactory.ok("/admin/index.html","登录成功");

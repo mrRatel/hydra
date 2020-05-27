@@ -12,6 +12,10 @@ public class WebResultFactory {
         return new WebResult().setStatus(true).setContent(obj).setMsg(msg);
     }
 
+    public static WebResult ok(Object obj){
+        return new WebResult().setStatus(true).setContent(obj);
+    }
+
 
     public static WebResult failed(String msg,String code){
         return new WebResult().setStatus(false).setMsg(msg).setCode(code);

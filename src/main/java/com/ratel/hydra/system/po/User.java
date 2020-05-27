@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
@@ -15,7 +17,7 @@ import lombok.Data;
 @ApiModel(value="com-ratel-hydra-po-User")
 @Data
 @TableName(value = "`user`")
-public class User {
+public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty(value="")
     private Long id;
