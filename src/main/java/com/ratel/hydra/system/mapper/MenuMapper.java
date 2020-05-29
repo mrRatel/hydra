@@ -16,5 +16,5 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @Author ratel
      * @Date 2020-05-25
      */
-    List<Menu> findCurrentUserMenuByPid(@Param("pid") Long pid, @Param("id") Long userId);
+    List<Menu> findCurrentUserMenuByPid(@Param("pid") Long pid, @Param("userId") Long userId);
 }

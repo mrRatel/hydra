@@ -41,7 +41,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         List<MenuTree> menuTreeList = new ArrayList<>();
         menus.forEach(menu -> {
             MenuTree menuTree = buildMenu(menu);
-            if (menu.getId() == 0) {
+            if (menu.getParentId() == 0) {
                 menuTreeList.add(menuTree);
             }
             menuTreeList.forEach(item -> {

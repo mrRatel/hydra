@@ -12,9 +12,13 @@
     <result column="assess_time" jdbcType="TIMESTAMP" property="assessTime" />
     <result column="assess_url" jdbcType="VARCHAR" property="assessUrl" />
     <result column="source_url" jdbcType="VARCHAR" property="sourceUrl" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="access_device" jdbcType="VARCHAR" property="accessDevice" />
+    <result column="operating_system" jdbcType="VARCHAR" property="operatingSystem" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, ip, user_id, Operation_Content, Operation_param, assess_time, assess_url, source_url
+    id, ip, user_id, Operation_Content, Operation_param, assess_time, assess_url, source_url, 
+    `location`, access_device, operating_system
   </sql>
 </mapper>

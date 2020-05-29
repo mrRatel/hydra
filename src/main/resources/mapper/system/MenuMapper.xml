@@ -16,7 +16,7 @@
     id, role_id, url, role_icon, parent_id, relation_code
   </sql>
     <select id="findCurrentUserMenuByPid" resultMap="BaseResultMap">
-      select <include refid="Base_Column_List"/>
+      select m.id, m.role_id, m.url, m.role_icon, m.parent_id, m.relation_code
        from menu m inner join user_menu_relation umr on m.id = umr.menu_id and enabled = true where parent_id = #{pid,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT};
     </select>
 </mapper>

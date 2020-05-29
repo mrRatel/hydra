@@ -1,0 +1,3 @@
+function validateResponse(rep,errMsg) {
+
+}

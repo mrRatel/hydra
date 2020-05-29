@@ -8,4 +8,14 @@ import com.ratel.hydra.common.constant.ExceptionEnum;
  */
 public class SystemException extends BaseException {
 
+    private SystemException() {
+    }
+
+    public SystemException(ExceptionEnum en, String msg) {
+        super(en, msg);
+    }
+
+    public SystemException(ExceptionEnum en) {
+        super(en,en.getMsg());
+    }
 }

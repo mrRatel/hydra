@@ -8,65 +8,82 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Null;
-
-@ApiModel(value="com-ratel-hydra-system-po-AccessLog")
+@ApiModel(value = "com-ratel-hydra-system-po-AccessLog")
 @Data
-@Accessors(chain = true)
 @TableName(value = "access_log")
 public class AccessLog {
     @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value="")
+    @ApiModelProperty(value = "")
     private Long id;
 
     /**
      * 访问来源IP
      */
     @TableField(value = "ip")
-    @ApiModelProperty(value="访问来源IP")
+    @ApiModelProperty(value = "访问来源IP")
     private String ip;
 
     /**
      * 用户ID
      */
     @TableField(value = "user_id")
-    @ApiModelProperty(value="用户ID")
+    @ApiModelProperty(value = "用户ID")
     private Long userId;
 
     /**
      * 操作内容
      */
     @TableField(value = "Operation_Content")
-    @ApiModelProperty(value="操作内容")
+    @ApiModelProperty(value = "操作内容")
     private String operationContent;
 
     /**
      * 请求参数
      */
     @TableField(value = "Operation_param")
-    @ApiModelProperty(value="请求参数")
+    @ApiModelProperty(value = "请求参数")
     private String operationParam;
 
     /**
      * 访问时间
      */
     @TableField(value = "assess_time")
-    @ApiModelProperty(value="访问时间")
+    @ApiModelProperty(value = "访问时间")
     private Date assessTime;
 
     /**
      * 访问URL
      */
     @TableField(value = "assess_url")
-    @ApiModelProperty(value="访问URL")
+    @ApiModelProperty(value = "访问URL")
     private String assessUrl;
 
     /**
      * 来源网址
      */
     @TableField(value = "source_url")
-    @ApiModelProperty(value="来源网址")
+    @ApiModelProperty(value = "来源网址")
     private String sourceUrl;
+
+    /**
+     * ip 地区
+     */
+    @TableField(value = "location")
+    @ApiModelProperty(value = "ip 地区")
+    private String location;
+
+    /**
+     * 访问设备
+     */
+    @TableField(value = "access_device")
+    @ApiModelProperty(value = "访问设备")
+    private String accessDevice;
+
+    /**
+     * 操作系统
+     */
+    @TableField(value = "operating_system")
+    @ApiModelProperty(value = "操作系统")
+    private String operatingSystem;
 }

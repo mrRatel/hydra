@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>登入 - layuiAdmin</title>
+    <title>登入 - HydraAdmin</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -18,8 +18,8 @@
 
     <div class="layadmin-user-login-main">
         <div class="layadmin-user-login-box layadmin-user-login-header">
-            <h2>layuiAdmin</h2>
-            <p>layui 官方出品的单页面后台管理模板系统</p>
+            <h2>HydraAdmin</h2>
+            <p>HydraAdmin 后台管理系统</p>
         </div>
         <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
             <div class="layui-form-item">
@@ -39,13 +39,13 @@
                     <div class="layui-col-xs7">
                         <label class="layadmin-user-login-icon layui-icon layui-icon-vercode"
                                for="LAY-user-login-vercode"></label>
-                        <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required"
-                               placeholder="图形验证码" class="layui-input">
+                        <input type="text" name="captcha" id="LAY-user-login-vercode" lay-verify="required"
+                               placeholder="captcha" class="layui-input">
                     </div>
                     <div class="layui-col-xs5">
                         <div style="margin-left: 10px;">
-                            <img src="https://www.oschina.net/action/user/captcha" class="layadmin-user-login-codeimg"
-                                 id="LAY-user-get-vercode">
+                            <img src="/captcha/one" class="layadmin-user-login-codeimg"
+                                 onclick="this.src = this.src +'?' + Math.random()">
                         </div>
                     </div>
                 </div>

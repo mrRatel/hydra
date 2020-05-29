@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SystemException.class)
     public WebResult systemExceptionHandler(SystemException e){
         log.error(e.getMessage(),e);
-        return WebResultFactory.failed(e.getEn().toString(),e.getMessage());
+        return WebResultFactory.failed(e.getMessage(),e.getEn().toString());
     }
 
     @ExceptionHandler(UnknownAccountException.class)

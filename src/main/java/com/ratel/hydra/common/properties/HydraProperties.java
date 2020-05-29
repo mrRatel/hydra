@@ -2,8 +2,6 @@ package com.ratel.hydra.common.properties;
 
 import lombok.Data;
 import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 
 /**
@@ -14,7 +12,9 @@ import org.springframework.context.annotation.PropertySource;
 @Data
 @SpringBootConfiguration
 @PropertySource(value = {"classpath:props/hydra.properties"})
-@ConfigurationProperties(prefix = "hydra")
+//@ConfigurationProperties(prefix = "hydra")
+//@EnableConfigurationProperties(HydraProperties.class)
 public class HydraProperties {
     private Swagger2Property swagger2Property = new Swagger2Property();
+    private CaptchaProperty captchaProperty = new CaptchaProperty();
 }

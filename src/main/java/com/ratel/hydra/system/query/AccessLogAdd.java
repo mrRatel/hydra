@@ -61,4 +61,21 @@ public class AccessLogAdd {
     @ApiModelProperty(value="来源网址")
     private String sourceUrl;
 
+    /**
+     * ip 地区
+     */
+    @ApiModelProperty(value = "ip 地区")
+    private String location;
+
+    /**
+     * 访问设备
+     */
+    @ApiModelProperty(value = "访问设备")
+    private String accessDevice;
+
+    /**
+     * 操作系统
+     */
+    @ApiModelProperty(value = "操作系统")
+    private String operatingSystem;
 }
