@@ -21,4 +21,12 @@ public interface MenuTreeStruct {
             @Mapping(target = "target",constant = "_self")
     })
     MenuTree toMenuTree(Menu menu);
+
+    @Mappings({
+            @Mapping(target = "icon",source = "icon"),
+            @Mapping(target = "menuName",source = "title"),
+            @Mapping(target = "url",source = "href"),
+            @Mapping(target = "id",source = "id"),
+    })
+    Menu toMenu(MenuTree menuTree);
 }

@@ -26,4 +26,5 @@ public interface MenuService {
 
     List<MenuTree> findMenuTreeList(User user);
 
+    void batchInsert(List<MenuTree> list,Long pid);
 }

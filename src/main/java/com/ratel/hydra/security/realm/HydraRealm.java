@@ -1,7 +1,5 @@
 package com.ratel.hydra.security.realm;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ratel.hydra.system.mapper.UserMapper;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;

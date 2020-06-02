@@ -47,11 +47,18 @@
         layer.load(2);
         treetable.render({
             treeColIndex: 1,
-            treeSpid: -1,
+            treeSpid: -1
             treeIdName: 'authorityId',
             treePidName: 'parentId',
             elem: '#munu-table',
             url: '../api/menus.json',
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                    "code": res.status, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.total, //解析数据长度
+                    "data": res.data.item //解析数据列表
+                }},
             page: false,
             cols: [[
                 {type: 'numbers'},
