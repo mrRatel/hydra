@@ -1,17 +1,20 @@
 package com.ratel.hydra.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ratel.hydra.common.mapstruct.MenuTreeStruct;
+import com.ratel.hydra.common.utils.ConvertUtils;
+import com.ratel.hydra.system.dto.LayuiTree;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.mapper.MenuMapper;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ratel
@@ -21,9 +24,12 @@ import java.util.Objects;
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
+    @Autowired
+    private MenuTreeStruct menuTreeStruct;
+
     @Override
-    public List<Menu> list(Long pid, User user) {
-        return baseMapper.findCurrentUserMenuByPid(pid == null ? 0 : pid, user.getId());
+    public List<Menu> list(User user) {
+        return baseMapper.findCurrentUserMenu(user.getId());
     }
 
     @Override
@@ -33,30 +39,23 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
     @Override
     public List<MenuTree> findMenuTreeList(User user) {
-        List<Menu> menuList = baseMapper.findCurrentUserMenuByPid(0L, user.getId());
-        return buildMenuTreeList(menuList);
-    }
-
-    private List<MenuTree> buildMenuTreeList(List<Menu> menus) {
-        List<MenuTree> menuTreeList = new ArrayList<>();
-        menus.forEach(menu -> {
-            MenuTree menuTree = buildMenu(menu);
-            if (menu.getParentId() == 0) {
-                menuTreeList.add(menuTree);
+        List<Menu> currentUserMenu = baseMapper.findCurrentUserMenu(user.getId());
+        Map<Long, MenuTree> map = new HashMap<>();
+        currentUserMenu.forEach(a -> map.put(a.getId(), menuTreeStruct.toMenuTree(a)));
+        List<MenuTree> list = new ArrayList<>();
+        currentUserMenu.forEach(a -> {
+            if (a.getParentId() == 0) {
+                list.add(map.get(a.getId()));
+                return;
             }
-            menuTreeList.forEach(item -> {
-                if (Objects.equals(menu.getParentId(),item.getMenu().getId())) {
-                    item.addMenuTree(menuTree);
-                }
-            });
+            MenuTree menuTree = map.get(a.getParentId());
+            List<MenuTree> child = menuTree.getChild();
+            if (child == null) {
+                child = new ArrayList<>();
+                menuTree.setChild(child);
+            }
+            child.add(map.get(a.getId()));
         });
-        return menuTreeList;
+        return list;
     }
-
-    private MenuTree buildMenu(Menu menu) {
-        MenuTree menuTree = new MenuTree();
-        menuTree.setMenu(menu);
-        return menuTree;
-    }
-
 }

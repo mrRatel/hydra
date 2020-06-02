@@ -1,5 +1,7 @@
 package com.ratel.hydra.system.controller;
 
+import com.ratel.hydra.common.constant.ExceptionEnum;
+import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.system.po.User;
 import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
@@ -11,6 +13,10 @@ import org.apache.shiro.SecurityUtils;
 public class BaseController {
 
     public User currentUser(){
-        return (User) SecurityUtils.getSubject().getPrincipal();
+        User principal = (User) SecurityUtils.getSubject().getPrincipal();
+        if (principal == null){
+            throw new SystemException(ExceptionEnum.AUTH1008);
+        }
+        return principal;
     }
 }

@@ -1,3 +1,0 @@
-function validateResponse(rep,errMsg) {
-
-}

@@ -5,6 +5,7 @@ import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.properties.CaptchaProperty;
+import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.query.user.UserAdd;
 import com.ratel.hydra.system.query.user.UserLogin;
@@ -37,12 +38,12 @@ public class UserController extends BaseController{
 
     @PostMapping("add")
     @OperatingInfo(operation = "注册")
-    public WebResult add(@RequestBody @Valid UserAdd add){
-        service.add(add);
+    public WebResult add(@RequestBody @Valid UserAdd add,HttpServletRequest request){
+        service.add(add.setRegisterFrom(WebUtil.getBrowers(request)));
         UsernamePasswordToken token = new UsernamePasswordToken(add.getUsername(), add.getPassword(),false);
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);
-        return WebResultFactory.ok("/view/index.html","注册成功");
+        return WebResultFactory.ok("/index.html","注册成功");
     }
 
     @PostMapping("login")
@@ -58,6 +59,6 @@ public class UserController extends BaseController{
         UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(), userLogin.getPassword(),userLogin.isRememberMe());
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);
-        return WebResultFactory.ok("/view/index.html","登录成功");
+        return WebResultFactory.ok("/index.html","登录成功");
     }
 }

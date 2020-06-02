@@ -13,14 +13,10 @@ import java.util.List;
  */
 @Data
 public class MenuTree{
-    private Long pid;
-    private Menu menu;
-    private List<MenuTree> list;
-
-    public void addMenuTree(MenuTree menuTree){
-        if (list == null){
-            list = new ArrayList<>();
-        }
-        list.add(menuTree);
-    }
+    private String title;
+    private Long id;
+    private String icon;
+    private String href;
+    private String target;
+    private List<MenuTree> child;
 }
