@@ -1,5 +1,6 @@
 package com.ratel.hydra.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ratel.hydra.system.dto.LayuiTree;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
@@ -27,4 +28,8 @@ public interface MenuService {
     List<MenuTree> findMenuTreeList(User user);
 
     void batchInsert(List<MenuTree> list,Long pid);
+
+    IPage findMenuListByPage(User currentUser);
+
+    Menu findById(Long id);
 }

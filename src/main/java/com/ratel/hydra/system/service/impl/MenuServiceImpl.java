@@ -1,6 +1,8 @@
 package com.ratel.hydra.system.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.common.mapstruct.MenuTreeStruct;
 import com.ratel.hydra.common.utils.ConvertUtils;
@@ -46,7 +48,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         currentUserMenu.forEach(a -> map.put(a.getId(), menuTreeStruct.toMenuTree(a)));
         List<MenuTree> list = new ArrayList<>();
         currentUserMenu.forEach(a -> {
-            if (a.getParentId() == 0) {
+            if (a.getParentId() == -1) {
                 list.add(map.get(a.getId()));
                 return;
             }
@@ -77,5 +79,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             }
             batchInsert(child,menu.getId());
         });
+    }
+
+    @Override
+    public IPage<Menu> findMenuListByPage(User currentUser) {
+        IPage<Menu> page = new Page<>();
+        List<Menu> currentUserMenu = baseMapper.findCurrentUserMenu(currentUser.getId());
+        return page.setRecords(currentUserMenu).setTotal(currentUserMenu.size());
+    }
+
+    @Override
+    public Menu findById(Long id) {
+        return baseMapper.selectById(id);
     }
 }

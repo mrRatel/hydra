@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -25,12 +26,17 @@ public class MenuController extends BaseController{
 
     @GetMapping("/list")
     public WebResult list(){
-        return WebResultFactory.ok(service.findMenuTreeList(currentUser()));
+        return WebResultFactory.ok(service.findMenuListByPage(currentUser()));
     }
 
     @PostMapping("batchInsert")
     public WebResult batchInsert(@RequestBody List<MenuTree> list){
         service.batchInsert(list,0L);
         return WebResultFactory.ok(null);
+    }
+
+    @GetMapping("/get/{id}")
+    public WebResult getById(@PathVariable("id") @NotBlank(message = "菜单id不能为空") Long id){
+        return WebResultFactory.ok(service.findById(id));
     }
 }
