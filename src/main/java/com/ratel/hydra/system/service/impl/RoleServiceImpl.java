@@ -14,4 +14,18 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+    @Override
+    public Role getById(Long id) {
+        return super.getById(id);
+    }
+
+    @Override
+    public void delById(Long id) {
+        removeById(id);
+    }
+
+    @Override
+    public void addOrUpdate(Role role) {
+        saveOrUpdate(role);
+    }
 }

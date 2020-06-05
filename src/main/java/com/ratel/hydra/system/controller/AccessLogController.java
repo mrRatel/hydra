@@ -40,8 +40,8 @@ public class AccessLogController extends BaseController{
 //            @ApiImplicitParam(name = "password", value = "密码", defaultValue = "1234", required = true)
 //    }
 //    )
-    public WebResult list(Page<AccessLog> query) {
-        return WebResultFactory.ok(service.list(query), "获取访问记录成功");
+    public WebResult list(Page<AccessLog> page, AccessLog accessLog) {
+        return WebResultFactory.ok(service.list(page,accessLog), "获取访问记录成功");
     }
 
     @Valid

@@ -1,6 +1,7 @@
 package com.ratel.hydra.system.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -42,6 +43,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
+    public boolean saveOrUpdate(Menu entity, Wrapper<Menu> updateWrapper) {
+        return false;
+    }
+
+    @Override
     public List<MenuTree> findMenuTreeList(User user) {
         List<Menu> currentUserMenu = baseMapper.findCurrentUserMenu(user.getId());
         Map<Long, MenuTree> map = new HashMap<>();
@@ -72,7 +78,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             menu.setCreator(1L);
             menu.setModifier(1L);
             //pid
-            baseMapper.insert(menu);
+            save(menu);
             List<MenuTree> child = a.getChild();
             if (CollectionUtils.isEmpty(child)){
                 return;
@@ -90,6 +96,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
     @Override
     public Menu findById(Long id) {
-        return baseMapper.selectById(id);
+
+        return getById(id);
     }
+
+    @Override
+    public void delById(Long id) {
+        delById(id);
+    }
+
+    @Override
+    public void addOrUpdate(Menu menu) {
+        saveOrUpdate(menu);
+    }
+
 }

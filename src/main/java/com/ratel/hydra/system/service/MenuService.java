@@ -32,4 +32,8 @@ public interface MenuService {
     IPage findMenuListByPage(User currentUser);
 
     Menu findById(Long id);
+
+    void delById(Long id);
+
+    void addOrUpdate(Menu menu);
 }

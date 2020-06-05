@@ -4,13 +4,18 @@ import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
+import com.ratel.hydra.common.mapstruct.LoginLogStruct;
 import com.ratel.hydra.common.properties.CaptchaProperty;
+import com.ratel.hydra.common.utils.IpUtil;
 import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.system.po.LoginLog;
 import com.ratel.hydra.system.query.user.UserAdd;
 import com.ratel.hydra.system.query.user.UserLogin;
+import com.ratel.hydra.system.service.LoginLogService;
 import com.ratel.hydra.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -34,7 +39,11 @@ public class UserController extends BaseController{
     @Autowired
     private UserService service;
 
+    @Autowired
+    private LoginLogService loginLogService;
 
+    @Autowired
+    private LoginLogStruct loginLogStruct;
 
     @PostMapping("add")
     @OperatingInfo(operation = "注册")
@@ -59,6 +68,12 @@ public class UserController extends BaseController{
         UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(), userLogin.getPassword(),userLogin.isRememberMe());
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);
+        //记录登录日志
+        LoginLog loginLog = loginLogStruct.toLoginLog(currentUser(), request);
+        loginLog.setLocation(IpUtil.getCityInfo(loginLog.getIp()));
+        loginLogService.add(loginLog);
         return WebResultFactory.ok("/index.html","登录成功");
     }
+
+
 }

@@ -1,8 +1,10 @@
 package com.ratel.hydra.system.controller;
 
 import com.ratel.hydra.common.factory.WebResultFactory;
+import com.ratel.hydra.common.utils.NumberUtils;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.dto.MenuTree;
+import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +21,36 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("menu")
-public class MenuController extends BaseController{
+public class MenuController extends BaseController {
 
     @Autowired
     private MenuService service;
 
     @GetMapping("/list")
-    public WebResult list(){
+    public WebResult list() {
         return WebResultFactory.ok(service.findMenuListByPage(currentUser()));
     }
 
     @PostMapping("batchInsert")
-    public WebResult batchInsert(@RequestBody List<MenuTree> list){
-        service.batchInsert(list,0L);
+    public WebResult batchInsert(@RequestBody List<MenuTree> list) {
+        service.batchInsert(list, 0L);
         return WebResultFactory.ok(null);
     }
 
     @GetMapping("/get/{id}")
-    public WebResult getById(@PathVariable("id") @NotBlank(message = "菜单id不能为空") Long id){
+    public WebResult getById(@PathVariable("id") @NotBlank(message = "菜单id不能为空") Long id) {
         return WebResultFactory.ok(service.findById(id));
+    }
+
+    @PostMapping("/del/{id}")
+    public WebResult del(@PathVariable("id") Long id) {
+        service.delById(id);
+        return WebResultFactory.ok();
+    }
+
+    @PostMapping("/addOrUpdate")
+    public WebResult addOrUpdate(@RequestBody Menu menu) {
+        service.addOrUpdate(menu);
+        return WebResultFactory.ok();
     }
 }

@@ -23,17 +23,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void add(UserAdd add) {
 
-        User user = baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, add.getUsername()));
+        User user = getOne(new LambdaQueryWrapper<User>().eq(User::getUsername, add.getUsername()));
         if (user != null){
             throw new SystemException(ExceptionEnum.USER1001);
         }
         User po = new User();
         BeanUtils.copyProperties(add,po);
-        baseMapper.insert(po);
+        save(po);
     }
 
     @Override
     public User getByUsername(String username) {
-        return baseMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username));
+        return getOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username));
     }
 }

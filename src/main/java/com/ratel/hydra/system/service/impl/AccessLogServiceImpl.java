@@ -1,7 +1,9 @@
 package com.ratel.hydra.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.system.mapper.AccessLogMapper;
@@ -21,16 +23,14 @@ import org.springframework.stereotype.Service;
 public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLog> implements AccessLogService {
 
     @Override
-    public IPage<AccessLog> list(Page<AccessLog> query) {
-        LambdaQueryWrapper<AccessLog> eq = new LambdaQueryWrapper<AccessLog>();
-//        .eq(AccessLog::getId,1);
-        return baseMapper.selectPage(query, eq);
+    public IPage<AccessLog> list(Page<AccessLog> page, AccessLog accessLog) {
+        return page(page,new QueryWrapper<>(accessLog));
     }
 
     @Override
     public void add(AccessLogAdd add) {
         AccessLog po = new AccessLog();
         BeanUtils.copyProperties(add,po);
-        baseMapper.insert(po);
+        save(po);
     }
 }
