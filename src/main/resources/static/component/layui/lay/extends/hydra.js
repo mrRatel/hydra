@@ -26,7 +26,6 @@ layui.define(['jquery','layer'], function (exports) {
     }
     
     function req(url,data,type,func){
-        console.log(data)
         $.ajax({
             url:url,
             data:data,
@@ -37,7 +36,7 @@ layui.define(['jquery','layer'], function (exports) {
                     //前置处理
                     func(res);
                 }else {
-                    layer.msg(res.msg)
+                    // layer.msg(res.msg)
                     console.log(JSON.stringify(res))
                 }
             }

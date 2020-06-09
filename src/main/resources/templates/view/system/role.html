@@ -11,6 +11,7 @@
     <div class="layui-card-body">
         <form class="layui-form" action="">
             <div class="layui-form-item">
+                <input type="hidden" name="id">
                 <label class="layui-form-label">角色名称</label>
                 <div class="layui-input-inline">
                     <input type="text" name="realName" placeholder="" class="layui-input">
@@ -166,7 +167,7 @@
                 title: '修改',
                 shade: 0.1,
                 area: ['500px', '400px'],
-                content: '/view/system/role/edit.html'
+                content: '/view/role/'+obj.data.id
             });
         }
 

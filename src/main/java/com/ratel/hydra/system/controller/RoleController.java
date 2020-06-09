@@ -29,7 +29,7 @@ public class RoleController extends BaseController{
         service.delById(id);
         return WebResultFactory.ok();
     }
-    @GetMapping("addOrUpdate")
+    @PostMapping("addOrUpdate")
     public WebResult addOrUpdate(@RequestBody Role role){
         service.addOrUpdate(role);
         return WebResultFactory.ok();

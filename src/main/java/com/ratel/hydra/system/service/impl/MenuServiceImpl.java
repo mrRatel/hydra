@@ -1,15 +1,10 @@
 package com.ratel.hydra.system.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.mapstruct.MenuTreeStruct;
-import com.ratel.hydra.common.utils.ConvertUtils;
-import com.ratel.hydra.system.dto.LayuiTree;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.mapper.MenuMapper;
 import com.ratel.hydra.system.po.Menu;
@@ -21,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author ratel

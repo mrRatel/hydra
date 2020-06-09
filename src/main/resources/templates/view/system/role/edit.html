@@ -7,35 +7,36 @@
     <link rel="stylesheet" href="../../../component/layui/css/layui.css" />
 </head>
 <body>
-<form class="layui-form" action="">
+<form class="layui-form" action=""  lay-filter="editForm">
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
                 <div class="layui-form-item">
                     <label class="layui-form-label">角色名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="username" value="854085467" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="hidden" name="roleId" th:value="${data.id}"  lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text" name="username" th:value="${data.roleName}"  lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">角色编码</label>
                     <div class="layui-input-block">
-                        <input type="text"  name="realName" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text"  name="realName" th:value="${data.roleCode}" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-block">
-                        <input type="text"  name="email" value="854085467@qq.com" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text"  name="remark" th:value="${data.remark}" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-form-item">
+<!--                <div class="layui-form-item">
                     <label class="layui-form-label">性别</label>
                     <div class="layui-input-block">
                         <input type="radio" name="sex" value="0" title="男">
                         <input type="radio" name="sex" value="1" title="女" checked>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
@@ -54,19 +55,32 @@
 </form>
 <script src="../../../component/layui/layui.js"></script>
 <script>
-layui.use(['form','jquery'],function(){
+layui.use(['form','jquery','hydra'],function(){
     let form = layui.form;
     let $ = layui.jquery;
-
+    let hydra = layui.hydra;
+    var role = [[${data}]];
+    $(function(){
+        // role = form.val("editForm");
+        console.log("form 数据：",JSON.stringify(role))
+    })
     form.on('submit(user-save)', function(data){
-        let roleIds = "";
-        $('input[type=checkbox]:checked').each(function() {
-            roleIds += $(this).val()+",";
-        });
-        roleIds = roleIds.substr(0,roleIds.length-1);
-        data.field.roleIds = roleIds;
-
-        $.ajax({
+        // let roleIds = "";
+        // data[id]= data.roleId;
+        // $('input[type=checkbox]:checked').each(function() {
+        //     roleIds += $(this).val()+",";
+        // });
+        // roleIds = roleIds.substr(0,roleIds.length-1);
+        // data.field.id = data.roleId;
+        data.field.id = data.field.roleId;
+        console.log(JSON.stringify(data.field))
+        hydra.post("/role/addOrUpdate",JSON.stringify(data.field),function(res){
+            // layer.msg(result.msg,{icon:1,time:1000},function(){
+            //     parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+            //     parent.layui.table.reload("user-table");
+            // });
+        })
+      /*  $.ajax({
             url:'/system/user/save',
             data:JSON.stringify(data.field),
             dataType:'json',
@@ -82,7 +96,7 @@ layui.use(['form','jquery'],function(){
                     layer.msg(result.msg,{icon:2,time:1000});
                 }
             }
-        })
+        })*/
         return false;
     });
 })

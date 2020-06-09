@@ -46,9 +46,10 @@ public class ViewController extends BaseController {
          return "hydra/views/login";
     }
 
-    @GetMapping("/view/role/add/{id}")
-    public String roleAddView(@PathVariable("id") Long id,ModelAndView view){
-        view.addObject("data",roleService.getById(id));
-        return  "view/system/role/edit";
+    @GetMapping("/view/role/{id}")
+    public ModelAndView roleAddView(@PathVariable("id") Long id, ModelAndView view){
+        view.addObject("data",JSON.toJSON(roleService.getById(id)));
+        view.setViewName("view/system/role/edit");
+        return  view;
     }
 }
