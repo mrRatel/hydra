@@ -9,11 +9,11 @@ import com.ratel.hydra.common.vo.WebResult;
 public class WebResultFactory {
 
     public static WebResult ok(Object obj,String msg){
-        return new WebResult().setStatus(true).setContent(obj).setMsg(msg).setCode("200");
+        return new WebResult().setStatus(true).setData(obj).setMsg(msg).setCode("200");
     }
 
     public static WebResult ok(Object obj){
-        return new WebResult().setStatus(true).setContent(obj).setCode("200");
+        return new WebResult().setStatus(true).setData(obj).setCode("200");
     }
 
     public static WebResult ok(){

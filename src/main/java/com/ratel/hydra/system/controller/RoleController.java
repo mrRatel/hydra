@@ -3,6 +3,7 @@ package com.ratel.hydra.system.controller;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.po.Role;
+import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class RoleController extends BaseController{
     public WebResult addOrUpdate(@RequestBody Role role){
         service.addOrUpdate(role);
         return WebResultFactory.ok();
+    }
+
+    @GetMapping("page")
+    public WebResult page(PageQuery<Role> query){
+        return WebResultFactory.ok(service.page(query));
     }
 }

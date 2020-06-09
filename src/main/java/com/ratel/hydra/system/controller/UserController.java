@@ -45,7 +45,7 @@ public class UserController extends BaseController{
     @Autowired
     private LoginLogStruct loginLogStruct;
 
-    @PostMapping("add")
+    @PostMapping("register")
     @OperatingInfo(operation = "注册")
     public WebResult add(@RequestBody @Valid UserAdd add,HttpServletRequest request){
         service.add(add.setRegisterFrom(WebUtil.getBrowers(request)));
@@ -72,7 +72,7 @@ public class UserController extends BaseController{
         LoginLog loginLog = loginLogStruct.toLoginLog(currentUser(), request);
         loginLog.setLocation(IpUtil.getCityInfo(loginLog.getIp()));
         loginLogService.add(loginLog);
-        return WebResultFactory.ok("/index.html","登录成功");
+        return WebResultFactory.ok("/index","登录成功");
     }
 
 

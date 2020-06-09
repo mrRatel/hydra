@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ratel.hydra.common.constant.ExceptionEnum;
+import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.mapstruct.MenuTreeStruct;
 import com.ratel.hydra.common.utils.ConvertUtils;
 import com.ratel.hydra.system.dto.LayuiTree;
@@ -54,15 +56,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         currentUserMenu.forEach(a -> map.put(a.getId(), menuTreeStruct.toMenuTree(a)));
         List<MenuTree> list = new ArrayList<>();
         currentUserMenu.forEach(a -> {
-            if (a.getParentId() == -1) {
+            if (a.getParentId() == 0) {
                 list.add(map.get(a.getId()));
                 return;
             }
             MenuTree menuTree = map.get(a.getParentId());
-            List<MenuTree> child = menuTree.getChild();
+            List<MenuTree> child = menuTree.getChildren();
             if (child == null) {
                 child = new ArrayList<>();
-                menuTree.setChild(child);
+                menuTree.setChildren(child);
             }
             child.add(map.get(a.getId()));
         });
@@ -70,20 +72,21 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public void batchInsert(List<MenuTree> list,Long pid) {
-        list.forEach(a ->{
+    public void batchInsert(List<MenuTree> list, Long pid) {
+        list.forEach(a -> {
             Menu menu = menuTreeStruct.toMenu(a);
             menu.setParentId(pid);
             menu.setRoleId(1L);
             menu.setCreator(1L);
             menu.setModifier(1L);
+            menu.setType(a.getType());
             //pid
             save(menu);
-            List<MenuTree> child = a.getChild();
-            if (CollectionUtils.isEmpty(child)){
+            List<MenuTree> child = a.getChildren();
+            if (CollectionUtils.isEmpty(child)) {
                 return;
             }
-            batchInsert(child,menu.getId());
+            batchInsert(child, menu.getId());
         });
     }
 
@@ -109,5 +112,4 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public void addOrUpdate(Menu menu) {
         saveOrUpdate(menu);
     }
-
 }

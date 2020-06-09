@@ -31,6 +31,11 @@ public class MenuController extends BaseController {
         return WebResultFactory.ok(service.findMenuListByPage(currentUser()));
     }
 
+    @GetMapping("/menuTree")
+    public WebResult menuTree() {
+        return WebResultFactory.ok(service.findMenuTreeList(currentUser()));
+    }
+
     @PostMapping("batchInsert")
     public WebResult batchInsert(@RequestBody List<MenuTree> list) {
         service.batchInsert(list, 0L);

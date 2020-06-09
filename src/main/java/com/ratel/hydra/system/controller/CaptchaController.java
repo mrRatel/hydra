@@ -22,14 +22,14 @@ import javax.servlet.http.HttpSession;
  */
 @Slf4j
 @Controller
-@RequestMapping("captcha")
+@RequestMapping("image")
 public class CaptchaController {
     @Autowired
     private HydraProperties hydraProperties;
     @Autowired
     private CaptchaService service;
 
-    @GetMapping("one")
+    @GetMapping("captcha")
     public void generateAuthCode(HttpServletRequest request, HttpServletResponse response){
         CaptchaProperty captchaProperty = hydraProperties.getCaptchaProperty();
         service.setHeader(response, captchaProperty.getType());

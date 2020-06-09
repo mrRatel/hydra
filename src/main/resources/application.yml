@@ -36,4 +36,5 @@ mybatis-plus:
 
 logging:
   level:
-    root: debug
+    com.ratel.hydra.system.mapper: debug
+    root: info

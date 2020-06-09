@@ -17,7 +17,7 @@ public class WebResult <T> implements Serializable {
     /** 响应状态 */
     private boolean status;
     /** 响应内容 */
-    private T Content;
+    private T data;
     /** 信息 */
     private String msg;
 }

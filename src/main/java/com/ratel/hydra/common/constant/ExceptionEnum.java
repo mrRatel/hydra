@@ -11,6 +11,7 @@ public enum  ExceptionEnum {
     SYS1003("反射异常,调用%s方法失败"),
     SYS1004("excel导入,数据为空"),
     SYS1005("枚举不存在,code【%s】"),
+    SYS1006("数据异常,code【%s】"),
     AUTH1000("未知账号异常"),
     AUTH1001("密码不正确"),
     AUTH1002("账号已被锁定"),

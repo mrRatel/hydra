@@ -18,7 +18,7 @@ public interface MenuTreeStruct {
             @Mapping(target = "title",source = "menuName"),
             @Mapping(target = "href",source = "url"),
             @Mapping(target = "id",source = "id"),
-            @Mapping(target = "target",constant = "_self")
+            @Mapping(target = "type",source = "type")
     })
     MenuTree toMenuTree(Menu menu);
 

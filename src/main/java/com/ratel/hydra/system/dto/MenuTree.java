@@ -17,6 +17,6 @@ public class MenuTree{
     private Long id;
     private String icon;
     private String href;
-    private String target;
-    private List<MenuTree> child;
+    private Byte type;
+    private List<MenuTree> children;
 }
