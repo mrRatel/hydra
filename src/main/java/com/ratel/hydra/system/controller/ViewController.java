@@ -48,7 +48,7 @@ public class ViewController extends BaseController {
 
     @GetMapping("/view/role/{id}")
     public ModelAndView roleAddView(@PathVariable("id") Long id, ModelAndView view){
-        view.addObject("data",JSON.toJSON(roleService.getById(id)));
+        view.addObject("data",roleService.getById(id));
         view.setViewName("view/system/role/edit");
         return  view;
     }
