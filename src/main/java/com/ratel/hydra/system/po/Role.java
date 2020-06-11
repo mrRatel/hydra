@@ -41,6 +41,10 @@ public class Role {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    @TableField(value = "description")
+    @ApiModelProperty(value = "")
+    private String description;
+
     /**
      * 角色编码
      */

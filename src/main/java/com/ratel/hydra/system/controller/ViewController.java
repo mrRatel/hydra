@@ -43,7 +43,7 @@ public class ViewController extends BaseController {
     @GetMapping("/login")
     public String login(ModelAndView model){
 
-         return "hydra/views/login";
+         return "/login";
     }
 
     @GetMapping("/view/role/{id}")
@@ -51,5 +51,10 @@ public class ViewController extends BaseController {
         view.addObject("data",roleService.getById(id));
         view.setViewName("view/system/role/edit");
         return  view;
+    }
+
+    @GetMapping("/view/role/add")
+    public String roleAddView(){
+        return  "view/system/role/edit/add";
     }
 }

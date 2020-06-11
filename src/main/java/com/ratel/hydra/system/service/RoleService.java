@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.query.PageQuery;
 
+import java.util.List;
+
 public interface RoleService {
 
     Role getById(Long id);
@@ -14,4 +16,5 @@ public interface RoleService {
 
     IPage<Role> page(PageQuery<Role> query);
 
+    void batchDelByIds(List<Long> ids);
 }

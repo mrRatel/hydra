@@ -1,15 +1,17 @@
 package com.ratel.hydra.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.system.mapper.RoleMapper;
 import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author ratel
@@ -35,6 +37,24 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     public IPage<Role> page(PageQuery<Role> query) {
-        return page(query.getPage());
+        LambdaQueryWrapper<Role> queryWrapper = new LambdaQueryWrapper<Role>().orderByDesc(Role::getModifyTime);
+        if (query.getQuery() != null){
+            Role role = query.getQuery();
+            if (StringUtils.isNoneBlank(role.getRoleName())) {
+                queryWrapper.likeLeft(Role::getRoleName,role.getRoleName());
+            }
+            if (StringUtils.isNoneBlank(role.getRoleCode())){
+                queryWrapper.eq(Role::getRoleCode,role.getRoleCode());
+            }
+            if (StringUtils.isNoneBlank(role.getDescription())){
+                queryWrapper.like(Role::getDescription,role.getDescription());
+            }
+        }
+        return page(query.getPage(),queryWrapper);
+    }
+
+    @Override
+    public void batchDelByIds(List<Long> ids) {
+        removeByIds(ids);
     }
 }

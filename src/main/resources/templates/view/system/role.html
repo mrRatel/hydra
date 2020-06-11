@@ -14,11 +14,15 @@
                 <input type="hidden" name="id">
                 <label class="layui-form-label">角色名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="realName" placeholder="" class="layui-input">
+                    <input type="text" name="queryParam.roleName" placeholder="" class="layui-input">
                 </div>
-                <label class="layui-form-label">角色标识</label>
+                <label class="layui-form-label">角色编码</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="username" placeholder="" class="layui-input">
+                    <input type="text" name="queryParam.roleCode" placeholder="" class="layui-input">
+                </div>
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="queryParam.description" placeholder="" class="layui-input">
                 </div>
                 <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="role-query">
                     <i class="layui-icon layui-icon-search"></i>
@@ -67,7 +71,7 @@
 
 <script src="../../component/layui/layui.js"></script>
 <script>
-    layui.use(['table', 'form', 'jquery','hydra'], function () {
+    layui.use(['table', 'form', 'jquery', 'hydra'], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
@@ -79,8 +83,9 @@
             [
                 {type: 'checkbox'},
                 {title: '角色名', field: 'roleName', align: 'center', width: 100},
-                {title: 'Key值', field: 'roleCode', align: 'center'},
-                {title: '描述', field: 'remark', align: 'center'},
+                {title: '角色编码', field: 'roleCode', align: 'center'},
+                {title: '描述', field: 'description', align: 'center'},
+                {title: '备注', field: 'remark', align: 'center'},
                 {title: '是否可用', field: 'enable', align: 'center', templet: '#role-enable'},
                 {title: '操作', toolbar: '#role-bar', align: 'center', width: 195}
             ]
@@ -147,7 +152,7 @@
                 title: '新增',
                 shade: 0.1,
                 area: ['500px', '400px'],
-                content: MODULE_PATH + 'add.html'
+                content: '/view/system/role/add.html'
             });
         }
 
@@ -167,60 +172,51 @@
                 title: '修改',
                 shade: 0.1,
                 area: ['500px', '400px'],
-                content: '/view/role/'+obj.data.id
+                content: '/view/role/' + obj.data.id
             });
         }
 
         window.remove = function (obj) {
             layer.confirm('确定要删除该角色', {icon: 3, title: '提示'}, function (index) {
                 layer.close(index);
-                let loading = layer.load();
-                $.ajax({
-                    url: MODULE_PATH + "remove/" + obj.data['roleId'],
-                    dataType: 'json',
-                    type: 'delete',
-                    success: function (result) {
-                        layer.close(loading);
-                        if (result.success) {
-                            layer.msg(result.msg, {icon: 1, time: 1000}, function () {
-                                obj.del();
-                            });
-                        } else {
-                            layer.msg(result.msg, {icon: 2, time: 1000});
-                        }
-                    }
+                var loading = layer.load();
+                hydra.post('/role/del/' + obj.data['id'], {}, function (res) {
+/*                    if (res.status) {
+                        table.reload('role-table');
+                    }*/
+
+                    layer.close(loading)
+                    layer.msg("操作成功", {icon: 1, time: 1000}, function () {
+                        parent.layui.table.reload("role-table");
+                    });
+                    console.log(1231231231)
+
                 })
             });
         }
 
+
         window.batchRemove = function (obj) {
+            console.log(JSON.stringify(table.checkStatus(obj.config.id).data))
             let data = table.checkStatus(obj.config.id).data;
             if (data.length === 0) {
                 layer.msg("未选中数据", {icon: 3, time: 1000});
                 return false;
             }
-            let ids = "";
+            var ids = [];
             for (let i = 0; i < data.length; i++) {
-                ids += data[i].userId + ",";
+                ids.push(data[i].id)
             }
-            ids = ids.substr(0, ids.length - 1);
+
             layer.confirm('确定要删除这些用户', {icon: 3, title: '提示'}, function (index) {
                 layer.close(index);
-                let loading = layer.load();
-                $.ajax({
-                    url: MODULE_PATH + "batchRemove/" + ids,
-                    dataType: 'json',
-                    type: 'delete',
-                    success: function (result) {
-                        layer.close(loading);
-                        if (result.success) {
-                            layer.msg(result.msg, {icon: 1, time: 1000}, function () {
-                                table.reload('user-table');
-                            });
-                        } else {
-                            layer.msg(result.msg, {icon: 2, time: 1000});
+                // let loading = layer.load();
+                hydra.post('/role/batchDel', JSON.stringify(ids), function (res) {
+                    layer.msg(res.msg, {icon: res.status ? 1 : 2, time: 1000}, function () {
+                        if (res.status) {
+                            table.reload('role-table');
                         }
-                    }
+                    });
                 })
             });
         }

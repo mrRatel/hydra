@@ -19,8 +19,8 @@ layui.define(['jquery','layer'], function (exports) {
         },
         convertPageParam:function convertPageParam(){
             return {
-                pageName: 'current' //页码的参数名称，默认：page
-                , limitName: 'size' //每页数据量的参数名，默认：limit
+                pageName: 'page.current' //页码的参数名称，默认：page
+                , limitName: 'page.size' //每页数据量的参数名，默认：limit
             }
         }
     }
@@ -33,12 +33,16 @@ layui.define(['jquery','layer'], function (exports) {
             contentType:"application/json",
             success:function (res) {
                 if (res.status){
-                    //前置处理
+                    //后置处理
                     func(res);
                 }else {
-                    // layer.msg(res.msg)
+                    if (res.code == 'AUTH1008') {
+                        location.href = '/login';
+                    }
+                    layer.msg(res.msg == null ? "操作失败" : res.msg, {icon: 2, time: 1000});
                     console.log(JSON.stringify(res))
                 }
+
             }
         })
     }
