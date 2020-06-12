@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("dictionary")
-public class DictionaryController extends BaseController{
+public class DictionaryController {
 
     @Autowired
     private DictionaryService service;

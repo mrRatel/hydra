@@ -42,20 +42,22 @@ public class MenuController extends BaseController {
         return WebResultFactory.ok(null);
     }
 
+/*
     @GetMapping("/get/{id}")
     public WebResult getById(@PathVariable("id") @NotBlank(message = "菜单id不能为空") Long id) {
         return WebResultFactory.ok(service.findById(id));
     }
+*/
 
-    @PostMapping("/del/{id}")
+/*    @PostMapping("/del/{id}")
     public WebResult del(@PathVariable("id") Long id) {
         service.delById(id);
         return WebResultFactory.ok();
-    }
-
+    }*/
+/*
     @PostMapping("/addOrUpdate")
     public WebResult addOrUpdate(@RequestBody Menu menu) {
         service.addOrUpdate(menu);
         return WebResultFactory.ok();
-    }
+    }*/
 }

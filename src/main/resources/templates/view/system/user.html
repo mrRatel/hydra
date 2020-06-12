@@ -56,7 +56,7 @@
 		</script>
 		
 		<script type="text/html" id="user-enable">
-		    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked = "{{ d.enable == 0 ? 'true' : 'false' }}">
+		    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked = "{{'false'}}">
 		</script>
 		
 		<script type="text/html" id="user-sex">
@@ -81,30 +81,36 @@
 		
 		<script src="../../component/layui/layui.js"></script>
 		<script>
-		    layui.use(['table','form','jquery'],function () {
+		    layui.use(['table','form','jquery','hydra'],function () {
 		        let table = layui.table;
 		        let form = layui.form;
 		        let $ = layui.jquery;
-		
+		        let hydra = layui.hydra;
+
 		        let MODULE_PATH = "operate/";
 		
 		        let cols = [
 		            [
 		                {type:'checkbox'},
 		                {title: '账号', field: 'username', align:'center', width:100},
-		                {title: '姓名', field: 'realName', align:'center'},
+		                {title: '用户名', field: 'realName', align:'center'},
 		                {title: '性别', field: 'sex', align:'center', width:80, templet:'#user-sex'},
+		                {title: '年龄', field: 'age', align:'center'},
 		                {title: '电话', field: 'phone', align:'center'},
+		                {title: '注册来源', field: 'registerFrom', align:'center'},
+		                {title: '注册时间', field: 'createTime', align:'center'},
+		                {title: '修改时间', field: 'modifyTime', align:'center'},
 		                {title: '启用', field: 'enable', align:'center', templet:'#user-enable'},
-		                {title: '登录', field: 'login', align:'center', templet:'#user-login'},
-		                {title: '注册', field: 'createTime', align:'center',templet:'#user-createTime'},
+		                // {title: '登录', field: 'login', align:'center', templet:'#user-login'},
+		                // {title: '注册', field: 'createTime', align:'center',templet:'#user-createTime'},
 		                {title: '操作', toolbar: '#user-bar', align:'center', width:130}
 		            ]
 		        ]
 		
 		        table.render({
 		            elem: '#user-table',
-		            url: '../../admin/data/user.json',
+		            // url: '../../admin/data/user.json',
+		            url: '/user/page',
 		            page: true ,
 		            cols: cols ,
 		            skin: 'line',
@@ -112,7 +118,11 @@
 		            defaultToolbar: [{
 		                layEvent: 'refresh',
 		                icon: 'layui-icon-refresh',
-		            }, 'filter', 'print', 'exports']
+		            }, 'filter', 'print', 'exports'],
+					request: hydra.convertPageParam(),
+					parseData: function (res) {
+						return hydra.parseData(res)
+					}
 		        });
 		
 		        table.on('tool(user-table)', function(obj){

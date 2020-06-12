@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/accessLog")
 @Api(tags = "访问日志相关接口")
-public class AccessLogController extends BaseController{
+public class AccessLogController{
 
     @Autowired
     private AccessLogService service;

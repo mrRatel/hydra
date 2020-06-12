@@ -1,8 +1,8 @@
 package com.ratel.hydra.system.query;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Map;
 
@@ -11,8 +11,8 @@ import java.util.Map;
  * @date 2020-06-09
  */
 @Data
-public class PageQuery<T> {
-    private T query;
-    private Map<String,Object> queryParam;
-    private Page page = new Page();
+@Accessors(chain = true)
+public class PageQuery<E> {
+    private E query;
+    private Page<E> page = new Page();
 }

@@ -37,7 +37,7 @@ public class Swagger2Configuration {
                 .apis(RequestHandlerSelectors.basePackage(swagger.getBasePackage()))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(apiInfo(swagger));
+                .apiInfo(apiInfo(swagger)).enable(true);
     }
 
     private ApiInfo apiInfo(Swagger2Property swagger) {
@@ -45,7 +45,7 @@ public class Swagger2Configuration {
                 swagger.getTitle(),
                 swagger.getDescription(),
                 swagger.getVersion(),
-                null,
+                "",
                 new Contact(swagger.getAuthor(), swagger.getUrl(), swagger.getEmail()),
                 swagger.getLicense(), swagger.getLicenseUrl(), Collections.emptyList());
     }

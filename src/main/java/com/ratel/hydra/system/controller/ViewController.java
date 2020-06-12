@@ -1,8 +1,6 @@
 package com.ratel.hydra.system.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ratel.hydra.common.utils.WebUtil;
-import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.service.MenuService;
 import com.ratel.hydra.system.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * @author ratel
@@ -26,17 +22,16 @@ public class ViewController extends BaseController {
     @Autowired
     private MenuService menuService;
 
-    @Autowired
+//    @Autowired
     private RoleService roleService;
 
-//    @GetMapping("/")
-//    public String redirectIndex(){
-//        return  "redirect:/index";
-//    }
+    @GetMapping("/")
+    public String redirectIndex(){
+        return  WebUtil.getRedirectUrl("/index");
+    }
 
     @GetMapping("/index")
     public String index(ModelAndView model){
-
          return "index";
     }
 
@@ -48,7 +43,7 @@ public class ViewController extends BaseController {
 
     @GetMapping("/view/role/{id}")
     public ModelAndView roleAddView(@PathVariable("id") Long id, ModelAndView view){
-        view.addObject("data",roleService.getById(id));
+        view.addObject("data",roleService.baseGetById(id));
         view.setViewName("view/system/role/edit");
         return  view;
     }

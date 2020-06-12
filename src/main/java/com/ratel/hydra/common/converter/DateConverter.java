@@ -2,6 +2,7 @@ package com.ratel.hydra.common.converter;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.ratel.hydra.common.mapstruct.RoleStruct;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

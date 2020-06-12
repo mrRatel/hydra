@@ -1,5 +1,6 @@
 package com.ratel.hydra.common.handler;
 
+import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.vo.WebResult;
@@ -39,7 +40,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SystemException.class)
     public WebResult systemExceptionHandler(SystemException e){
-        log.error(e.getMessage(),e);
+        if (!ExceptionEnum.AUTH1007.equals(e.getEn())) {
+            log.error(e.getMessage(), e);
+        }
         return WebResultFactory.failed(e.getMessage(),e.getEn().toString());
     }
 

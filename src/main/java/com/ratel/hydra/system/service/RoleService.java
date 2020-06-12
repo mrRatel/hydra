@@ -1,20 +1,24 @@
 package com.ratel.hydra.system.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ratel.hydra.common.mapstruct.RoleStruct;
 import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.query.PageQuery;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public interface RoleService {
+ public interface RoleService extends IBaseServiceImpl<Role> {
+     Role baseGetById(Long id);
 
-    Role getById(Long id);
+     void baseDelById(Long id);
 
-    void delById(Long id);
+     IPage<Role> basePage(PageQuery<Role> query);
 
-    void addOrUpdate(Role role);
+     void baseAddOrUpdate(Role role);
 
-    IPage<Role> page(PageQuery<Role> query);
 
-    void batchDelByIds(List<Long> ids);
+     void batchDelByIds(List<Long> ids);
 }

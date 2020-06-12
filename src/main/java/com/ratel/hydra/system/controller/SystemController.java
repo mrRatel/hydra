@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2020-05-24
  */
 @Controller
-public class SystemController extends BaseController{
+public class SystemController{
     @Autowired
     private MenuService menuService;
-    @GetMapping("/")
+/*    @GetMapping("/")
     public String index(){
         return WebUtil.getRedirectUrl("/admin/index.html");
-    }
+    }*/
 
     @ResponseBody
     @GetMapping("/home")
@@ -39,7 +39,7 @@ public class SystemController extends BaseController{
         logoInfoBean.setHref("");
 
         homeInfo.setLogoInfo(logoInfoBean);
-        homeInfo.setMenuInfo( menuService.findMenuTreeList(currentUser()));
+//        homeInfo.setMenuInfo( menuService.findMenuTreeList(currentUser()));
         return homeInfo;
     }
 }

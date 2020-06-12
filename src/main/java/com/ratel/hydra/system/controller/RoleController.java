@@ -1,29 +1,20 @@
 package com.ratel.hydra.system.controller;
 
-import com.ratel.hydra.common.converter.PageQueryParamConvert;
-import com.ratel.hydra.common.factory.WebResultFactory;
-import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.po.Role;
-import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author ratel
  * @date 2020-05-21
  */
 @Slf4j
-@RestController
+//@RestController
 @RequestMapping("role")
-public class RoleController extends BaseController{
-    @Autowired
-    private RoleService service;
+public class RoleController extends BaseController<RoleService,Role>{
 
-    @GetMapping("get/{id}")
+/*    @GetMapping("get/{id}")
     public WebResult getById(@PathVariable("id") Long id){
         return WebResultFactory.ok(service.getById(id));
     }
@@ -47,7 +38,7 @@ public class RoleController extends BaseController{
     }
 
     @GetMapping("page")
-    public WebResult page(PageQuery<Role> query){
-        return WebResultFactory.ok(service.page(PageQueryParamConvert.convert(query)));
-    }
+    public WebResult page(PageQuery<Role,Role> query,Role role){
+        return WebResultFactory.ok(service.page(query.setQuery(role)));
+    }*/
 }

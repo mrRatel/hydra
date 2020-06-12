@@ -1,18 +1,13 @@
 package com.ratel.hydra.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ratel.hydra.system.po.User;
-import com.ratel.hydra.system.query.user.UserAdd;
+import com.ratel.hydra.system.query.PageQuery;
 
-public interface UserService {
-    
-    /**
-     * @Description 创建用户
-     * @Author      ratel
-     * @Date        2020-05-21
-     * @param       add
-     * @return      void
-     **/
-    void add(UserAdd add);
+import java.util.List;
+
+public interface UserService extends IBaseServiceImpl<User>{
 
     /**
      * @Description 通过用户名获取用户
@@ -22,4 +17,19 @@ public interface UserService {
      * @return      com.ratel.hydra.system.po.User
      **/
     User getByUsername(String username);
+
+    
+    User baseGetById(Long id);
+
+    
+    void baseDelById(Long id);
+
+    
+    void baseAddOrUpdate(User po);
+
+    
+    IPage<User> basePage(PageQuery<User> query);
+
+    
+    void batchDelByIds(List<Long> ids);
 }

@@ -25,7 +25,7 @@ public interface LoginLogStruct {
             @Mapping(target = "userId",source = "user.id"),
             @Mapping(target = "loginTime",expression = "java(new java.util.Date())"),
             @Mapping(target = "ip",expression = "java(com.ratel.hydra.common.utils.IpUtil.getIpAddr(request))"),
-//            @Mapping(target = "location",expression = "java (com.ratel.hydra.common.utils.IpUtil.getCityInfo(loginLog.ip))"),
+            @Mapping(target = "location",expression = "java(com.ratel.hydra.common.utils.IpUtil.getCityInfo(loginLog.getIp()))"),
             @Mapping(target = "device",expression = "java(com.ratel.hydra.common.utils.WebUtil.getOperatingSystem(request))"),
             @Mapping(target = "brower",expression = "java(com.ratel.hydra.common.utils.WebUtil.getBrowers(request))"),
     })
