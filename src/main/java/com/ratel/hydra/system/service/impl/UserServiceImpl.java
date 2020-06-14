@@ -1,15 +1,18 @@
 package com.ratel.hydra.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.system.mapper.UserMapper;
+import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
-import com.ratel.hydra.system.service.IBaseServiceImpl;
 import com.ratel.hydra.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +23,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class UserServiceImplImpl extends ServiceImpl<UserMapper,User> implements UserService {
+public class UserServiceImpl extends IBaseServiceImpl<UserMapper,User> implements UserService {
 
     @Override
     public User baseGetById(Long id) {
@@ -39,7 +42,17 @@ public class UserServiceImplImpl extends ServiceImpl<UserMapper,User> implements
 
     @Override
     public IPage<User> basePage(PageQuery<User> query) {
-        return page(query.getPage(), Wrappers.emptyWrapper());
+        User user = query.getQuery();
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>().orderByDesc(User::getModifyTime);
+        if (user != null){
+            if (StringUtils.isNoneBlank(user.getUsername())) {
+                wrapper.likeRight(User::getUsername,user.getUsername());
+            }
+            if (StringUtils.isNoneBlank(user.getRealName())){
+                wrapper.likeRight(User::getRealName,user.getRealName());
+            }
+        }
+        return page(query.getPage(), wrapper);
     }
 
     @Override

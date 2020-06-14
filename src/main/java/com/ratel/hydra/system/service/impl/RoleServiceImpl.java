@@ -20,8 +20,8 @@ import java.util.List;
  * @date 2020-05-21
  */
 @Slf4j
-//@Service
-public class RoleServiceImplImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+@Service
+public class RoleServiceImpl extends IBaseServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired
     private RoleStruct roleStruct;

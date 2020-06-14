@@ -1,42 +1,70 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../../../admin/css/pearCommon.css" />
-    <link rel="stylesheet" href="../../../component/layui/css/layui.css" />
+    <link rel="stylesheet" href="../../../admin/css/pearCommon.css"/>
+    <link rel="stylesheet" href="../../../component/layui/css/layui.css"/>
 </head>
 <body>
-<form class="layui-form" action=""  lay-filter="editForm">
+<form class="layui-form" action="" lay-filter="editForm">
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">角色名称</label>
+                    <label class="layui-form-label">用户名</label>
                     <div class="layui-input-block">
-                        <input type="hidden" name="roleId" th:value="${data.id}"  lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
-                        <input type="text" name="roleName" th:value="${data.roleName}"  lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="hidden" name="userId" th:value="${data.id}" lay-verify="title" autocomplete="off"
+                               placeholder="请输入标题" class="layui-input">
+                        <input type="text" name="username" th:value="${data.username}" lay-verify="title"
+                               autocomplete="off" placeholder="请输入标题" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">角色编码</label>
+                    <label class="layui-form-label">真实姓名</label>
                     <div class="layui-input-block">
-                        <input type="text"  name="roleCode" th:value="${data.roleCode}" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="text" name="realName" th:value="${data.realName}" lay-verify="title"
+                               autocomplete="off" placeholder="请输入标题" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">备注</label>
+                    <label class="layui-form-label">邮箱</label>
                     <div class="layui-input-block">
-                        <input type="text"  name="remark" th:value="${data.remark}" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                        <input type="email" name="email" th:value="${data.email}" lay-verify="title" autocomplete="off"
+                               placeholder="请输入标题" class="layui-input">
                     </div>
                 </div>
-<!--                <div class="layui-form-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="phone" th:value="${data.phone}" lay-verify="title" autocomplete="off"
+                               placeholder="请输入标题" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">年龄</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="age" th:value="${data.age}" lay-verify="title" autocomplete="off"
+                               placeholder="请输入标题" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否锁定</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="ON|OFF"
+                               th:checked="${data.status eq 1}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">性别</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="sex" value="0" title="男">
-                        <input type="radio" name="sex" value="1" title="女" checked>
+                        <span th:if="data.sex eq 0"></span>
+                        <input type="radio" name="sex" value="0" title="男" th:checked="${data.sex == 0}">
+                        <input type="radio" name="sex" value="1" title="女" th:checked="${data.sex == 1}">
+                        <input type="radio" name="sex" value="-1" title="保密" th:checked="${data.sex == -1}">
                     </div>
-                </div>-->
+                </div>
+                <span th:text="${data}"></span>
             </div>
         </div>
     </div>
@@ -55,22 +83,16 @@
 </form>
 <script src="../../../component/layui/layui.js"></script>
 <script>
-layui.use(['form','jquery','hydra'],function(){
-    let form = layui.form;
-    let $ = layui.jquery;
-    let hydra = layui.hydra;
-    form.on('submit(user-save)', function(data){
-        data.field.id = data.field.roleId;
-        console.log(JSON.stringify(data.field))
-        hydra.post("/role/addOrUpdate",JSON.stringify(data.field),function(res){
-            layer.msg(res.msg,{icon:1,time:1000},function(){
-                parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                parent.layui.table.reload("role-table");//刷新角色列表
-            });
-        })
-        return false;
-    });
-})
+    layui.use(['form', 'jquery', 'hydra'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let hydra = layui.hydra;
+        form.on('submit(user-save)', function (data) {
+            data.field.id = data.field.userId;
+            hydra.update('/user/addOrUpdate',data,parent,'user-table');
+            return false;
+        });
+    })
 </script>
 <script>
 </script>

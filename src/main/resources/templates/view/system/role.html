@@ -182,26 +182,9 @@
                 content: '/view/role/' + obj.data.id
             });
         }
-
-        window.remove = function (obj) {
-            layer.confirm('确定要删除该角色', {icon: 3, title: '提示'}, function (index) {
-                layer.close(index);
-                var loading = layer.load();
-                hydra.post('/role/del/' + obj.data['id'], {}, function (res) {
-/*                    if (res.status) {
-                        table.reload('role-table');
-                    }*/
-
-                    layer.close(loading)
-                    layer.msg("操作成功", {icon: 1, time: 1000}, function () {
-                        parent.layui.table.reload("role-table");
-                    });
-                    console.log(1231231231)
-
-                })
-            });
+        window.remove = function(obj){
+            hydra.del('确定要删除该角色','/role/del/' + obj.data['id'],table,'role-table')
         }
-
 
         window.batchRemove = function (obj) {
             console.log(JSON.stringify(table.checkStatus(obj.config.id).data))
@@ -228,7 +211,7 @@
             });
         }
 
-        window.refresh = function () {
+        window.refresh = function (param) {
             table.reload('role-table');
         }
     })

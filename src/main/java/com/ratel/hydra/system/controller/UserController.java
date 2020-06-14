@@ -7,12 +7,13 @@ import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.mapstruct.LoginLogStruct;
 import com.ratel.hydra.common.properties.CaptchaProperty;
 import com.ratel.hydra.common.utils.IpUtil;
+import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.po.LoginLog;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.user.UserLogin;
 import com.ratel.hydra.system.service.LoginLogService;
-import com.ratel.hydra.system.service.impl.UserServiceImplImpl;
+import com.ratel.hydra.system.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -32,7 +33,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping("user")
-public class UserController extends BaseController<UserServiceImplImpl,User>{
+public class UserController extends BaseController<UserServiceImpl,User>{
 
     @Autowired
     private LoginLogService loginLogService;
@@ -43,7 +44,8 @@ public class UserController extends BaseController<UserServiceImplImpl,User>{
     @PostMapping("register")
     @OperatingInfo(operation = "注册")
     public WebResult add(@RequestBody @Valid User add,HttpServletRequest request){
-        service.baseAddOrUpdate(add);
+        add.setRegisterFrom(WebUtil.getOperatingSystem(request));
+        iBaseService.baseAddOrUpdate(add);
         UsernamePasswordToken token = new UsernamePasswordToken(add.getUsername(), add.getPassword(),false);
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);

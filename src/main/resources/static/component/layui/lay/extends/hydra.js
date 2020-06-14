@@ -1,4 +1,4 @@
-layui.define(['jquery','layer'], function (exports) {
+layui.define(['jquery','layer','table'], function (exports) {
     var $ = layui.jquery;
     var layer = layui.layer;
 
@@ -22,9 +22,25 @@ layui.define(['jquery','layer'], function (exports) {
                 pageName: 'page.current' //页码的参数名称，默认：page
                 , limitName: 'page.size' //每页数据量的参数名，默认：limit
             }
+        },
+        add:function (url,data,parent,tableId) {
+            updateFunc(url,data,parent,tableId);
+        },
+        del:function (promptMsg,url,table,tableId) {
+            delFunc(promptMsg,url,table,tableId)
+        },
+        //批量删除
+        batchDel:function (promptMsg,url,obj,table,tableId) {
+            batchDelFunc(promptMsg,url,obj,table,tableId)
+        },
+        update:function (url,data,parent,tableId) {
+            updateFunc(url,data,parent,tableId);
+        },
+        edit: function (url) {
+            editFunc(url);
         }
     }
-    
+
     function req(url,data,type,func){
         $.ajax({
             url:url,
@@ -47,7 +63,63 @@ layui.define(['jquery','layer'], function (exports) {
         })
     }
 
+    function delFunc(promptMsg,url,table,tableId){
+        layer.confirm(promptMsg, {icon: 3, title: '提示'}, function (index) {
+            layer.close(index);
+            var loading = layer.load();
+            hydra.post(url, {}, function (res) {
+                layer.close(loading)
+                layer.msg("操作成功", {icon: 1, time: 1000}, function () {
+                    table.reload(tableId);
+                });
+            })
+        });
+    }
 
 
+    function batchDelFunc(promptMsg,url,obj,table,tableId){
+        console.log(JSON.stringify(table.checkStatus(obj.config.id).data))
+        let data = table.checkStatus(obj.config.id).data;
+        if (data.length === 0) {
+            layer.msg("未选中数据", {icon: 3, time: 1000});
+            return false;
+        }
+        var ids = [];
+        for (let i = 0; i < data.length; i++) {
+            ids.push(data[i].id)
+        }
+
+        layer.confirm(promptMsg, {icon: 3, title: '提示'}, function (index) {
+            layer.close(index);
+            // let loading = layer.load();
+            hydra.post(url, JSON.stringify(ids), function (res) {
+                layer.msg(res.msg, {icon: res.status ? 1 : 2, time: 1000}, function () {
+                    if (res.status) {
+                        table.reload(tableId);
+                    }
+                });
+            })
+        });
+    }
+
+    function editFunc(url){
+        layer.open({
+            type: 2,
+            title: '修改',
+            shade: 0.1,
+            area: ['500px', '400px'],
+            content: url
+        });
+    }
+
+    function updateFunc(url,data,parent,tableId){
+        console.log(JSON.stringify(data.field))
+        hydra.post(url,JSON.stringify(data.field),function(res){
+            layer.msg(res.msg,{icon:1,time:1000},function(){
+                parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                parent.layui.table.reload(tableId);
+            });
+        })
+    }
     exports('hydra', hydra);
 });
