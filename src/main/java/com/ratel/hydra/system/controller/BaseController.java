@@ -1,5 +1,6 @@
 package com.ratel.hydra.system.controller;
 
+import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
@@ -20,10 +21,8 @@ import java.util.List;
  * @author ratel
  * @date 2020-05-25
  */
-//public class BaseController<M extends BaseMapper<T>,T> extends IBaseServiceImpl<M,T> {
-@SuppressWarnings("all")
 public class BaseController<E extends IBaseServiceImpl, T> {
-    //    @Autowired
+
     protected E iBaseService;
 
     protected User currentUser() {
@@ -35,23 +34,27 @@ public class BaseController<E extends IBaseServiceImpl, T> {
     }
 
     @GetMapping("get/{id}")
+//    @OperatingInfo(operation = "获取")
     public WebResult getById(@PathVariable("id") Long id) {
         return WebResultFactory.ok(iBaseService.baseGetById(id));
     }
 
     @PostMapping("del/{id}")
+    @OperatingInfo(operation = "删除")
     public WebResult delById(@PathVariable("id") Long id) {
         iBaseService.baseDelById(id);
         return WebResultFactory.ok();
     }
 
     @PostMapping("addOrUpdate")
+    @OperatingInfo(operation = "保存")
     public WebResult addOrUpdate(@RequestBody T po) {
         iBaseService.baseAddOrUpdate(po);
         return WebResultFactory.ok(null, "操作成功");
     }
 
     @PostMapping("batchDel")
+    @OperatingInfo(operation = "批量删除")
     public WebResult batchDel(@RequestBody List<Long> ids) {
         iBaseService.batchDelByIds(ids);
         return WebResultFactory.ok(null, "操作成功");
@@ -59,6 +62,7 @@ public class BaseController<E extends IBaseServiceImpl, T> {
 
 
     @GetMapping("page")
+//    @OperatingInfo(operation = "分页获取")
     public WebResult page(PageQuery<T> query, T po) {
         return WebResultFactory.ok(iBaseService.basePage(query.setQuery(po)));
     }

@@ -1,28 +1,22 @@
 package com.ratel.hydra.system.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ratel.hydra.common.factory.WebResultFactory;
-import com.ratel.hydra.common.vo.WebResult;
-import com.ratel.hydra.system.po.LoginLog;
-import com.ratel.hydra.system.service.LoginLogService;
+import com.ratel.hydra.common.annotation.OperatingInfo;
+import com.ratel.hydra.system.query.loginLog.LoginLogQuery;
+import com.ratel.hydra.system.service.impl.LoginLogServiceImpl;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author ratel
  * @date 2020-06-05
  */
 @Slf4j
+@RestController
 @RequestMapping("loginLog")
-public class LoginLogController {
+@Api(tags = "登录日志")
+@OperatingInfo(tag = "登录日志")
+public class LoginLogController extends BaseController<LoginLogServiceImpl,LoginLogQuery> {
 
-    @Autowired
-    private LoginLogService service;
-
-    @GetMapping("page")
-    public WebResult page(Page<LoginLog> page){
-        return WebResultFactory.ok(service.page(page));
-    }
 }

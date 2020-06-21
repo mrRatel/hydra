@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="/component/layui/css/layui.css" rel="stylesheet"/>
+    <link href="/admin/css/pearCommon.css" rel="stylesheet"/>
+</head>
+<body class="pear-container">
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <input type="hidden" name="id">
+                <label class="layui-form-label">操作内容</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="operationContent" placeholder="" class="layui-input">
+                </div>
+                <label class="layui-form-label">起始时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="beginTime" placeholder="" class="layui-input" id="beginTime">
+                </div>
+                <label class="layui-form-label">结束时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="endTime" placeholder="" class="layui-input" id="endTime">
+                </div>
+                <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="role-query">
+                    <i class="layui-icon layui-icon-search"></i>
+                    查询
+                </button>
+                <button type="reset" class="pear-btn pear-btn-md">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table id="accessLog-table" lay-filter="accessLog-table"></table>
+    </div>
+</div>
+</body>
+
+<script type="text/html" id="role-toolbar">
+    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+        <i class="layui-icon layui-icon-delete"></i>
+        删除
+    </button>
+</script>
+
+<script type="text/html" id="role-bar">
+    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    </button>
+</script>
+
+<script type="text/html" id="role-enable">
+    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="role-enable"
+           {{d.enable ? "\checked=true\" :''}}>
+</script>
+
+
+<script src="/component/layui/layui.js"></script>
+<script>
+    layui.use(['table', 'form', 'jquery', 'hydra','laydate'], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let $ = layui.jquery;
+        var hydra = layui.hydra;
+        var laydate = layui.laydate;
+
+
+        let cols = [
+            [
+                {type: 'checkbox'},
+                {title: '操作内容', field: 'operationContent', align: 'center', minWidth: 150},
+                {title: '访问来源IP', field: 'ip', align: 'center'},
+                {title: '用户ID', field: 'userId', align: 'center',width: 120},
+                {title: '请求参数', field: 'operationParam', align: 'center'},
+                {title: '访问时间', field: 'accessTime', align: 'center'},
+                {title: '访问URL', field: 'accessUrl', align: 'center'},
+                {title: '来源网址', field: 'sourceUrl', align: 'center'},
+                {title: 'IP地区', field: 'location', align: 'center'},
+                {title: '访问设备', field: 'accessDevice', align: 'center'},
+                {title: '操作系统', field: 'operatingSystem', align: 'center'},
+                {title: '操作', toolbar: '#role-bar', align: 'center', width: 50}
+            ]
+        ]
+
+        table.render({
+            elem: '#accessLog-table',
+            url: '/accessLog/page',
+            page: true,
+            cols: cols,
+            skin: 'line',
+            toolbar: '#role-toolbar',
+            defaultToolbar: [{
+                layEvent: 'refresh',
+                icon: 'layui-icon-refresh',
+            }, 'filter', 'print', 'exports']
+            , request: hydra.convertPageParam()
+            , parseData: function (res) {
+                return hydra.parseData(res)
+            }
+        });
+
+        var $checkbox = $('input[type=checkbox]:checked');
+
+
+        table.on('tool(accessLog-table)', function (obj) {
+            if (obj.event === 'remove') {
+                window.remove(obj);
+            }
+        });
+
+        table.on('toolbar(accessLog-table)', function (obj) {
+            if (obj.event === 'refresh') {
+                window.refresh();
+            } else if (obj.event === 'batchRemove') {
+                window.batchRemove(obj);
+            }
+        });
+
+        form.on('submit(role-query)', function (data) {
+            table.reload('accessLog-table', {where: data.field})
+            return false;
+        });
+
+        window.remove = function(obj){
+            hydra.del('确定要删除该记录','/accessLog/del/' + obj.data['id'],table,'accessLog-table')
+        }
+
+        window.batchRemove = function (obj) {
+            console.log(JSON.stringify(table.checkStatus(obj.config.id).data))
+            let data = table.checkStatus(obj.config.id).data;
+            if (data.length === 0) {
+                layer.msg("未选中数据", {icon: 3, time: 1000});
+                return false;
+            }
+            var ids = [];
+            for (let i = 0; i < data.length; i++) {
+                ids.push(data[i].id)
+            }
+
+            layer.confirm('确定要删除这些记录', {icon: 3, title: '提示'}, function (index) {
+                layer.close(index);
+                hydra.post('/accessLog/batchDel', JSON.stringify(ids), function (res) {
+                    layer.msg(res.msg, {icon: res.status ? 1 : 2, time: 1000}, function () {
+                        if (res.status) {
+                            table.reload('accessLog-table');
+                        }
+                    });
+                })
+            });
+        }
+
+        window.refresh = function (param) {
+            table.reload('accessLog-table');
+        }
+
+        //日期弹窗
+        laydate.render({
+            elem: '#beginTime',
+            format: 'yyyy-MM-dd HH:mm:ss',
+            type: 'datetime'
+        });
+
+        //日期弹窗
+        laydate.render({
+            elem: '#endTime', //指定元素
+            format: 'yyyy-MM-dd HH:mm:ss',
+            type: 'datetime'
+        });
+    })
+</script>
+</body>
+</html>

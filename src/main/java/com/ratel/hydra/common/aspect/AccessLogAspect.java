@@ -1,12 +1,14 @@
 package com.ratel.hydra.common.aspect;
 
 import com.alibaba.fastjson.JSON;
+import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.utils.IpUtil;
 import com.ratel.hydra.common.utils.ThreadLocalUtil;
 import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.AccessLogAdd;
 import com.ratel.hydra.system.service.AccessLogService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.security.SecurityUtil;
@@ -17,7 +19,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -56,12 +60,14 @@ public class AccessLogAspect {
         MethodSignature method = (MethodSignature) point.getSignature();
         HttpServletRequest req = getHttpServletRequest();
         String ip = getIP(req);
+        OperatingInfo annotation = point.getTarget().getClass().getAnnotation(OperatingInfo.class);
+
         AccessLogAdd accessLog = new AccessLogAdd()
                 .setAssessUrl(getUrl(req))
                 .setIp(ip)
-                .setOperationContent(getOperationContent(method))
+                .setOperationContent(annotation == null ? getOperationContent(method) : getOperationContent(method) + annotation.tag())
                 .setOperationParam(getOperationParam(point))
-                .setSourceUrl("")
+                .setSourceUrl(getSourceUrl(req))
                 .setUserId(getUserId())
                 .setLocation(IpUtil.getCityInfo(ip))
                 .setSourceUrl(WebUtil.getReferer(req))
@@ -103,11 +109,12 @@ public class AccessLogAspect {
     }
 
     private String getOperationContent(MethodSignature method){
-        ApiOperation annotation = method.getMethod().getAnnotation(ApiOperation.class);
+        OperatingInfo annotation = method.getMethod().getAnnotation(OperatingInfo.class);
         if (annotation == null){
             return method.getName();
         }
-        return annotation.value();
+        String content = annotation.operation();
+        return content;
     }
 
     private String getSourceUrl(HttpServletRequest request){

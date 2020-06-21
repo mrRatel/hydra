@@ -11,9 +11,11 @@ import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.po.LoginLog;
 import com.ratel.hydra.system.po.User;
+import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.query.user.UserLogin;
 import com.ratel.hydra.system.service.LoginLogService;
 import com.ratel.hydra.system.service.impl.UserServiceImpl;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -33,6 +36,8 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping("user")
+@Api(tags = "用户")
+@OperatingInfo(tag = "用户")
 public class UserController extends BaseController<UserServiceImpl,User>{
 
     @Autowired
@@ -71,6 +76,5 @@ public class UserController extends BaseController<UserServiceImpl,User>{
         loginLogService.add(loginLog);
         return WebResultFactory.ok("/index","登录成功");
     }
-
 
 }

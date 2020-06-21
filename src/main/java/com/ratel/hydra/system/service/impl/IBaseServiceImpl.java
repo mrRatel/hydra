@@ -1,12 +1,9 @@
 package com.ratel.hydra.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.query.PageQuery;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -16,7 +13,7 @@ import java.util.List;
  */
 public class IBaseServiceImpl<M extends BaseMapper<T>,T> extends ServiceImpl<M,T> {
 
-    public IPage<T> basePage(PageQuery<T> query) {
+    public IPage basePage(PageQuery query) {
         return page(query.getPage());
     }
 

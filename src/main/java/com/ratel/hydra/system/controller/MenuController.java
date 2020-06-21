@@ -1,11 +1,13 @@
 package com.ratel.hydra.system.controller;
 
+import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.utils.NumberUtils;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.service.MenuService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("menu")
+@Api(tags = "菜单")
+@OperatingInfo(tag = "菜单")
 public class MenuController extends BaseController {
 
     @Autowired

@@ -328,7 +328,7 @@ class HydraApplicationTests {
                 "                                <a lay-href=\"user/administrators/list.html\">后台管理员</a>\n" +
                 "                            </dd>\n" +
                 "                            <dd>\n" +
-                "                                <a lay-href=\"user/administrators/role.html\">角色管理</a>\n" +
+                "                                <a lay-href=\"user/administrators/loginLog.html\">角色管理</a>\n" +
                 "                            </dd>\n" +
                 "                        </dl>\n" +
                 "                    </li>\n" +

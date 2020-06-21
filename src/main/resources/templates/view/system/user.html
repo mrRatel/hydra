@@ -58,8 +58,8 @@
 </script>
 
 <script type="text/html" id="user-enable">
-    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable"
-           {{d.status== 1 ? "\checked=true\" :''}}>
+    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|冻结" lay-filter="user-enable"
+           {{d.status== 0 ? "\checked=false\" :''}}>
 </script>
 
 <script type="text/html" id="user-sex">
@@ -154,7 +154,7 @@
         });
 
         form.on('switch(user-enable)', function (obj) {
-            var data = {"id": this.value, "status": obj.elem.checked ? 1 : 0}
+            var data = {"id": this.value, "status": obj.elem.checked ? 0 : 1}
             hydra.post('/user/addOrUpdate', JSON.stringify(data), function (res) {
 
             })

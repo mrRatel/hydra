@@ -49,10 +49,10 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">是否锁定</label>
+                    <label class="layui-form-label">启用</label>
                     <div class="layui-input-block">
-                        <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="ON|OFF"
-                               th:checked="${data.status eq 1}">
+                        <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="启用|冻结"
+                               th:checked="${data.status eq 0}">
                     </div>
                 </div>
                 <div class="layui-form-item">

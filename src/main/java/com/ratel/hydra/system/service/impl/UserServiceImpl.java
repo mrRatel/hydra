@@ -41,8 +41,8 @@ public class UserServiceImpl extends IBaseServiceImpl<UserMapper,User> implement
     }
 
     @Override
-    public IPage<User> basePage(PageQuery<User> query) {
-        User user = query.getQuery();
+    public IPage<User> basePage(PageQuery query) {
+        User user = (User)query.getQuery();
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>().orderByDesc(User::getModifyTime);
         if (user != null){
             if (StringUtils.isNoneBlank(user.getUsername())) {

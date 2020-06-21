@@ -12,16 +12,6 @@ import com.ratel.hydra.system.query.AccessLogAdd;
 public interface AccessLogService {
 
     /**
-     * @Description 获取访问记录
-     * @Author      ratel
-     * @Date        2020-05-21
-     * @param       query
-     * @param accessLog
-     * @return      com.baomidou.mybatisplus.core.metadata.IPage<com.ratel.hydra.system.po.AccessLog>
-     **/
-    IPage<AccessLog> list(Page<AccessLog> query, AccessLog accessLog);
-
-    /**
      * @Description 增加一条访问记录
      * @Author      ratel
      * @Date        2020-05-21

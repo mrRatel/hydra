@@ -9,8 +9,8 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="Operation_Content" jdbcType="VARCHAR" property="operationContent" />
     <result column="Operation_param" jdbcType="VARCHAR" property="operationParam" />
-    <result column="assess_time" jdbcType="TIMESTAMP" property="assessTime" />
-    <result column="assess_url" jdbcType="VARCHAR" property="assessUrl" />
+    <result column="assess_time" jdbcType="TIMESTAMP" property="setAccessTime" />
+    <result column="assess_url" jdbcType="VARCHAR" property="setAccessUrl" />
     <result column="source_url" jdbcType="VARCHAR" property="sourceUrl" />
     <result column="location" jdbcType="VARCHAR" property="location" />
     <result column="access_device" jdbcType="VARCHAR" property="accessDevice" />

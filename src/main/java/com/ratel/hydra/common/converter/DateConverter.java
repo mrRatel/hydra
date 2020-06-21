@@ -1,30 +1,28 @@
 package com.ratel.hydra.common.converter;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.ratel.hydra.common.mapstruct.RoleStruct;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 /**
  * @author ratel
  * @date 2020-05-21
  */
+@Slf4j
 @Component
-public class DateConverter implements Converter<String, Date> {
+public class DateConverter implements Converter<String, LocalDateTime> {
     @Override
-    public Date convert(String s) {
-        if (StringUtils.isEmpty(s)){
+    public LocalDateTime convert(String s) {
+        if (!StringUtils.isNoneBlank(s)) {
             return null;
         }
-        return Date.from(LocalDateTime.parse(s).atZone(ZoneId.systemDefault()).toInstant());
+        log.info("Date format String to localDateTime");
+        return LocalDateTime.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
 }

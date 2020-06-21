@@ -36,10 +36,10 @@ public class RoleServiceImpl extends IBaseServiceImpl<RoleMapper, Role> implemen
     }
 
     @Override
-    public IPage<Role> basePage(PageQuery<Role> query) {
+    public IPage<Role> basePage(PageQuery query) {
         LambdaQueryWrapper<Role> queryWrapper = new LambdaQueryWrapper<Role>().orderByDesc(Role::getModifyTime);
         if (query.getQuery() != null){
-            Role role = query.getQuery();
+            Role role = (Role)query.getQuery();
             if (StringUtils.isNoneBlank(role.getRoleName())) {
                 queryWrapper.likeRight(Role::getRoleName,role.getRoleName());
             }

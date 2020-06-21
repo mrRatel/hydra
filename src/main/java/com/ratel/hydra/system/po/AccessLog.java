@@ -48,16 +48,16 @@ public class AccessLog {
     /**
      * 访问时间
      */
-    @TableField(value = "assess_time")
+    @TableField(value = "access_time")
     @ApiModelProperty(value = "访问时间")
-    private Date assessTime;
+    private Date accessTime;
 
     /**
      * 访问URL
      */
-    @TableField(value = "assess_url")
+    @TableField(value = "access_url")
     @ApiModelProperty(value = "访问URL")
-    private String assessUrl;
+    private String accessUrl;
 
     /**
      * 来源网址

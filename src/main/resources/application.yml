@@ -12,7 +12,9 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
 
+# jackson 字符串转日期全局格式
   jackson:
+    default-property-inclusion: ALWAYS
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
@@ -21,7 +23,6 @@ spring:
 
   resources:
     static-locations: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/, classpath:/templates/
-
 
 mybatis-plus:
   type-aliases-package: com.ratel.hydra.**.po
