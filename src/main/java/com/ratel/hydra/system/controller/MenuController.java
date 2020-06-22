@@ -32,7 +32,7 @@ public class MenuController extends BaseController {
 
     @GetMapping("/list")
     public WebResult list() {
-        return WebResultFactory.ok(service.findMenuListByPage(currentUser()));
+        return WebResultFactory.ok(service.list(currentUser()));
     }
 
     @GetMapping("/menuTree")

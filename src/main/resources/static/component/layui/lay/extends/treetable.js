@@ -6,10 +6,10 @@ layui.define(['layer', 'table'], function (exports) {
     var $ = layui.jquery;
     var layer = layui.layer;
     var table = layui.table;
-
     var treetable = {
         // 渲染树形表格
         render: function (param) {
+            // console.log(JSON.stringify(param))
             // 检查参数
             if (!treetable.checkParam(param)) {
                 return;
@@ -28,22 +28,23 @@ layui.define(['layer', 'table'], function (exports) {
             var mData = [];
             var doneCallback = param.done;
             var tNodes = data;
+            console.log(JSON.stringify(tNodes))
             // 补上id和pid字段
             for (var i = 0; i < tNodes.length; i++) {
                 var tt = tNodes[i];
                 if (!tt.id) {
-                    if (!param.treeIdName) {
-                        layer.msg('参数treeIdName不能为空', {icon: 5});
+                    if (!param.treeId) {
+                        layer.msg('参数treeId不能为空', {icon: 5});
                         return;
                     }
                     tt.id = tt[param.treeIdName];
                 }
                 if (!tt.pid) {
-                    if (!param.treePidName) {
-                        layer.msg('参数treePidName不能为空', {icon: 5});
+                    if (!param.treePid) {
+                        layer.msg('参数treePid不能为空', {icon: 5});
                         return;
                     }
-                    tt.pid = tt[param.treePidName];
+                    tt.pid = tt[param.treePid];
                 }
             }
 

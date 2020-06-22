@@ -85,13 +85,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public IPage<Menu> findMenuListByPage(User currentUser) {
-        IPage<Menu> page = new Page<>();
-        List<Menu> currentUserMenu = baseMapper.findCurrentUserMenu(currentUser.getId());
-        return page.setRecords(currentUserMenu).setTotal(currentUserMenu.size());
-    }
-
-    @Override
     public Menu findById(Long id) {
 
         return getById(id);

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../../admin/css/pearCommon.css" />
-    <link rel="stylesheet" href="../../component/layui/css/layui.css" />
+    <link rel="stylesheet" href="/admin/css/pearCommon.css"/>
+    <link rel="stylesheet" href="/component/layui/css/layui.css"/>
 </head>
 <body class="pear-container">
 <div class="layui-card">
@@ -49,23 +49,25 @@
 </script>
 
 <script type="text/html" id="power-bar">
-    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
-    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    </button>
+    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    </button>
 </script>
 
 <script type="text/html" id="power-type">
-    <span>{{JSON.to}}</span>
-    {{#if (d.type == 0) { }}
+    {{#if (d.type == '0') { }}
     <span>目录</span>
-    {{# }else if(d.type == 1){ }}
+    {{# }else if(d.type == '1'){ }}
     <span>菜单</span>
-    {{# }else if(d.type == 2){ }}
+    {{# }else if(d.type == '2'){ }}
     <span>按钮</span>
     {{# } }}
 </script>
 
 <script type="text/html" id="power-enable">
-    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked = "{{ d.id == 10003 ? 'true' : 'false' }}">
+    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable"
+           checked="{{ d.id == 10003 ? 'true' : 'false' }}">
 </script>
 
 <script type="text/html" id="icon">
@@ -74,9 +76,9 @@
 
 </body>
 
-<script src="../../component/layui/layui.js"></script>
+<script src="/component/layui/layui.js"></script>
 <script>
-    layui.use(['table','form','jquery','treetable'],function () {
+    layui.use(['table', 'form', 'jquery', 'treetable'], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
@@ -84,36 +86,38 @@
 
         let MODULE_PATH = "operate/";
 
-        window.render = function(){
+        window.render = function () {
             treetable.render({
                 treeColIndex: 1,
                 treeSpid: 0,
-                treeId: 'powerId',
+                treeId: 'id',
                 treePid: 'parentId',
-                skin:'line',
-                method:'post',
+                skin: 'line',
+                method: 'post',
                 treeDefaultClose: true,
-                toolbar:'#power-toolbar',
+                toolbar: '#power-toolbar',
                 elem: '#power-table',
-                url: '../../admin/data/power.json',
+                url: '/menu/list',
+                // url: '/admin/data/power.json',
                 page: false,
                 cols: [
                     [
-                    {type: 'checkbox'},
-                    {field: 'powerName', minWidth: 200, title: '权限名称'},
-                    {field: 'icon', title: '图标',templet:'#icon'},
-                    {field: 'powerType', title: '权限类型',templet:'#power-type'},
-                    {field: 'enable', title: '是否可用',templet:'#power-enable'},
-                    {field: 'sort', title: '排序'},
-                    {title: '操作',templet: '#power-bar', width: 150, align: 'center'}
+                        {type: 'checkbox'},
+                        {field: 'menuName', minWidth: 200, title: '权限名称'},
+                        {field: 'icon', title: '图标', templet: '#icon'},
+                        {field: 'type', title: '权限类型', templet: '#power-type'},
+                        // {field: 'enable', title: '是否可用', templet: '#power-enable'},
+                        {field: 'sort', title: '排序'},
+                        {title: '操作', templet: '#power-bar', width: 150, align: 'center'}
                     ]
-                ]
+                ],
+                // parseData: {treeId: '', treePid: '', url: '', sort: '', icon: ''}
             });
         }
 
         render();
 
-        table.on('tool(power-table)',function(obj){
+        table.on('tool(power-table)', function (obj) {
             if (obj.event === 'remove') {
                 window.remove(obj);
             } else if (obj.event === 'edit') {
@@ -122,17 +126,17 @@
         })
 
 
-        table.on('toolbar(power-table)', function(obj){
-            if(obj.event === 'add'){
+        table.on('toolbar(power-table)', function (obj) {
+            if (obj.event === 'add') {
                 window.add();
-            } else if(obj.event === 'refresh'){
+            } else if (obj.event === 'refresh') {
                 window.refresh();
-            } else if(obj.event === 'batchRemove'){
+            } else if (obj.event === 'batchRemove') {
                 window.batchRemove(obj);
             }
         });
 
-        window.add = function(){
+        window.add = function () {
             layer.open({
                 type: 2,
                 title: '新增',
@@ -142,7 +146,7 @@
             });
         }
 
-        window.edit = function(obj){
+        window.edit = function (obj) {
             layer.open({
                 type: 2,
                 title: '修改',
@@ -151,22 +155,22 @@
                 content: MODULE_PATH + 'edit.html'
             });
         }
-        window.remove = function(obj){
-            layer.confirm('确定要删除该权限', {icon: 3, title:'提示'}, function(index){
+        window.remove = function (obj) {
+            layer.confirm('确定要删除该权限', {icon: 3, title: '提示'}, function (index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: MODULE_PATH+"remove/"+obj.data['powerId'],
-                    dataType:'json',
-                    type:'delete',
-                    success:function(result){
+                    url: MODULE_PATH + "remove/" + obj.data['powerId'],
+                    dataType: 'json',
+                    type: 'delete',
+                    success: function (result) {
                         layer.close(loading);
-                        if(result.success){
-                            layer.msg(result.msg,{icon:1,time:1000},function(){
+                        if (result.success) {
+                            layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                                 obj.del();
                             });
-                        }else{
-                            layer.msg(result.msg,{icon:2,time:1000});
+                        } else {
+                            layer.msg(result.msg, {icon: 2, time: 1000});
                         }
                     }
                 })

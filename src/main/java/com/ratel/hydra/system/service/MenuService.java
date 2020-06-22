@@ -29,8 +29,6 @@ public interface MenuService {
 
     void batchInsert(List<MenuTree> list,Long pid);
 
-    IPage findMenuListByPage(User currentUser);
-
     Menu findById(Long id);
 
     void delById(Long id);
