@@ -3,6 +3,7 @@ package com.ratel.hydra.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.common.mapstruct.MenuTreeStruct;
 import com.ratel.hydra.system.dto.MenuTree;
@@ -23,7 +24,7 @@ import java.util.*;
  */
 @Slf4j
 @Service
-public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
+public class MenuServiceImpl extends IBaseServiceImpl<MenuMapper, Menu> implements MenuService {
 
     @Autowired
     private MenuTreeStruct menuTreeStruct;

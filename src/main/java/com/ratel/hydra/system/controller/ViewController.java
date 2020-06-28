@@ -68,4 +68,16 @@ public class ViewController extends BaseController {
     public String userAddView(){
         return  "view/system/role/user/add";
     }
+
+    @GetMapping("/view/permission/{id}")
+    public ModelAndView permissionAddView(@PathVariable("id") Long id, ModelAndView view){
+        view.setViewName("view/system/permission/edit");
+        view.addObject("data",menuService.findById(id));
+        return  view;
+    }
+
+    @GetMapping("/view/permission/add")
+    public String permissionAddView(){
+        return  "view/system/permission/add";
+    }
 }

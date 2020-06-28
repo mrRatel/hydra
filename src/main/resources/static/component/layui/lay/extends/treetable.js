@@ -9,7 +9,7 @@ layui.define(['layer', 'table'], function (exports) {
     var treetable = {
         // 渲染树形表格
         render: function (param) {
-            // console.log(JSON.stringify(param))
+            console.log("treeTable render!")
             // 检查参数
             if (!treetable.checkParam(param)) {
                 return;
@@ -28,7 +28,6 @@ layui.define(['layer', 'table'], function (exports) {
             var mData = [];
             var doneCallback = param.done;
             var tNodes = data;
-            console.log(JSON.stringify(tNodes))
             // 补上id和pid字段
             for (var i = 0; i < tNodes.length; i++) {
                 var tt = tNodes[i];

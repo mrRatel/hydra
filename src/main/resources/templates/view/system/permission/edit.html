@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/admin/css/pearCommon.css"/>
+    <link rel="stylesheet" href="/component/layui/css/layui.css"/>
+</head>
+<body>
+<form class="layui-form" action="" lay-filter="editForm">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单名</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" name="userId" th:value="${data.id}" lay-verify="title" autocomplete="off"
+                               placeholder="请输入菜单名" class="layui-input">
+                        <input type="text" name="menuName" th:value="${data.menuName}" lay-verify="title"
+                               autocomplete="off" placeholder="请输入菜单名" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单URL</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="url" th:value="${data.url}" lay-verify="title"
+                               autocomplete="off" placeholder="请输入菜单URL" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sort" th:value="${data.sort}" lay-verify="title" autocomplete="off"
+                               placeholder="请输入排序编号" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" lay-filter="typeSelect">
+                    <div class="layui-form-label">类型</div>
+                    <div class="layui-input-block">
+                        <select name="type">
+                            <option value="0" th:selected="${data.type} eq 0">目录</option>
+                            <option value="1" th:selected="${data.type} eq 1">菜单</option>
+                            <option value="2" th:selected="${data.type} eq 2">按钮</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单图标</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="icon" th:value="${data.icon}"  autocomplete="off"
+                               placeholder="请输入菜单图标" class="layui-input">
+                    <i th:class="${data.icon}" style="font-size: 50px; color: #1E9FFF;"></i>
+                    </div>
+                </div>
+
+                <!--        <div class="layui-form-item">
+                            <label class="layui-form-label">年龄</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="age" th:value="${data.age}" lay-verify="title" autocomplete="off"
+                                       placeholder="请输入标题" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">启用</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="启用|冻结"
+                                       th:checked="${data.status eq 0}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-block">
+                                <span th:if="data.sex eq 0"></span>
+                                <input type="radio" name="sex" value="0" title="男" th:checked="${data.sex == 0}">
+                                <input type="radio" name="sex" value="1" title="女" th:checked="${data.sex == 1}">
+                                <input type="radio" name="sex" value="-1" title="保密" th:checked="${data.sex == -1}">
+                            </div>
+                        </div>-->
+                <!--<span th:text="${data}"></span>-->
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="" lay-filter="permission-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+<script src="/component/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'jquery', 'hydra'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var hydra = layui.hydra;
+        form.on('submit(permission-save)', function (data) {
+            data.field.id = data.field.userId;
+            hydra.update('/menu/addOrUpdate',data,parent,'permission-table');
+            // parent.layui.table.reload("power-table");
+            return false;
+        });
+
+
+       /* form.on('submit(power-save)', function(data){
+            $.ajax({
+                url:'/system/power/update',
+                data:JSON.stringify(data.field),
+                dataType:'json',
+                contentType:'application/json',
+                type:'put',
+                success:function(result){
+                    if(result.success){
+                        layer.msg(result.msg,{icon:1,time:1000},function(){
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("power-table");
+                        });
+                    }else{
+                        layer.msg(result.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });*/
+    })
+</script>
+</body>
+</html>

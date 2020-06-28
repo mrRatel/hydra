@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-    <link href="../../component/layui/css/layui.css" rel="stylesheet"/>
-    <link href="../../admin/css/pearCommon.css" rel="stylesheet"/>
+    <link href="/component/layui/css/layui.css" rel="stylesheet"/>
+    <link href="/admin/css/pearCommon.css" rel="stylesheet"/>
+    <link href="/admin/css/hydra.css" rel="stylesheet"/>
 </head>
 <body>
 <body class="pear-container">
@@ -92,14 +93,13 @@
         let $ = layui.jquery;
         let hydra = layui.hydra;
 
-        let MODULE_PATH = "operate/";
 
         let cols = [
             [
                 {type: 'checkbox'},
                 {title: '账号', field: 'username', align: 'center', width: 100},
                 {title: '用户名', field: 'realName', align: 'center'},
-                {title: '性别', field: 'sex', align: 'center', width: 80, templet: '#user-sex'},
+                {title: '性别', field: 'sex', align: 'center', width: 50, templet: '#user-sex'},
                 {title: '年龄', field: 'age', align: 'center'},
                 {title: '电话', field: 'phone', align: 'center'},
                 {title: '注册来源', field: 'registerFrom', align: 'center'},
