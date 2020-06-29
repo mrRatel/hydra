@@ -14,11 +14,13 @@ import org.mapstruct.Mappings;
 public interface MenuTreeStruct {
 
     @Mappings({
-            @Mapping(target = "icon",source = "icon"),
-            @Mapping(target = "title",source = "menuName"),
-            @Mapping(target = "href",source = "url"),
             @Mapping(target = "id",source = "id"),
-            @Mapping(target = "type",source = "type")
+            @Mapping(target = "href",source = "url"),
+            @Mapping(target = "icon",source = "icon"),
+            @Mapping(target = "pid",source = "parentId"),
+            @Mapping(target = "title",source = "menuName"),
+            @Mapping(target = "sort",source = "sort"),
+            @Mapping(target = "type",source = "type"),
     })
     MenuTree toMenuTree(Menu menu);
 

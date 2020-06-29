@@ -37,7 +37,6 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 @Api(tags = "用户")
-@OperatingInfo(tag = "用户")
 public class UserController extends BaseController<UserServiceImpl,User>{
 
     @Autowired
@@ -77,4 +76,33 @@ public class UserController extends BaseController<UserServiceImpl,User>{
         return WebResultFactory.ok("/index","登录成功");
     }
 
+    @Override
+    @OperatingInfo(operation = "获取用户")
+    public WebResult getById(Long id) {
+        return super.getById(id);
+    }
+
+    @Override
+    @OperatingInfo(operation = "删除用户")
+    public WebResult delById(Long id) {
+        return super.delById(id);
+    }
+
+    @Override
+    @OperatingInfo(operation = "保存用户")
+    public WebResult addOrUpdate(User po) {
+        return super.addOrUpdate(po);
+    }
+
+    @Override
+    @OperatingInfo(operation = "批量删除用户")
+    public WebResult batchDel(List<Long> ids) {
+        return super.batchDel(ids);
+    }
+
+    @Override
+    @OperatingInfo(operation = "分页获取用户")
+    public WebResult page(PageQuery<User> query, User po) {
+        return super.page(query, po);
+    }
 }

@@ -1,5 +1,6 @@
 package com.ratel.hydra.system.controller;
 
+import com.ratel.hydra.common.properties.ViewUrlProperty;
 import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.system.service.MenuService;
 import com.ratel.hydra.system.service.RoleService;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 @Controller
 @RequestMapping
-public class ViewController extends BaseController {
+public class ViewController{
     @Autowired
     private MenuService menuService;
 
@@ -31,53 +32,53 @@ public class ViewController extends BaseController {
 
     @GetMapping("/")
     public String redirectIndex(){
-        return  WebUtil.getRedirectUrl("/index");
+        return  WebUtil.getRedirectUrl(ViewUrlProperty.INDEX);
     }
 
     @GetMapping("/index")
     public String index(ModelAndView model){
-         return "index";
+         return ViewUrlProperty.INDEX;
     }
 
     @GetMapping("/login")
     public String login(ModelAndView model){
 
-         return "/login";
+         return ViewUrlProperty.LOGIN;
     }
 
     @GetMapping("/view/role/{id}")
     public ModelAndView roleGetById(@PathVariable("id") Long id, ModelAndView view){
         view.addObject("data",roleService.baseGetById(id));
-        view.setViewName("view/system/role/edit");
+        view.setViewName(ViewUrlProperty.ROLE_EDIT);
         return  view;
     }
 
     @GetMapping("/view/role/add")
     public String roleAddView(){
-        return  "view/system/role/edit/add";
+        return ViewUrlProperty.ROLE_ADD;
     }
 
     @GetMapping("/view/user/{id}")
     public ModelAndView userGetById(@PathVariable("id") Long id, ModelAndView view){
         view.addObject("data",userService.baseGetById(id));
-        view.setViewName("view/system/user/edit");
+        view.setViewName(ViewUrlProperty.USER_EDIT);
         return  view;
     }
 
     @GetMapping("/view/user/add")
     public String userAddView(){
-        return  "view/system/role/user/add";
+        return ViewUrlProperty.USER_ADD;
     }
 
     @GetMapping("/view/permission/{id}")
     public ModelAndView permissionAddView(@PathVariable("id") Long id, ModelAndView view){
-        view.setViewName("view/system/permission/edit");
+        view.setViewName(ViewUrlProperty.PERMISSION_EDIT);
         view.addObject("data",menuService.findById(id));
         return  view;
     }
 
     @GetMapping("/view/permission/add")
     public String permissionAddView(){
-        return  "view/system/permission/add";
+        return ViewUrlProperty.PERMISSION_ADD;
     }
 }

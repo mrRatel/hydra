@@ -6,6 +6,7 @@ import com.ratel.hydra.common.utils.NumberUtils;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
+import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.MenuService;
 import com.ratel.hydra.system.service.impl.MenuServiceImpl;
 import io.swagger.annotations.Api;
@@ -25,44 +26,57 @@ import java.util.List;
 @RestController
 @RequestMapping("menu")
 @Api(tags = "菜单")
-@OperatingInfo(tag = "菜单")
 public class MenuController extends BaseController<MenuServiceImpl,Menu> {
 
     @Autowired
     private MenuService service;
 
     @GetMapping("/list")
+    @OperatingInfo(operation = "获取菜单列表")
     public WebResult list() {
         return WebResultFactory.ok(service.list(currentUser()));
     }
 
     @GetMapping("/menuTree")
+    @OperatingInfo(operation = "获取菜单树")
     public WebResult menuTree() {
         return WebResultFactory.ok(service.findMenuTreeList(currentUser()));
     }
 
     @PostMapping("batchInsert")
+    @OperatingInfo(operation = "批量增加菜单")
     public WebResult batchInsert(@RequestBody List<MenuTree> list) {
         service.batchInsert(list, 0L);
         return WebResultFactory.ok(null);
     }
 
-/*
-    @GetMapping("/get/{id}")
-    public WebResult getById(@PathVariable("id") @NotBlank(message = "菜单id不能为空") Long id) {
-        return WebResultFactory.ok(service.findById(id));
+    @Override
+    @OperatingInfo(operation = "获取菜单")
+    public WebResult getById(Long id) {
+        return super.getById(id);
     }
-*/
 
-/*    @PostMapping("/del/{id}")
-    public WebResult del(@PathVariable("id") Long id) {
-        service.delById(id);
-        return WebResultFactory.ok();
-    }*/
-/*
-    @PostMapping("/addOrUpdate")
-    public WebResult addOrUpdate(@RequestBody Menu menu) {
-        service.addOrUpdate(menu);
-        return WebResultFactory.ok();
-    }*/
+    @Override
+    @OperatingInfo(operation = "删除菜单")
+    public WebResult delById(Long id) {
+        return super.delById(id);
+    }
+
+    @Override
+    @OperatingInfo(operation = "保存菜单")
+    public WebResult addOrUpdate(@RequestBody Menu po) {
+        return super.addOrUpdate(po);
+    }
+
+    @Override
+    @OperatingInfo(operation = "批量删除菜单")
+    public WebResult batchDel(@RequestBody List<Long> ids) {
+        return super.batchDel(ids);
+    }
+
+    @Override
+    @OperatingInfo(operation = "分页获取菜单")
+    public WebResult page(PageQuery<Menu> query, Menu po) {
+        return super.page(query, po);
+    }
 }

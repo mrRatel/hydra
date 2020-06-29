@@ -18,5 +18,7 @@ public class MenuTree{
     private String icon;
     private String href;
     private Byte type;
+    private Long pid;
+    private Long sort;
     private List<MenuTree> children;
 }

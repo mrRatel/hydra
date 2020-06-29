@@ -116,8 +116,9 @@ layui.define(['jquery','layer','table'], function (exports) {
         console.log(JSON.stringify(data.field))
         hydra.post(url,JSON.stringify(data.field),function(res){
             layer.msg(res.msg,{icon:1,time:1000},function(){
-                parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                parent.layui.table.reload(tableId);
+                if (tableId) {
+                    parent.layui.table.reload(tableId);
+                }
             });
         })
     }
