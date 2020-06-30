@@ -3,13 +3,16 @@ package com.ratel.hydra.common.handler;
 import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
+import com.ratel.hydra.common.properties.ViewUrlProperty;
 import com.ratel.hydra.common.vo.WebResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -35,7 +38,8 @@ public class GlobalExceptionHandler {
     public WebResult exceptionHandler(Exception e){
 //        WebResultFactory.failed()
         log.error("系统异常",e);
-        return WebResultFactory.failed(null,null);
+        return WebResultFactory.failed(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR.value(), ViewUrlProperty.ERROR);
+
     }
 
     @ExceptionHandler(SystemException.class)
@@ -91,5 +95,12 @@ public class GlobalExceptionHandler {
     public WebResult httpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException e){
         log.info(e.getMessage());
         return WebResultFactory.failed(e.getMessage(),"405");
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public WebResult UnauthorizedExceptionHandler(UnauthorizedException e){
+        log.info(e.getMessage());
+        return WebResultFactory.failed(e.getMessage(),HttpStatus.FORBIDDEN.value(),ViewUrlProperty.UNAUTHORIZED);
     }
 }

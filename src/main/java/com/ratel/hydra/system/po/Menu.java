@@ -100,4 +100,8 @@ public class Menu {
     @TableField(value = "modify_time")
     @ApiModelProperty(value = "修改时间")
     private Date modifyTime;
+
+    @TableField(value = "permission_code")
+    @ApiModelProperty(value = "权限编码")
+    private String permissionCode;
 }

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 雪花ID生成器
  * @author ratel
  * @date 2020-06-05
  */

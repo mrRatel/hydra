@@ -7,6 +7,7 @@ import com.ratel.hydra.system.query.loginLog.LoginLogQuery;
 import com.ratel.hydra.system.service.impl.LoginLogServiceImpl;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,13 +36,13 @@ public class LoginLogController extends BaseController<LoginLogServiceImpl,Login
 
     @Override
     @OperatingInfo(operation = "保存登录日志")
-    public WebResult addOrUpdate(LoginLogQuery po) {
+    public WebResult addOrUpdate(@RequestBody LoginLogQuery po) {
         return super.addOrUpdate(po);
     }
 
     @Override
     @OperatingInfo(operation = "批量删除登录日志")
-    public WebResult batchDel(List<Long> ids) {
+    public WebResult batchDel(@RequestBody List<Long> ids) {
         return super.batchDel(ids);
     }
 

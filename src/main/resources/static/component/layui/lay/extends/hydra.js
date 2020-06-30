@@ -10,6 +10,9 @@ layui.define(['jquery','layer','table'], function (exports) {
             req(url,data,"get",func)
         },
         parseData:function parseData(res){
+            if (res.code == 403){
+                location.href = res.data;
+            }
             return {
                 "code": res.code == 200 ? 0 : 1, //解析接口状态
                 "msg": res.message, //解析提示文本
@@ -42,12 +45,14 @@ layui.define(['jquery','layer','table'], function (exports) {
     }
 
     function req(url,data,type,func){
+        var loading = layer.load();
         $.ajax({
             url:url,
             data:data,
             type:type,
             contentType:"application/json",
             success:function (res) {
+                layer.close(loading)
                 if (res.status){
                     //后置处理
                     func(res);
@@ -55,7 +60,7 @@ layui.define(['jquery','layer','table'], function (exports) {
                     if (res.code == 'AUTH1008') {
                         location.href = '/login';
                     }
-                    layer.msg(res.msg == null ? "操作失败" : res.msg, {icon: 2, time: 1000});
+                    layer.msg(res.msg == null ? "操作失败" : res.code == '403' ? "您没有权限操作此功能" : res.msg, {icon: 2, time: 1000});
                     console.log(JSON.stringify(res))
                 }
 
@@ -66,9 +71,8 @@ layui.define(['jquery','layer','table'], function (exports) {
     function delFunc(promptMsg,url,table,tableId){
         layer.confirm(promptMsg, {icon: 3, title: '提示'}, function (index) {
             layer.close(index);
-            var loading = layer.load();
+
             hydra.post(url, {}, function (res) {
-                layer.close(loading)
                 layer.msg("操作成功", {icon: 1, time: 1000}, function () {
                     table.reload(tableId);
                 });

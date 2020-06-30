@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.common.mapstruct.RoleStruct;
 import com.ratel.hydra.system.mapper.RoleMapper;
 import com.ratel.hydra.system.po.Role;
+import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -59,11 +60,13 @@ public class RoleServiceImpl extends IBaseServiceImpl<RoleMapper, Role> implemen
     }
 
 
-
-
-
     @Override
     public void batchDelByIds(List<Long> ids) {
         removeByIds(ids);
+    }
+
+    @Override
+    public List<Role> list(User user) {
+        return baseMapper.selectListByUserId(user.getId());
     }
 }

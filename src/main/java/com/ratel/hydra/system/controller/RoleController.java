@@ -34,13 +34,13 @@ public class RoleController extends BaseController<RoleServiceImpl,Role>{
 
     @Override
     @OperatingInfo(operation = "保存角色")
-    public WebResult addOrUpdate(Role po) {
+    public WebResult addOrUpdate(@RequestBody Role po) {
         return super.addOrUpdate(po);
     }
 
     @Override
     @OperatingInfo(operation = "批量删除角色")
-    public WebResult batchDel(List<Long> ids) {
+    public WebResult batchDel(@RequestBody List<Long> ids) {
         return super.batchDel(ids);
     }
 

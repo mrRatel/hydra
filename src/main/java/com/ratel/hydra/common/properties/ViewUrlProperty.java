@@ -8,4 +8,7 @@ public interface ViewUrlProperty {
     String USER_ADD = "view/system/role/user/add";
     String PERMISSION_EDIT = "view/system/permission/edit";
     String PERMISSION_ADD = "view/system/permission/add";
+
+    String UNAUTHORIZED = "/error/403.html";
+    String ERROR = "/error/500.html";
 }

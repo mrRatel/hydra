@@ -24,4 +24,7 @@ public class WebResultFactory {
     public static WebResult failed(String msg,String code){
         return new WebResult().setStatus(false).setMsg(msg).setCode(code);
     }
+    public static WebResult failed(String msg,int code,Object obj){
+        return new WebResult().setStatus(false).setMsg(msg).setCode(code+"").setData(obj);
+    }
 }

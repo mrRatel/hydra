@@ -36,13 +36,13 @@ public class AccessLogController extends BaseController<AccessLogServiceImpl, Ac
 
     @Override
     @OperatingInfo(operation = "保存访问日志")
-    public WebResult addOrUpdate(AccessLogQuery po) {
+    public WebResult addOrUpdate(@RequestBody AccessLogQuery po) {
         return super.addOrUpdate(po);
     }
 
     @Override
     @OperatingInfo(operation = "批量删除访问日志")
-    public WebResult batchDel(List<Long> ids) {
+    public WebResult batchDel(@RequestBody List<Long> ids) {
         return super.batchDel(ids);
     }
 

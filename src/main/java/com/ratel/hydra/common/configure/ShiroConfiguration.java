@@ -6,6 +6,7 @@ import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -32,15 +33,12 @@ public class ShiroConfiguration {
         return realm;
     }
 
-//    @Bean //将方法中返回的对象注入到IOC容器中
-//    public FilterRegistrationBean registeShiroFilterFactoryBean(ShiroFilterFactoryBean shiroFilterFactoryBean) {
-//        FilterRegistrationBean reFilter = new FilterRegistrationBean();
-//        reFilter.setFilter(shiroFilterFactoryBean); //创建并注册TestFilter
-//        reFilter.addUrlPatterns("/*"); //拦截的路径（对所有请求拦截）
-//        reFilter.setName("TestFilter"); //拦截器的名称
-//        reFilter.setOrder(1); //拦截器的执行顺序。数字越小越先执行
-//        return reFilter;
-//    }
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
 
     @Bean
     public DefaultSecurityManager securityManager(Realm realm){
@@ -60,7 +58,7 @@ public class ShiroConfiguration {
         //登录成功过跳转的URL
 //        shiroFilterFactoryBean.setSuccessUrl("/admin/index.html");
         //未授权URL
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
 
         Map<String,String> filterChainMap = new LinkedHashMap<>();
 
@@ -70,6 +68,13 @@ public class ShiroConfiguration {
         filterChainMap.put("/fonts/**","anon");
         filterChainMap.put("/img/**","anon");
         filterChainMap.put("/*.html","anon");
+        filterChainMap.put("/assets/**","anon");
+        filterChainMap.put("/admin/**","anon");
+        filterChainMap.put("/component/**","anon");
+        //验证码 不拦截
+        filterChainMap.put("/image/captcha","anon");
+
+        filterChainMap.put("/error/**","anon");
 
         //druid 监控不拦截
         filterChainMap.put("/druid/**","anon");
@@ -83,8 +88,8 @@ public class ShiroConfiguration {
         //登出接口
         filterChainMap.put("/logout","logout");
 
-        //首页不拦截
-//        filterChainMap.put("/**","user");
+        //剩下所有接口都需要拦截
+        filterChainMap.put("/**","user");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainMap);
         //剩下所有接口都需要拦截

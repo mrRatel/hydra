@@ -1,14 +1,26 @@
 package com.ratel.hydra.security.realm;
 
+import com.ratel.hydra.system.po.Menu;
+import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.po.User;
+import com.ratel.hydra.system.service.MenuService;
+import com.ratel.hydra.system.service.RoleService;
 import com.ratel.hydra.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.ratel.hydra.common.constant.ExceptionEnum.AUTH1005;
 
@@ -22,6 +34,12 @@ public class HydraRealm extends AuthorizingRealm  {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private MenuService menuService;
+
+    @Autowired
+    private RoleService roleService;
+
     /**
      * @Description 授权
      * @Author      ratel
@@ -31,8 +49,24 @@ public class HydraRealm extends AuthorizingRealm  {
      **/
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        log.info("授权中、、、、");
-        return null;
+        //当前登录用户
+        User user = (User) principalCollection.getPrimaryPrincipal();
+        //权限
+
+        List<Menu> menuList = menuService.list(user);
+        Set<String> permissionSet = menuList.stream()
+                .filter(menu -> menu != null && !StringUtils.isEmpty(menu.getPermissionCode()))
+                .map(Menu::getPermissionCode).collect(Collectors.toSet());
+
+        //角色
+        List<Role> roleList = roleService.list(user);
+        Set<String> roleCodeSet = roleList.stream().map(Role::getRoleCode).collect(Collectors.toSet());
+        SimpleAuthorizationInfo authenticationInfo = new SimpleAuthorizationInfo();
+        authenticationInfo.addRoles(roleCodeSet);
+        authenticationInfo.addStringPermissions(permissionSet);
+        log.info("当前用户拥有角色【{}】",roleCodeSet.toString());
+        log.info("当前用户拥有权限【{}】",permissionSet.toString());
+        return authenticationInfo;
     }
 
     /**

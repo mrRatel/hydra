@@ -6,6 +6,8 @@ import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.mapstruct.LoginLogStruct;
 import com.ratel.hydra.common.properties.CaptchaProperty;
+import com.ratel.hydra.common.properties.PermissionProperty;
+import com.ratel.hydra.common.properties.RoleProperty;
 import com.ratel.hydra.common.utils.IpUtil;
 import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.common.vo.WebResult;
@@ -19,6 +21,8 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -84,24 +88,26 @@ public class UserController extends BaseController<UserServiceImpl,User>{
 
     @Override
     @OperatingInfo(operation = "删除用户")
+    @RequiresPermissions(PermissionProperty.USER_DEL)
     public WebResult delById(Long id) {
         return super.delById(id);
     }
 
     @Override
     @OperatingInfo(operation = "保存用户")
-    public WebResult addOrUpdate(User po) {
+    public WebResult addOrUpdate(@RequestBody User po) {
         return super.addOrUpdate(po);
     }
 
     @Override
     @OperatingInfo(operation = "批量删除用户")
-    public WebResult batchDel(List<Long> ids) {
+    public WebResult batchDel(@RequestBody List<Long> ids) {
         return super.batchDel(ids);
     }
 
     @Override
     @OperatingInfo(operation = "分页获取用户")
+    @RequiresRoles(RoleProperty.ROLE_CODER)
     public WebResult page(PageQuery<User> query, User po) {
         return super.page(query, po);
     }
