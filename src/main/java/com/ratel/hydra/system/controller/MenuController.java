@@ -2,6 +2,8 @@ package com.ratel.hydra.system.controller;
 
 import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.factory.WebResultFactory;
+import com.ratel.hydra.common.mapstruct.MenuTreeStruct;
+import com.ratel.hydra.common.properties.RoleProperty;
 import com.ratel.hydra.common.utils.NumberUtils;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.dto.MenuTree;
@@ -11,6 +13,7 @@ import com.ratel.hydra.system.service.MenuService;
 import com.ratel.hydra.system.service.impl.MenuServiceImpl;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +33,8 @@ public class MenuController extends BaseController<MenuServiceImpl,Menu> {
 
     @Autowired
     private MenuService service;
+    @Autowired
+    private MenuTreeStruct menuTreeStruct;
 
     @GetMapping("/list")
     @OperatingInfo(operation = "获取菜单列表")
@@ -78,5 +83,12 @@ public class MenuController extends BaseController<MenuServiceImpl,Menu> {
     @OperatingInfo(operation = "分页获取菜单")
     public WebResult page(PageQuery<Menu> query, Menu po) {
         return super.page(query, po);
+    }
+
+    @GetMapping("permission")
+    @OperatingInfo(operation = "获取所有菜单")
+    @RequiresRoles(RoleProperty.ROLE_CODER)
+    public WebResult permission(){
+        return WebResultFactory.ok(menuTreeStruct.toMenuTree(service.list()));
     }
 }

@@ -62,6 +62,7 @@
 			formSelects:'extends/formSelects-v4',
 			treetable:"extends/treetable",
 			hydra:"extends/hydra",
+			iconPicker:"extends/iconPicker",
 			"layui.all": "../layui.all"
 		};
 	o.prototype.cache = n, o.prototype.define = function(e, t) {

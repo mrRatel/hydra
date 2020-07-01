@@ -84,6 +84,7 @@
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
+        let iconPicker = layui.iconPicker;
         let treetable = layui.treetable;
 
 
@@ -99,7 +100,6 @@
                 toolbar: '#power-toolbar',
                 elem: '#permission-table',
                 url: '/menu/list',
-                // url: '/admin/data/power.json',
                 page: false,
                 cols: [
                     [
@@ -116,7 +116,6 @@
                     layEvent: 'refresh',
                     icon: 'layui-icon-refresh',
                 }, 'filter', 'print', 'exports']
-                // parseData: {treeId: '', treePid: '', url: '', sort: '', icon: ''}
             });
         }
 
@@ -182,13 +181,12 @@
                 })
             });
         }
-
+        //刷新菜单树
         window.refresh = function (obj) {
             let table = layui.table;
             let form = layui.form;
             let $ = layui.jquery;
             let treetable = layui.treetable;
-
 
             window.render = function () {
                 treetable.render({

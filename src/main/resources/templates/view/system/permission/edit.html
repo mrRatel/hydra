@@ -48,7 +48,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">菜单图标</label>
                     <div class="layui-input-block">
-                        <input type="text" name="icon" th:value="${data.icon}"  autocomplete="off"
+                        <input type="text" name="icon" id="icon" th:value="${data.icon}" lay-filter="icon" autocomplete="off"
                                placeholder="请输入菜单图标" class="layui-input">
                     <i th:class="${data.icon}" style="font-size: 50px; color: #1E9FFF;"></i>
                     </div>
@@ -96,7 +96,7 @@
 </form>
 <script src="/component/layui/layui.js"></script>
 <script>
-    layui.use(['form', 'jquery', 'hydra'], function () {
+    layui.use(['form', 'jquery', 'hydra','iconPicker'], function () {
         var form = layui.form;
         var $ = layui.jquery;
         var hydra = layui.hydra;
@@ -108,26 +108,7 @@
         });
 
 
-       /* form.on('submit(power-save)', function(data){
-            $.ajax({
-                url:'/system/power/update',
-                data:JSON.stringify(data.field),
-                dataType:'json',
-                contentType:'application/json',
-                type:'put',
-                success:function(result){
-                    if(result.success){
-                        layer.msg(result.msg,{icon:1,time:1000},function(){
-                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                            parent.layui.table.reload("power-table");
-                        });
-                    }else{
-                        layer.msg(result.msg,{icon:2,time:1000});
-                    }
-                }
-            })
-            return false;
-        });*/
+
     })
 </script>
 </body>

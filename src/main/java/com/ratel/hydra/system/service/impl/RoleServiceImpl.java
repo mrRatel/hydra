@@ -69,4 +69,10 @@ public class RoleServiceImpl extends IBaseServiceImpl<RoleMapper, Role> implemen
     public List<Role> list(User user) {
         return baseMapper.selectListByUserId(user.getId());
     }
+
+
+    @Override
+    public List<Role> list() {
+        return super.list();
+    }
 }
