@@ -51,6 +51,9 @@ public interface MenuTreeStruct {
                 return;
             }
             MenuTree menuTree = map.get(a.getParentId());
+            if (menuTree == null){
+                System.out.println();
+            }
             List<MenuTree> child = menuTree.getChildren();
             if (child == null) {
                 child = new ArrayList<>();

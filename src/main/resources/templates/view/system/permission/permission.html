@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,155 +11,169 @@
 <body class="pear-container">
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form" action="">
+        <form class="layui-form" action="" lay-filter="btnForm">
             <div class="layui-form-item">
-                <label class="layui-form-label">权限名称</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="realName" placeholder="" class="layui-input">
-                </div>
-                <label class="layui-form-label">权限标识</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="username" placeholder="" class="layui-input">
-                </div>
-                <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
-                    <i class="layui-icon layui-icon-search"></i>
-                    查询
-                </button>
-                <button type="reset" class="pear-btn pear-btn-md">
-                    <i class="layui-icon layui-icon-refresh"></i>
-                    重置
+                <button type="button" class="layui-btn" lay-submit lay-filter="batchRemove">
+<!--                    <i class="layui-icon layui-icon-search"></i>-->
+                    <i class="layui-icon layui-icon-delete"></i>
                 </button>
             </div>
         </form>
     </div>
 </div>
-<div class="layui-card">
-    <div class="layui-card-body">
-        <table id="permission-table" lay-filter="permission-table"></table>
+<div class="layui-row layui-col-space14">
+    <div class="layui-col-md6">
+        <div class="layui-card" id="testTree">
+        </div>
     </div>
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <form class="layui-form" lay-filter="menuForm">
+                <div class="layui-card-body">
+                    <input type="hidden" name="menuId">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上级ID</label>
+                        <div class="layui-input-block">
+                            <select name="pid" lay-verify="title" lay-search id="pid">
+                                <option value="0"></option>
+                                <option th:each="item : ${list}" th:value="${item.getId()}"
+                                        th:text="${item.menuName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="menuName" lay-verify="title"
+                                   autocomplete="off" placeholder="请输入菜单名" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单URL</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="url" lay-verify="title"
+                                   autocomplete="off" placeholder="请输入菜单URL" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">权限</label>
+                        <div class="layui-input-block">
+                            <select lay-verify="title" lay-search id="permissionCode" name="permissionCode">
+                                <option/>
+                                <option value="CODER">CODER</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色</label>
+                        <div class="layui-input-block">
+                            <select lay-verify="title" lay-search id="role" name="roleId">
+                                <option/>
+                                <option th:each="item:${roles}" th:value="${item.id}" th:text="${item.roleName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sort" lay-verify="title" autocomplete="off"
+                                   placeholder="请输入排序编号" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" lay-filter="typeSelect">
+                        <div class="layui-form-label">类型</div>
+                        <div class="layui-input-block">
+                            <select name="type">
+                                <option value="0">目录</option>
+                                <option value="1">菜单</option>
+                                <option value="2">按钮</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item">
+                            <label for="" class="layui-form-label">菜单图标</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="iconPicker" name="icon" lay-filter="iconPicker" class="hide">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <div class="layui-btn" lay-submit lay-filter="permission-save">保存</div>
+                            <div class="layui-btn" lay-submit lay-filter="permission-add">新增</div>
+                            <button class="layui-btn layui-btn-primary" lay-submit lay-filter="permission-reset">重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
 </div>
-
-<script type="text/html" id="power-toolbar">
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
-        <i class="layui-icon layui-icon-add-1"></i>
-        新增
-    </button>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
-        <i class="layui-icon layui-icon-delete"></i>
-        删除
-    </button>
-</script>
-
-<script type="text/html" id="power-bar">
-    <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
-    </button>
-    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
-    </button>
-</script>
-
-<script type="text/html" id="power-type">
-    {{#
-    var status = {
-    0: {title: '目录', color: 'green'},
-    1: {title: '菜单', color: 'volcano'},
-    2: {title: '按钮', color: 'volcano'}
-    }[d.type];
-    }}
-    <span class="layui-badge hydra-tag-{{status.color}}">{{ status.title }}</span>
-</script>
-
-<script type="text/html" id="power-enable">
-    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable"
-           checked="{{ d.id == 10003 ? 'true' : 'false' }}">
-</script>
-
-<script type="text/html" id="icon">
-    <i class="layui-icon {{d.icon}}"></i>
-</script>
 
 </body>
 
 <script src="/component/layui/layui.js"></script>
 <script>
-    layui.use(['table', 'form', 'jquery', 'treetable'], function () {
-        let table = layui.table;
+    var currentData = {
+        "title": '',
+        "id": '',
+        "pid": '',
+        "icon": "",
+        "href": "",
+        "type": 0
+    };
+    var menuTree;
+    layui.use(['table', 'form', 'jquery', 'tree', 'hydra', 'iconPicker'], function () {
         let form = layui.form;
-        let $ = layui.jquery;
-        let iconPicker = layui.iconPicker;
-        let treetable = layui.treetable;
-
+        var $ = layui.jquery;
+        var tree = layui.tree;
+        var iconPicker = layui.iconPicker;
+        var hydra = layui.hydra;
+        var icon;
 
         window.render = function () {
-            treetable.render({
-                treeColIndex: 1,
-                treeSpid: 0,
-                treeId: 'id',
-                treePid: 'parentId',
-                skin: 'line',
-                method: 'post',
-                treeDefaultClose: true,
-                toolbar: '#power-toolbar',
-                elem: '#permission-table',
-                url: '/menu/list',
-                page: false,
-                cols: [
-                    [
-                        {type: 'checkbox'},
-                        {field: 'menuName', minWidth: 200, title: '权限名称'},
-                        {field: 'icon', title: '图标', templet: '#icon'},
-                        {field: 'type', title: '权限类型', templet: '#power-type'},
-                        // {field: 'enable', title: '是否可用', templet: '#power-enable'},
-                        {field: 'sort', title: '排序'},
-                        {title: '操作', templet: '#power-bar', width: 150, align: 'center'}
-                    ]
-                ],
-                defaultToolbar: [{
-                    layEvent: 'refresh',
-                    icon: 'layui-icon-refresh',
-                }, 'filter', 'print', 'exports']
-            });
+            hydra.get('http://localhost:7000/menu/permission', '', function (res) {
+                menuTree = tree.render({
+                    elem: '#testTree'
+                    , data: res.data
+                    , showCheckbox: true  //是否显示复选框
+                    , id: 'demoId1'
+                    // , isJump: true //是否允许点击节点时弹出新窗口跳转
+                    , click: function (obj) {
+                        isAdd = false;
+                        var data = obj.data;  //获取当前点击的节点数据
+                        currentData = data;
+                        //选中图标
+                        iconPicker.checkIcon('iconPicker', data.icon);
+                        //选中pid
+                        $("#pid option[value=" + data.pid + "]").prop("selected", true)
+                        //选中角色
+                        $("#role option[value=" + data.roleId + "]").prop("selected", true)
+                        //选中权限
+                        $("#permissionCode option[value=" + data.permissionCode + "]").prop("selected", true)
+                        form.val("menuForm", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                            "pid": data.pid
+                            , "menuName": data.title // "name": "value"
+                            , "url": data.href
+                            , "permissionCode": data.permissionCode
+                            , "roleId": data.roleId
+                            , "sort": data.sort
+                            , "type": data.type
+                            , "menuId": data.id
+                            , "icon": data.icon
+                        });
+                        // layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+                    }
+                    ,oncheck: function(obj){
+                    }
+                })
+            })
         }
-
-        render();
-        
-        table.on('tool(permission-table)', function (obj) {
-            if (obj.event === 'remove') {
-                window.remove(obj);
-            } else if (obj.event === 'edit') {
-                window.edit(obj);
-            }
-        })
-
-
-        table.on('toolbar(permission-table)', function (obj) {
-            if (obj.event === 'add') {
-                window.add();
-            } else if (obj.event === 'refresh') {
-                window.refresh();
-            } else if (obj.event === 'batchRemove') {
-                window.batchRemove(obj);
-            }
-        });
-
-        window.add = function () {
-            layer.open({
-                type: 2,
-                title: '新增',
-                shade: 0.1,
-                area: ['450px', '500px'],
-                content: MODULE_PATH + 'add.html'
-            });
-        }
-
-        window.edit = function (obj) {
-            layer.open({
-                type: 2,
-                title: '修改',
-                shade: 0.1,
-                area: ['450px', '500px'],
-                content: '/view/permission/'+obj.data.id
-            });
-        }
+        window.render();
 
         window.remove = function (obj) {
             layer.confirm('确定要删除该权限', {icon: 3, title: '提示'}, function (index) {
@@ -181,114 +196,112 @@
                 })
             });
         }
-        //刷新菜单树
-        window.refresh = function (obj) {
-            let table = layui.table;
-            let form = layui.form;
-            let $ = layui.jquery;
-            let treetable = layui.treetable;
 
-            window.render = function () {
-                treetable.render({
-                    treeColIndex: 1,
-                    treeSpid: 0,
-                    treeId: 'id',
-                    treePid: 'parentId',
-                    skin: 'line',
-                    method: 'post',
-                    treeDefaultClose: true,
-                    toolbar: '#power-toolbar',
-                    elem: '#permission-table',
-                    url: '/menu/list',
-                    // url: '/admin/data/power.json',
-                    page: false,
-                    cols: [
-                        [
-                            {type: 'checkbox'},
-                            {field: 'menuName', minWidth: 200, title: '权限名称'},
-                            {field: 'icon', title: '图标', templet: '#icon'},
-                            {field: 'type', title: '权限类型', templet: '#power-type'},
-                            // {field: 'enable', title: '是否可用', templet: '#power-enable'},
-                            {field: 'sort', title: '排序'},
-                            {title: '操作', templet: '#power-bar', width: 150, align: 'center'}
-                        ]
-                    ],
-                    id:'permission-table',
-                    defaultToolbar: [{
-                        layEvent: 'refresh',
-                        icon: 'layui-icon-refresh',
-                    }, 'filter', 'print', 'exports']
-                    // parseData: {treeId: '', treePid: '', url: '', sort: '', icon: ''}
-                });
-            }
 
-            render();
-
-            table.on('tool(permission-table)', function (obj) {
-                if (obj.event === 'remove') {
-                    window.remove(obj);
-                } else if (obj.event === 'edit') {
-                    window.edit(obj);
+        //表单保存
+        form.on('submit(permission-save)', function (data) {
+            data.field.id = data.field.menuId;
+            console.log(JSON.stringify(data))
+            var ac = {
+                'field': {
+                    "menuName": data.field.title,
+                    "id": data.field.id,
+                    "parentId": data.field.pid,
+                    "icon": icon,
+                    "sort": data.field.sort,
+                    "url": data.field.url,
+                    "type": data.field.type,
+                    "permissionCode": data.field.permissionCode,
+                    "roleId": data.field.roleId
                 }
-            })
-
-
-            table.on('toolbar(permission-table)', function (obj) {
-                if (obj.event === 'add') {
-                    window.add();
-                } else if (obj.event === 'refresh') {
-                    window.refresh();
-                } else if (obj.event === 'batchRemove') {
-                    window.batchRemove(obj);
+            };
+            hydra.update('/menu/addOrUpdate', ac, parent);
+            window.render();
+            return false;
+        });
+        form.on('submit(permission-add)', function (data) {
+            // data.field.id = data.field.menuId;
+            console.log(JSON.stringify(data))
+            var ac = {
+                'field': {
+                    "menuName": data.field.menuName,
+                    "id": data.field.id,
+                    "parentId": data.field.pid,
+                    "icon": icon,
+                    "sort": data.field.sort,
+                    "url": data.field.url,
+                    "type": data.field.type,
+                    "permissionCode": data.field.permissionCode,
+                    "roleId": data.field.roleId
                 }
+            };
+            hydra.update('/menu/addOrUpdate', ac, parent);
+            window.render();
+            return false;
+        });
+        //表单重置
+        form.on('submit(permission-reset)', function (data) {
+            console.log(JSON.stringify(currentData))
+            form.val("menuForm", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                "pid": currentData.pid
+                , "menuName": currentData.title // "name": "value"
+                , "url": currentData.href
+                , "sort": currentData.sort
+                , "type": currentData.type
             });
-
-            window.add = function () {
-                layer.open({
-                    type: 2,
-                    title: '新增',
-                    shade: 0.1,
-                    area: ['450px', '500px'],
-                    content: MODULE_PATH + 'add.html'
-                });
+            return false;
+        });
+        form.on('submit(batchRemove)', function (data) {
+            var checkData = menuTree.getChecked('demoId');
+            if (checkData ||checkData.length == 0){
+                layer.msg('请选中要删除的菜单', {icon: 2, time: 1000});
             }
 
-            window.edit = function (obj) {
-                layer.open({
-                    type: 2,
-                    title: '修改',
-                    shade: 0.1,
-                    area: ['450px', '500px'],
-                    content: '/view/permission/'+obj.data.id
-                });
+            //先删除子菜单
+            let ids = [];
+            for (let i = 0; i <checkData.length ; i++) {
+                let item = checkData[i];
+                getChildMenu(item,ids);
             }
+            hydra.post("/menu/batchDel",JSON.stringify(ids),function(res){
+                layer.msg("删除成功", {icon: 1, time: 1000});
+                window.render()
+            })
+            return false;
+        });
 
-            window.remove = function (obj) {
-                layer.confirm('确定要删除该权限', {icon: 3, title: '提示'}, function (index) {
-                    layer.close(index);
-                    var loading = layer.load();
-                    $.ajax({
-                        url: MODULE_PATH + "remove/" + obj.data['powerId'],
-                        dataType: 'json',
-                        type: 'delete',
-                        success: function (result) {
-                            layer.close(loading);
-                            if (result.success) {
-                                layer.msg(result.msg, {icon: 1, time: 1000}, function () {
-                                    obj.del();
-                                });
-                            } else {
-                                layer.msg(result.msg, {icon: 2, time: 1000});
-                            }
-                        }
-                    })
-                });
-            }
-
-            window.refresh = function (obj) {
-                render();
+        function getChildMenu(item,ids){
+            let arr = item.children;
+            if(arr && arr.length > 0){
+                for (let i = 0; i < arr.length; i++) {
+                    getChildMenu(arr[i],ids)
+                }
+            }else {
+                ids.push(item.id);
             }
         }
+        //初始化图标组件
+        iconPicker.render({
+            // 选择器，推荐使用input
+            elem: '#iconPicker',
+            // 数据类型：fontClass/unicode，推荐使用fontClass
+            type: 'fontClass',
+            // 是否开启搜索：true/false，默认true
+            search: true,
+            // 是否开启分页：true/false，默认true
+            page: true,
+            // 每页显示数量，默认12
+            limit: 12,
+            // 点击回调
+            click: function (data) {
+                icon = data.icon;
+            },
+            // 渲染成功后的回调
+            success: function (d) {
+                console.log(d);
+            }
+        });
+
     })
 </script>
 </html>

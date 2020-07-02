@@ -8,6 +8,7 @@ import com.ratel.hydra.common.utils.NumberUtils;
 import com.ratel.hydra.common.vo.WebResult;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
+import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.MenuService;
 import com.ratel.hydra.system.service.impl.MenuServiceImpl;
@@ -70,6 +71,11 @@ public class MenuController extends BaseController<MenuServiceImpl,Menu> {
     @Override
     @OperatingInfo(operation = "保存菜单")
     public WebResult addOrUpdate(@RequestBody Menu po) {
+        User user = currentUser();
+        if (NumberUtils.isZero(po.getId())) {
+            po.setCreator(user.getId());
+        }
+        po.setModifier(user.getId());
         return super.addOrUpdate(po);
     }
 

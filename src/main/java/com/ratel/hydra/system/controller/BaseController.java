@@ -49,6 +49,7 @@ public class BaseController<E extends IBaseServiceImpl, T> {
     @PostMapping("addOrUpdate")
     @OperatingInfo(operation = "保存")
     public WebResult addOrUpdate(@RequestBody T po) {
+
         iBaseService.baseAddOrUpdate(po);
         return WebResultFactory.ok(null, "操作成功");
     }
