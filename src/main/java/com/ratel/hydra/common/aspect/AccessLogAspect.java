@@ -22,6 +22,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -52,7 +53,7 @@ public class AccessLogAspect {
     @Before("accessLogAnnoPointcut()")
     public void before(JoinPoint point) {
         AccessLogAdd accessLog = constructLog(point);
-        service.add(accessLog);
+        service.asyncAdd(accessLog);
         log.debug("==>>日志切面：{}",JSON.toJSONString(accessLog));
     }
 
@@ -126,6 +127,4 @@ public class AccessLogAspect {
         Object principal = subject.getPrincipal();
         return principal == null ? -1L : ((User)principal).getId();
     }
-
-
 }

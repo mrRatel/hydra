@@ -55,4 +55,9 @@ public class AccessLogServiceImpl extends IBaseServiceImpl<AccessLogMapper, Acce
         BeanUtils.copyProperties(page,accessLogPage);
         return super.page(accessLogPage,wrapper);
     }
+
+    @Override
+    public void asyncAdd(AccessLogAdd add) {
+        this.add(add);
+    }
 }
