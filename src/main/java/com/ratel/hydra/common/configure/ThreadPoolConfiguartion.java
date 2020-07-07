@@ -1,5 +1,7 @@
 package com.ratel.hydra.common.configure;
+import com.ratel.hydra.common.concurrent.HydraThreadPoolTaskExecutor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -23,7 +25,7 @@ public class ThreadPoolConfiguartion {
      **/
     @Bean
     public ThreadPoolTaskExecutor initCommonThreadPool() {
-        ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
+        ThreadPoolTaskExecutor threadPool = new HydraThreadPoolTaskExecutor();
         threadPool.setCorePoolSize(2);//核心线程数
         threadPool.setMaxPoolSize(4);//最大线程数
         threadPool.setKeepAliveSeconds(60);//线程存活时间
