@@ -1,5 +1,6 @@
 package com.ratel.hydra.common.configure;
 
+import com.ratel.hydra.common.properties.ShiroProperty;
 import com.ratel.hydra.security.realm.HydraRealm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.codec.Base64;
@@ -11,6 +12,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,7 @@ import java.util.Map;
  */
 @Slf4j
 @Configuration
+@EnableConfigurationProperties(ShiroProperty.class)
 public class ShiroConfiguration {
 
     @Bean
@@ -49,7 +52,7 @@ public class ShiroConfiguration {
     }
 
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager){
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, ShiroProperty shiroProperty){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         //设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -62,27 +65,31 @@ public class ShiroConfiguration {
 
         Map<String,String> filterChainMap = new LinkedHashMap<>();
 
-        //静态资源 不拦截
-        filterChainMap.put("/css/**","anon");
-        filterChainMap.put("/js/**","anon");
-        filterChainMap.put("/fonts/**","anon");
-        filterChainMap.put("/img/**","anon");
-        filterChainMap.put("/*.html","anon");
-        filterChainMap.put("/assets/**","anon");
-        filterChainMap.put("/admin/**","anon");
-        filterChainMap.put("/component/**","anon");
-        //验证码 不拦截
-        filterChainMap.put("/image/captcha","anon");
+        //静态资源
+        log.debug("exclude premission url {}",shiroProperty.getExclude().toString());
+        shiroProperty.getExclude().forEach(a->filterChainMap.put(a,"anon"));
 
-        filterChainMap.put("/error/**","anon");
-
-        //druid 监控不拦截
-        filterChainMap.put("/druid/**","anon");
-        //登录接口
-        filterChainMap.put("/user/login","anon");
-        //注册
-        filterChainMap.put("/user/add","anon");
-        filterChainMap.put("/","anon");
+//        //静态资源 不拦截
+//        filterChainMap.put("/css/**","anon");
+//        filterChainMap.put("/js/**","anon");
+//        filterChainMap.put("/fonts/**","anon");
+//        filterChainMap.put("/img/**","anon");
+//        filterChainMap.put("/*.html","anon");
+//        filterChainMap.put("/assets/**","anon");
+//        filterChainMap.put("/admin/**","anon");
+//        filterChainMap.put("/component/**","anon");
+//        //验证码 不拦截
+//        filterChainMap.put("/image/captcha","anon");
+//
+//        filterChainMap.put("/error/**","anon");
+//
+//        //druid 监控不拦截
+//        filterChainMap.put("/druid/**","anon");
+//        //登录接口
+//        filterChainMap.put("/user/login","anon");
+//        //注册
+//        filterChainMap.put("/user/add","anon");
+//        filterChainMap.put("/","anon");
 
 
         //登出接口

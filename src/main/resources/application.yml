@@ -37,5 +37,23 @@ mybatis-plus:
 
 logging:
   level:
-    com.ratel.hydra.system.mapper: debug
+    com.ratel.hydra: debug
     root: info
+
+hydra:
+  shiro:
+    exclude:
+      - /css/**
+      - /js/**
+      - /img/**
+      - /*.html
+      - /assets/**
+      - /admin/**
+      - /component/**
+      - /image/captcha
+      - /error/**
+      - /druid/**
+      - /user/login
+      - /user/add
+      - /
+        /admin/css/pearForm.css

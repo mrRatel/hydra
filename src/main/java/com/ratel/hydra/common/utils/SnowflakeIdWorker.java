@@ -108,10 +108,10 @@ public class SnowflakeIdWorker {
         // 为啥时间戳减法向左移动22 位 因为  5位datacenterid 
         // 为啥 datCenterID向左移动17位 因为 前面有5位workid  还有12位序列号 就是17位
         //为啥 workerId向左移动12位 因为 前面有12位序列号 就是12位 
-        System.out.println(((timestamp - twepoch) << timestampLeftShift) //
+/*        System.out.println(((timestamp - twepoch) << timestampLeftShift) //
                 | (dataCenterId << dataCenterIdShift) //
                 | (workerId << workerIdShift) //
-                | sequence);
+                | sequence);*/
         return ((timestamp - twepoch) << timestampLeftShift) //
                 | (dataCenterId << dataCenterIdShift) //
                 | (workerId << workerIdShift) //
@@ -141,7 +141,7 @@ public class SnowflakeIdWorker {
  
     // ==============================Test=============================================
     /** 测试 */
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         System.out.println(System.currentTimeMillis());
         SnowflakeIdWorker idWorker = new SnowflakeIdWorker(1, 1);
         long startTime = System.nanoTime();
@@ -150,5 +150,5 @@ public class SnowflakeIdWorker {
             System.out.println(id);
         }
         System.out.println((System.nanoTime() - startTime) / 1000000 + "ms");
-    }
+    }*/
 }
