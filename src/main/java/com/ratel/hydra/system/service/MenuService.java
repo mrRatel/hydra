@@ -5,6 +5,7 @@ import com.ratel.hydra.system.dto.LayuiTree;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.User;
+import com.ratel.hydra.system.vo.MenuVO;
 
 import java.util.List;
 
@@ -34,4 +35,13 @@ public interface MenuService {
     void delById(Long id);
 
     void addOrUpdate(Menu menu);
+
+    /**
+     * @Description 获取所有菜单
+     * @Author      ratel
+     * @Date        2020/7/5
+     * @param       currentUser
+     * @return      java.util.List<com.ratel.hydra.system.vo.MenuVO>
+     **/
+    List<MenuVO> getMenuVOS(User currentUser);
 }

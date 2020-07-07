@@ -1,18 +1,17 @@
 package com.ratel.hydra.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.system.mapper.UserMapper;
-import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
+import com.ratel.hydra.system.service.MenuService;
+import com.ratel.hydra.system.service.RoleService;
 import com.ratel.hydra.system.service.UserService;
+import com.ratel.hydra.system.vo.SavePremissionVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +23,10 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserServiceImpl extends IBaseServiceImpl<UserMapper,User> implements UserService {
-
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private MenuService menuService;
     @Override
     public User baseGetById(Long id) {
         return getById(id);
@@ -64,5 +66,14 @@ public class UserServiceImpl extends IBaseServiceImpl<UserMapper,User> implement
     @Override
     public User getByUsername(String username) {
         return getOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username));
+    }
+
+    @Override
+    public void savePremission(SavePremissionVO premission) {
+        //获取当前没有的角色
+        List<Long> addRoleIds = roleService.getCurrentlyNotExistRolesForCurrentUser(premission.getCurrentUser().getId(),premission.getRoleIds());
+        //todo 增加对应角色关系
+        //获取当前用户需要删除的角色
+        List<Long>  delRoleIds = roleService.getNeedDeleteRolesByCurrentUser(premission.getCurrentUser().getId(),premission.getRoleIds());
     }
 }

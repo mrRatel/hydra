@@ -26,4 +26,8 @@
     <select id="findCurrentUserMenu" resultMap="BaseResultMap">
      select t3.* from user t inner join user_role_relation t2 on t.id = t2.user_id inner join menu t3 on t2.role_id = t3.role_id where user_id = #{userId,jdbcType=BIGINT} order by parent_id;
     </select>
+    <select id="selectMenuVOS" resultType="com.ratel.hydra.system.vo.MenuVO">
+    select t1.*,urr.id is not null as have from menu t1
+    left join user_role_relation urr on t1.role_id = urr.role_id <if test="id != null"> and urr.user_id = #{id,jdbcType=BIGINT}</if>
+    </select>
 </mapper>

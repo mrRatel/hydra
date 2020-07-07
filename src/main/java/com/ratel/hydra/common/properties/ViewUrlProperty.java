@@ -6,6 +6,7 @@ public interface ViewUrlProperty {
     String ROLE_ADD = "view/system/role/edit/add";
     String USER_EDIT = "view/system/user/edit";
     String USER_ADD = "view/system/role/user/add";
+    String USER_AUTHORIZE = "view/system/user/authorize";
     String PERMISSION_EDIT = "view/system/permission/edit";
     String PERMISSION_ADD = "view/system/permission/add";
     String PERMISSION = "view/system/permission/permission";

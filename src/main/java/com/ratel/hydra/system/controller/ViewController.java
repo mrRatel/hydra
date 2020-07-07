@@ -8,9 +8,12 @@ import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.Role;
+import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.service.MenuService;
 import com.ratel.hydra.system.service.RoleService;
 import com.ratel.hydra.system.service.UserService;
+import com.ratel.hydra.system.vo.MenuVO;
+import com.ratel.hydra.system.vo.RoleVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ratel
@@ -30,7 +35,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping
-public class ViewController{
+public class ViewController extends BaseController{
     @Autowired
     private MenuService menuService;
 
@@ -77,6 +82,18 @@ public class ViewController{
         view.addObject("data",userService.baseGetById(id));
         view.setViewName(ViewUrlProperty.USER_EDIT);
         return  view;
+    }
+
+    @GetMapping("/view/authorize")
+    @RequiresRoles(RoleProperty.ROLE_CODER)
+    public String authorize(Model model){
+        List<RoleVO> roleVOs = roleService.getRoleVOs(currentUser());
+        model.addAttribute("roles",roleVOs);
+        List<MenuVO> menuVOS = menuService.getMenuVOS(currentUser());
+        model.addAttribute("premission",menuVOS);
+        model.addAttribute("menuArray",menuVOS.stream().filter(MenuVO::isHave).map(MenuVO::getId).collect(Collectors.toList()).toString());
+        model.addAttribute("roleArray",roleVOs.stream().filter(RoleVO::isHave).map(RoleVO::getId).collect(Collectors.toList()).toString());
+        return ViewUrlProperty.USER_AUTHORIZE;
     }
 
     @GetMapping("/view/user/add")

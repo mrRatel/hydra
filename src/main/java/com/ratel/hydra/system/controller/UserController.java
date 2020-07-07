@@ -5,6 +5,7 @@ import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.mapstruct.LoginLogStruct;
+import com.ratel.hydra.common.pojo.KVBean;
 import com.ratel.hydra.common.properties.CaptchaProperty;
 import com.ratel.hydra.common.properties.PermissionProperty;
 import com.ratel.hydra.common.properties.RoleProperty;
@@ -17,6 +18,7 @@ import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.query.user.UserLogin;
 import com.ratel.hydra.system.service.LoginLogService;
 import com.ratel.hydra.system.service.impl.UserServiceImpl;
+import com.ratel.hydra.system.vo.SavePremissionVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -110,5 +112,14 @@ public class UserController extends BaseController<UserServiceImpl,User>{
     @RequiresRoles(RoleProperty.ROLE_CODER)
     public WebResult page(PageQuery<User> query, User po) {
         return super.page(query, po);
+    }
+
+    @PostMapping("savePremission")
+    @OperatingInfo(operation = "保存用户权限")
+    @RequiresRoles(RoleProperty.ROLE_CODER)
+    public WebResult savePremission(SavePremissionVO savePremissionVO){
+        savePremissionVO.setCurrentUser(currentUser());
+        iBaseService.savePremission(savePremissionVO);
+        return WebResultFactory.ok();
     }
 }

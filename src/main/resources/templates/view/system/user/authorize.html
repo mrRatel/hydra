@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/admin/css/pearCommon.css"/>
+    <link rel="stylesheet" href="/component/layui/css/layui.css"/>
+    <link href="/admin/css/pearSelect.css" rel="stylesheet"/>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        角色
+                    </div>
+                    <div class="layui-card-body">
+                        <select name="roles" xm-select="select4" xm-select-skin="default">
+                            <option th:value="${role.id}" th:each="role:${roles}" th:text="${role.roleName}"
+                                    th:selected="${role.have}"></option>
+                            <!--<option value="4" selected="selected">深圳</option>
+                            <option value="5">天津</option>-->
+                        </select>
+                    </div>
+
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        权限
+                    </div>
+                    <div class="layui-card-body">
+                        <select name="premission" xm-select="select" xm-select-skin="default">
+                            <option th:each="item:${premission}" th:value="${item.id}" th:text="${item.menuName}"
+                                    th:selected="${item.have}"/>
+                            <!--<option value="2" selected="selected">上海</option>
+                            <option value="3">广州</option>
+                            <option value="4" selected="selected">深圳</option>
+                            <option value="5">天津</option>-->
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                    lay-filter="premission-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+<script src="/component/layui/layui.js"></script>
+<script>
+    var roleArray = [[${roleArray}]];
+    var roleMap = {};
+    for (let id of roleArray) {
+        roleMap[id] = true;
+    }
+    var menuArray = [[${menuArray}]];
+    var premissionMap = {};
+    for (let id of menuArray) {
+        premissionMap[id] = true;
+    }
+    //JavaScript代码区域
+    layui.use(['formSelects', 'code', 'form', 'jquery'], function () {
+        var formSelects = layui.formSelects;
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        // console.log("roleArray" + JSON.stringify(roleArray));
+        // console.log("roleMap" + JSON.stringify(roleMap));
+        // console.log("menuArray" + JSON.stringify(menuArray));
+        // console.log("premissionMap" + JSON.stringify(premissionMap));
+        layui.code()
+
+
+        form.on('submit(premission-save)', function (data) {
+
+            let roleIds = data.field.roles.split(',');
+            let roleIdMap = {};
+            for (let id of roleIds) {
+                roleIdMap[id] = true;
+            }
+            // console.log("roleIdMap" + JSON.stringify(roleIdMap))
+
+            let premissionIds = data.field.premission.split(',');
+            let premissionIdMap = {};
+            for (let premissionId of premissionIds) {
+                premissionIdMap[premissionId] = true;
+            }
+            // console.log("premissionIdMap" + JSON.stringify(premissionIdMap))
+
+            //获取删除的角色
+            let delRoleIds = [];
+            for (let id of roleArray) {
+                if (!roleIdMap[id]) {
+                    delRoleIds.push(id);
+                }
+            }
+            //获取删除的权限
+            let delPremissionIds = [];
+            for (let id of menuArray) {
+                if (!premissionIdMap[id]) {
+                    delPremissionIds.push(id);
+                }
+            }
+
+            //获取新增的角色
+            let newRoleIds = [];
+            for (let id of roleIds) {
+                // console.log("roleMap[id]" + id)
+                if (!roleMap[id]) {
+                    newRoleIds.push(id);
+                }
+            }
+
+            //获取新增的权限
+            let newPremissionIds = [];
+            for (let id of premissionIds) {
+                if (!premissionMap[id]) {
+                    newPremissionIds.push(id);
+                }
+            }
+
+            // console.log("删除的角色" + JSON.stringify(delRoleIds))
+            // console.log("删除的权限" + JSON.stringify(delPremissionIds))
+            // console.log("新增的角色" + JSON.stringify(newRoleIds))
+            // console.log("新增的权限" + JSON.stringify(newPremissionIds))
+            // hydra.update('/menu/addOrUpdate', ac, parent);
+            // window.render();
+            return false;
+        });
+
+    });
+
+    function isRealNum(val) {
+        // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除，
+
+        if (val === "" || val == null) {
+            return false;
+        }
+        if (!isNaN(val)) {
+            //对于空数组和只有一个数值成员的数组或全是数字组成的字符串，isNaN返回false，例如：'123'、[]、[2]、['123'],isNaN返回false,
+            //所以如果不需要val包含这些特殊情况，则这个判断改写为if(!isNaN(val) && typeof val === 'number' )
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+<script>
+</script>
+</body>
+</html>

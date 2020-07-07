@@ -1,7 +1,7 @@
 package com.ratel.hydra.common.mapstruct;
 
 import com.ratel.hydra.system.po.Role;
-import com.ratel.hydra.system.vo.RoleVo;
+import com.ratel.hydra.system.vo.RoleVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,10 +14,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface RoleStruct {
 
-    @Mapping(target = "enable",expression = "java(CustomConvertor.booleanToByte(role.getEnable()))")
-    RoleVo convertToVo(Role role);
+    @Mapping(target = "enable",source = "enable")
+    RoleVO convertToVo(Role role);
 
-    List<RoleVo> convertToVo(List<Role> roleList);
+    List<RoleVO> convertToVo(List<Role> roleList);
 
     class CustomConvertor {
         protected static Byte booleanToByte(Boolean enable){

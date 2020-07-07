@@ -2,18 +2,20 @@ package com.ratel.hydra.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.common.mapstruct.RoleStruct;
 import com.ratel.hydra.system.mapper.RoleMapper;
 import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.RoleService;
+import com.ratel.hydra.system.vo.RoleVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -74,5 +76,34 @@ public class RoleServiceImpl extends IBaseServiceImpl<RoleMapper, Role> implemen
     @Override
     public List<Role> list() {
         return super.list();
+    }
+
+    @Override
+    public List<RoleVO> getRoleVOs(User user) {
+        if (user == null){
+            return Collections.emptyList();
+        }
+        return baseMapper.selectRoleVOs(user);
+    }
+
+    @Override
+    public void addUserRoleRelation(List<Long> roleIds, Long id) {
+
+    }
+
+    @Override
+    public List<Long> getCurrentlyNotExistRolesForCurrentUser(Long id, List<Long> roleIds) {
+        if (id == null){
+            return Collections.emptyList();
+        }
+       return baseMapper.selectCurrentlyNotExistRolesForCurrentUser(id,roleIds);
+    }
+
+    @Override
+    public List<Long> getNeedDeleteRolesByCurrentUser(Long userId, List<Long> roleIds) {
+        if (userId == null){
+            return Collections.emptyList();
+        }
+        return baseMapper.selectNeedDeleteRolesByCurrentUser(userId,roleIds);
     }
 }

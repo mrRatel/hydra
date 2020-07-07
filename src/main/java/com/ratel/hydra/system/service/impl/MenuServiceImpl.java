@@ -11,6 +11,7 @@ import com.ratel.hydra.system.mapper.MenuMapper;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.service.MenuService;
+import com.ratel.hydra.system.vo.MenuVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,5 +100,13 @@ public class MenuServiceImpl extends IBaseServiceImpl<MenuMapper, Menu> implemen
     @Override
     public void addOrUpdate(Menu menu) {
         saveOrUpdate(menu);
+    }
+
+    @Override
+    public List<MenuVO> getMenuVOS(User currentUser) {
+        if (currentUser == null){
+            return Collections.emptyList();
+        }
+        return baseMapper.selectMenuVOS(currentUser);
     }
 }

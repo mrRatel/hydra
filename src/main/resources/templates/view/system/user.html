@@ -54,6 +54,7 @@
 <script type="text/html" id="user-bar">
     <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
     </button>
+        <button class="pear-btn pear-btn-warming pear-btn-sm" lay-event="power"><i class="layui-icon layui-icon-vercode"></i></button>
     <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
@@ -108,7 +109,7 @@
                 {title: '启用', field: 'enable', align: 'center', templet: '#user-enable'},
                 // {title: '登录', field: 'login', align:'center', templet:'#user-login'},
                 // {title: '注册', field: 'createTime', align:'center',templet:'#user-createTime'},
-                {title: '操作', toolbar: '#user-bar', align: 'center', width: 130}
+                {title: '操作', toolbar: '#user-bar', align: 'center', width: 170}
             ]
         ]
 
@@ -135,6 +136,8 @@
                 window.remove(obj);
             } else if (obj.event === 'edit') {
                 window.edit(obj);
+            } else if(obj.event == 'power'){
+                window.power(obj);
             }
         });
 
@@ -183,6 +186,16 @@
 
         window.refresh = function (param) {
             table.reload('user-table');
+        }
+
+        window.power = function (obj) {
+            layer.open({
+                type: 2,
+                title: '修改权限',
+                shade: 0.1,
+                area: ['500px', '400px'],
+                content: '/view/authorize'
+            });
         }
     })
 </script>

@@ -20,10 +20,31 @@
         modify_time
     </sql>
     <select id="selectListByUserId" resultMap="BaseResultMap">
-      select r.id, r.role_name, r.parent_id, r.remark, r.description, r.role_code, r.enable, r.create_time, r.modify_time
+        select r.id, r.role_name, r.parent_id, r.remark, r.description, r.role_code, r.enable, r.create_time,
+        r.modify_time
         from user t1
         inner join user_role_relation urr on t1.id = urr.user_id
         inner join role r on r.id = urr.role_id
         where t1.id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectRoleVOs" resultType="com.ratel.hydra.system.vo.RoleVO">
+        select t1.*,urr.id is not null as have from role t1 left join user_role_relation urr on t1.id = urr.role_id
+        <if test="id != null">
+            and urr.user_id = #{id,jdbcType=BIGINT}
+        </if>
+    </select>
+    <select id="selectCurrentlyNotExistRolesForCurrentUser" resultType="java.lang.Long">
+        select t1.id
+        from role t1
+        where
+        <if test="roleIds != null and roleIds.size() != 0">
+            and t1.id in <foreach collection="roleIds" item="roleId" open="(" close=")" separator=","> #{roleId,jdbcType=BIGINT}</foreach>
+        </if>
+        <if test="id != null">
+            and not exists(select 1 from user_role_relation urr where urr.user_id = 1 and t1.id = urr.role_id);
+        </if>
+    </select>
+    <select id="selectNeedDeleteRolesByCurrentUser" resultType="java.lang.Long">
+
     </select>
 </mapper>
