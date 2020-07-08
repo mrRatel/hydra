@@ -72,7 +72,6 @@ public class MenuServiceImpl extends IBaseServiceImpl<MenuMapper, Menu> implemen
         list.forEach(a -> {
             Menu menu = menuTreeStruct.toMenu(a);
             menu.setParentId(pid);
-            menu.setRoleId(1L);
             menu.setCreator(1L);
             menu.setModifier(1L);
             menu.setType(a.getType());
@@ -103,10 +102,10 @@ public class MenuServiceImpl extends IBaseServiceImpl<MenuMapper, Menu> implemen
     }
 
     @Override
-    public List<MenuVO> getMenuVOS(User currentUser) {
-        if (currentUser == null){
+    public List<MenuVO> getMenuVOS(Long userId) {
+        if (userId == null){
             return Collections.emptyList();
         }
-        return baseMapper.selectMenuVOS(currentUser);
+        return baseMapper.selectMenuVOS(userId);
     }
 }

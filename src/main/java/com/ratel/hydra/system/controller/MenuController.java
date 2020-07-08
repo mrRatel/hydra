@@ -5,7 +5,7 @@ import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.mapstruct.MenuTreeStruct;
 import com.ratel.hydra.common.properties.RoleProperty;
 import com.ratel.hydra.common.utils.NumberUtils;
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.User;
@@ -18,7 +18,6 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 

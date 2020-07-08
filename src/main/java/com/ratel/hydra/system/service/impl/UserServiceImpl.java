@@ -1,19 +1,29 @@
 package com.ratel.hydra.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ratel.hydra.common.constant.ExceptionEnum;
+import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.system.mapper.UserMapper;
+import com.ratel.hydra.system.mapper.UserRoleRelationMapper;
+import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.po.User;
+import com.ratel.hydra.system.po.UserRoleRelation;
 import com.ratel.hydra.system.query.PageQuery;
-import com.ratel.hydra.system.service.MenuService;
-import com.ratel.hydra.system.service.RoleService;
+import com.ratel.hydra.system.query.user.SavePremissionRequest;
 import com.ratel.hydra.system.service.UserService;
-import com.ratel.hydra.system.vo.SavePremissionVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,11 +32,13 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Transactional()
 public class UserServiceImpl extends IBaseServiceImpl<UserMapper,User> implements UserService {
+
     @Autowired
-    private RoleService roleService;
-    @Autowired
-    private MenuService menuService;
+    private UserRoleRelationMapper userRoleRelationMapper;
+
+
     @Override
     public User baseGetById(Long id) {
         return getById(id);
@@ -69,11 +81,30 @@ public class UserServiceImpl extends IBaseServiceImpl<UserMapper,User> implement
     }
 
     @Override
-    public void savePremission(SavePremissionVO premission) {
-        //获取当前没有的角色
-        List<Long> addRoleIds = roleService.getCurrentlyNotExistRolesForCurrentUser(premission.getCurrentUser().getId(),premission.getRoleIds());
-        //todo 增加对应角色关系
-        //获取当前用户需要删除的角色
-        List<Long>  delRoleIds = roleService.getNeedDeleteRolesByCurrentUser(premission.getCurrentUser().getId(),premission.getRoleIds());
+    public void savePremission(SavePremissionRequest savePremissionRequest) {
+        log.debug("execute savePremission");
+        User user = savePremissionRequest.getUser();
+        if (user == null){
+             throw new SystemException(ExceptionEnum.AUTH1008);
+        }
+        //绑定角色
+        List<Long> addRoleIds = savePremissionRequest.getAddRoleIds();
+        if (!CollectionUtils.isEmpty(addRoleIds)) {
+            List<UserRoleRelation> userRoleRelations = new ArrayList<>();
+            addRoleIds.forEach(id -> userRoleRelations.add(new UserRoleRelation().setUserId(user.getId()).setRoleId(id)));
+            userRoleRelationMapper.insertList(userRoleRelations);
+        }
+
+        //解绑角色
+        List<Long> delRoleIds = savePremissionRequest.getDelRoleIds();
+        if (!CollectionUtils.isEmpty(delRoleIds)) {
+            userRoleRelationMapper.delete(new LambdaQueryWrapper<UserRoleRelation>().in(UserRoleRelation::getId, delRoleIds));
+        }
+
+       /* //绑定权限
+        List<Long> addPremissionIds = savePremissionRequest.getAddPremissionIds();
+
+        //解绑权限
+        List<Long> delPremissionIds = savePremissionRequest.getDelPremissionIds();*/
     }
 }

@@ -3,17 +3,14 @@ package com.ratel.hydra.system.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.factory.WebResultFactory;
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 import com.ratel.hydra.system.po.Dictionary;
 import com.ratel.hydra.system.po.DictionaryDetail;
 import com.ratel.hydra.system.service.DictionaryDetailService;
 import com.ratel.hydra.system.service.DictionaryService;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author ratel

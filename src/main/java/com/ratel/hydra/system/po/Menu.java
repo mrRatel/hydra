@@ -18,13 +18,6 @@ public class Menu {
     private Long id;
 
     /**
-     * 角色id
-     */
-    @TableField(value = "role_id")
-    @ApiModelProperty(value = "角色id")
-    private Long roleId;
-
-    /**
      * 菜单URL
      */
     @TableField(value = "url")
@@ -101,6 +94,9 @@ public class Menu {
     @ApiModelProperty(value = "修改时间")
     private Date modifyTime;
 
+    /**
+     * 权限编码
+     */
     @TableField(value = "permission_code")
     @ApiModelProperty(value = "权限编码")
     private String permissionCode;

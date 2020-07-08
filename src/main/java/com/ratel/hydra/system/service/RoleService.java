@@ -24,7 +24,7 @@ import java.util.List;
 
      List<Role> list();
 
-     List<RoleVO> getRoleVOs(User user);
+     List<RoleVO> getRoleVOs(Long userId);
 
      void addUserRoleRelation(List<Long> roleIds, Long id);
 

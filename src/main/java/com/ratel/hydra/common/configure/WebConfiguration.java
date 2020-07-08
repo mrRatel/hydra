@@ -28,18 +28,6 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
     private ShiroProperty shiroProperty;
     @Autowired
     private ResourceProperties resourceProperties;
-    /**
-     * @Description 请求追踪拦截器，id 通过雪花ID 生成
-     * @Author      ratel
-     * @Date        2020-07-07
-     * @param       snowflakeIdWorker
-     * @return      com.ratel.hydra.common.Interceptor.TraceInterceptor
-     **/
-//    @Bean
-    public TraceInterceptor traceInterceptor(SnowflakeIdWorker snowflakeIdWorker){
-        traceInterceptor = new TraceInterceptor(snowflakeIdWorker);
-        return traceInterceptor;
-    }
 
     /**
      * @Description 添加拦截器
@@ -52,6 +40,7 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         List<String> exclude = shiroProperty.getExclude();
         log.debug("TraceInterceptor exclude url {}",exclude.toString());
+        //配置拦截器的过滤规则 和 拦截规则
         registry.addInterceptor(traceInterceptor).excludePathPatterns(exclude).addPathPatterns("/**");
     }
 

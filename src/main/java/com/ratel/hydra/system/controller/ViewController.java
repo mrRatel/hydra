@@ -84,12 +84,12 @@ public class ViewController extends BaseController{
         return  view;
     }
 
-    @GetMapping("/view/authorize")
+    @GetMapping("/view/authorize/{userId}")
     @RequiresRoles(RoleProperty.ROLE_CODER)
-    public String authorize(Model model){
-        List<RoleVO> roleVOs = roleService.getRoleVOs(currentUser());
+    public String authorize(Model model,@PathVariable("userId") Long userId){
+        List<RoleVO> roleVOs = roleService.getRoleVOs(userId);
         model.addAttribute("roles",roleVOs);
-        List<MenuVO> menuVOS = menuService.getMenuVOS(currentUser());
+        List<MenuVO> menuVOS = menuService.getMenuVOS(userId);
         model.addAttribute("premission",menuVOS);
         model.addAttribute("menuArray",menuVOS.stream().filter(MenuVO::isHave).map(MenuVO::getId).collect(Collectors.toList()).toString());
         model.addAttribute("roleArray",roleVOs.stream().filter(RoleVO::isHave).map(RoleVO::getId).collect(Collectors.toList()).toString());

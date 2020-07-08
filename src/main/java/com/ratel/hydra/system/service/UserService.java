@@ -1,10 +1,10 @@
 package com.ratel.hydra.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ratel.hydra.common.pojo.KVBean;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
-import com.ratel.hydra.system.vo.SavePremissionVO;
+import com.ratel.hydra.system.query.user.SavePremissionRequest;
 
 import java.util.List;
 
@@ -34,5 +34,5 @@ public interface UserService extends IBaseServiceImpl<User>{
     
     void batchDelByIds(List<Long> ids);
 
-    void savePremission(SavePremissionVO savePremissionVO);
+    void savePremission(SavePremissionRequest savePremissionRequest);
 }

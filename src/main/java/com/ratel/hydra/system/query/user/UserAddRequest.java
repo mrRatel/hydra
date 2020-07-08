@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class UserAdd {
+public class UserAddRequest {
     /**
      * 用户名
      */

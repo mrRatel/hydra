@@ -21,6 +21,5 @@ public class MenuTree{
     private Long pid;
     private Long sort;
     private String permissionCode;
-    private Long roleId;
     private List<MenuTree> children;
 }

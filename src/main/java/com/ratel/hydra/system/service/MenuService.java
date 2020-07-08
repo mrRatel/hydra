@@ -40,8 +40,8 @@ public interface MenuService {
      * @Description 获取所有菜单
      * @Author      ratel
      * @Date        2020/7/5
-     * @param       currentUser
+     * @param       userId
      * @return      java.util.List<com.ratel.hydra.system.vo.MenuVO>
      **/
-    List<MenuVO> getMenuVOS(User currentUser);
+    List<MenuVO> getMenuVOS(Long userId);
 }

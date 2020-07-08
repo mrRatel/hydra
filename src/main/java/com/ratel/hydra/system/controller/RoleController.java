@@ -1,7 +1,7 @@
 package com.ratel.hydra.system.controller;
 
 import com.ratel.hydra.common.annotation.OperatingInfo;
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.impl.RoleServiceImpl;

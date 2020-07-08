@@ -4,7 +4,7 @@ import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.impl.IBaseServiceImpl;

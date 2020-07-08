@@ -1,11 +1,10 @@
 package com.ratel.hydra.system.controller;
 
 import com.ratel.hydra.common.annotation.OperatingInfo;
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.query.loginLog.LoginLogQuery;
 import com.ratel.hydra.system.service.impl.LoginLogServiceImpl;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

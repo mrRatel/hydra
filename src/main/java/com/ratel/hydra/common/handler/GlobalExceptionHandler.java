@@ -4,7 +4,7 @@ import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.properties.ViewUrlProperty;
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -12,17 +12,11 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.servlet.annotation.HttpConstraint;
 
 import static com.ratel.hydra.common.constant.ExceptionEnum.*;
 

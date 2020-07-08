@@ -79,11 +79,11 @@ public class RoleServiceImpl extends IBaseServiceImpl<RoleMapper, Role> implemen
     }
 
     @Override
-    public List<RoleVO> getRoleVOs(User user) {
-        if (user == null){
+    public List<RoleVO> getRoleVOs(Long userId) {
+        if (userId == null){
             return Collections.emptyList();
         }
-        return baseMapper.selectRoleVOs(user);
+        return baseMapper.selectRoleVOs(userId);
     }
 
     @Override

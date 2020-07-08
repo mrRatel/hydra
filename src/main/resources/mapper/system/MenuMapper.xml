@@ -5,7 +5,6 @@
     <!--@mbg.generated-->
     <!--@Table menu-->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="role_id" jdbcType="BIGINT" property="roleId" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
@@ -17,17 +16,37 @@
     <result column="modifier" jdbcType="BIGINT" property="modifier" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="permission_code" jdbcType="VARCHAR" property="permissionCode" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, role_id, url, icon, parent_id, relation_code, menu_name, sort, `type`, creator, 
-    modifier, create_time, modify_time
+    id, url, icon, parent_id, relation_code, menu_name, sort, `type`, creator, modifier, 
+    create_time, modify_time, permission_code
   </sql>
     <select id="findCurrentUserMenu" resultMap="BaseResultMap">
-     select t3.* from user t inner join user_role_relation t2 on t.id = t2.user_id inner join menu t3 on t2.role_id = t3.role_id where user_id = #{userId,jdbcType=BIGINT} order by parent_id;
+      select t3.*
+      from user t
+      inner join
+      user_role_relation t2
+      on t.id = t2.user_id
+      inner join role_menu_relation t3 on t3.role_id = t2.role_id
+      inner join
+      menu t4
+      on t4.id = t3.menu_id
+      where t.id = #{userId,jdbcType=BIGINT} order by t4.parent_id;
     </select>
     <select id="selectMenuVOS" resultType="com.ratel.hydra.system.vo.MenuVO">
-    select t1.*,urr.id is not null as have from menu t1
-    left join user_role_relation urr on t1.role_id = urr.role_id <if test="id != null"> and urr.user_id = #{id,jdbcType=BIGINT}</if>
+      select
+      t1.*,
+      urr.id is not null as have
+      from
+      menu t1
+      left join role_menu_relation t2 on t2.menu_id = t1.id
+      left join
+      user_role_relation urr
+      on t2.role_id = urr.role_id
+      <if test="userId != null">
+        and urr.user_id = #{userId,jdbcType=BIGINT}
+      </if>
     </select>
 </mapper>

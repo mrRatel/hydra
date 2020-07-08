@@ -29,8 +29,8 @@
     </select>
     <select id="selectRoleVOs" resultType="com.ratel.hydra.system.vo.RoleVO">
         select t1.*,urr.id is not null as have from role t1 left join user_role_relation urr on t1.id = urr.role_id
-        <if test="id != null">
-            and urr.user_id = #{id,jdbcType=BIGINT}
+        <if test="userId != null">
+            and urr.user_id = #{userId,jdbcType=BIGINT}
         </if>
     </select>
     <select id="selectCurrentlyNotExistRolesForCurrentUser" resultType="java.lang.Long">

@@ -5,20 +5,19 @@ import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.mapstruct.LoginLogStruct;
-import com.ratel.hydra.common.pojo.KVBean;
 import com.ratel.hydra.common.properties.CaptchaProperty;
 import com.ratel.hydra.common.properties.PermissionProperty;
 import com.ratel.hydra.common.properties.RoleProperty;
 import com.ratel.hydra.common.utils.IpUtil;
 import com.ratel.hydra.common.utils.WebUtil;
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 import com.ratel.hydra.system.po.LoginLog;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
-import com.ratel.hydra.system.query.user.UserLogin;
+import com.ratel.hydra.system.query.user.SavePremissionRequest;
+import com.ratel.hydra.system.query.user.UserLoginRequest;
 import com.ratel.hydra.system.service.LoginLogService;
 import com.ratel.hydra.system.service.impl.UserServiceImpl;
-import com.ratel.hydra.system.vo.SavePremissionVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -32,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -64,15 +64,15 @@ public class UserController extends BaseController<UserServiceImpl,User>{
 
     @PostMapping("login")
     @OperatingInfo(operation = "登录")
-    public WebResult login(@RequestBody @Valid UserLogin userLogin, HttpServletRequest request){
+    public WebResult login(@RequestBody @Valid UserLoginRequest userLoginRequest, HttpServletRequest request){
         HttpSession session = request.getSession();
         String captcha = (String)session.getAttribute(CaptchaProperty.CAPTCHA);
-        String uCaptcha = userLogin.getCaptcha();
+        String uCaptcha = userLoginRequest.getCaptcha();
         if (!uCaptcha.equals(captcha)){
             session.removeAttribute(CaptchaProperty.CAPTCHA);
             throw new SystemException(ExceptionEnum.AUTH1007);
         }
-        UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(), userLogin.getPassword(),userLogin.isRememberMe());
+        UsernamePasswordToken token = new UsernamePasswordToken(userLoginRequest.getUsername(), userLoginRequest.getPassword(), userLoginRequest.isRememberMe());
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);
         //记录登录日志
@@ -114,12 +114,11 @@ public class UserController extends BaseController<UserServiceImpl,User>{
         return super.page(query, po);
     }
 
-    @PostMapping("savePremission")
-    @OperatingInfo(operation = "保存用户权限")
+    @OperatingInfo(operation = "保存权限")
     @RequiresRoles(RoleProperty.ROLE_CODER)
-    public WebResult savePremission(SavePremissionVO savePremissionVO){
-        savePremissionVO.setCurrentUser(currentUser());
-        iBaseService.savePremission(savePremissionVO);
+    public WebResult savePremission(@NotNull(message = "请求参数不能为空") SavePremissionRequest savePremissionRequest) {
+        savePremissionRequest.setUser(currentUser());
+        iBaseService.savePremission(savePremissionRequest);
         return WebResultFactory.ok();
     }
 }

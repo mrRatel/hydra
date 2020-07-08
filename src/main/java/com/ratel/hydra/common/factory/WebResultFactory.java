@@ -1,6 +1,6 @@
 package com.ratel.hydra.common.factory;
 
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 
 /**
  * @author ratel

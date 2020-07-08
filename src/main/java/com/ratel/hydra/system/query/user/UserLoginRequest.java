@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
  * @date 2020-05-24
  */
 @Data
-public class UserLogin {
+public class UserLoginRequest {
     @NotEmpty(message = "用户名不能为空")
     private String username;
     @NotEmpty(message = "密码不能为空")

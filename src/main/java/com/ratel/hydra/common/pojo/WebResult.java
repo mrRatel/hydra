@@ -1,4 +1,4 @@
-package com.ratel.hydra.common.vo;
+package com.ratel.hydra.common.pojo;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

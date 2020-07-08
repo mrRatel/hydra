@@ -2,7 +2,7 @@ package com.ratel.hydra.system.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.ratel.hydra.common.factory.WebResultFactory;
-import com.ratel.hydra.common.vo.WebResult;
+import com.ratel.hydra.common.pojo.WebResult;
 import com.ratel.hydra.system.dto.ExcelExportDTO;
 import com.ratel.hydra.system.query.ExcelExportQuery;
 import com.ratel.hydra.system.query.ExcelImportQuery;

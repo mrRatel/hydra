@@ -1,7 +1,6 @@
 package com.ratel.hydra.common.Interceptor;
 
 import com.ratel.hydra.common.utils.SnowflakeIdWorker;
-import com.ratel.hydra.common.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -29,7 +27,6 @@ public class TraceInterceptor implements HandlerInterceptor {
     private static final ReentrantLock lock = new ReentrantLock();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        initSnowflakeIdWorker();
         MDC.put("TRACE_ID", snowflakeIdWorker.nextId() + "");
         return true;
     }
@@ -46,18 +43,5 @@ public class TraceInterceptor implements HandlerInterceptor {
 
     public TraceInterceptor(SnowflakeIdWorker snowflakeIdWorker) {
         this.snowflakeIdWorker = snowflakeIdWorker;
-    }
-
-    private void initSnowflakeIdWorker(){
-        if (snowflakeIdWorker == null){
-            System.out.println("-----------isLocked-----------");
-            if (!lock.isLocked()) {
-                lock.lock();
-                if (snowflakeIdWorker == null) {
-                    snowflakeIdWorker = SpringUtil.getBean(SnowflakeIdWorker.class);
-                }
-                lock.unlock();
-            }
-        }
     }
 }

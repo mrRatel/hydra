@@ -27,7 +27,6 @@ public interface MenuTreeStruct {
             @Mapping(target = "sort",source = "sort"),
             @Mapping(target = "type",source = "type"),
             @Mapping(target = "permissionCode",source = "permissionCode"),
-            @Mapping(target = "roleId",source = "roleId"),
     })
     MenuTree toMenuTree(Menu menu);
 

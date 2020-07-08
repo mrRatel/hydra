@@ -31,10 +31,6 @@ public class HydraThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
         return useFixedContext ? fixedContext : MDC.getCopyOfContextMap();
     }
 
-    /**
-     * All executions will have MDC injected. {@code ThreadPoolExecutor}'s submission methods ({@code submit()} etc.)
-     * all delegate to this.
-     */
     @Override
     public void execute(Runnable command) {
         super.execute(wrapExecute(command, getContextForTask()));

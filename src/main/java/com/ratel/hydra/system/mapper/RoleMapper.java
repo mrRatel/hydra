@@ -19,13 +19,13 @@ public interface RoleMapper extends BaseMapper<Role> {
     List<Role> selectListByUserId(Long id);
 
     /**
-     * @param user
+     * @param userId
      * @return java.util.List<com.ratel.hydra.system.vo.RoleVO>
      * @Description 获取所有角色
      * @Author ratel
      * @Date 2020/7/5
      **/
-    List<RoleVO> selectRoleVOs(User user);
+    List<RoleVO> selectRoleVOs(@Param("userId") Long userId);
 
     /*
      * @Description 获取当前用户没有的角色  roleIds == null 时，角色列表为有所有角色
