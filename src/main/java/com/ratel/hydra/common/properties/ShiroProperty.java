@@ -19,7 +19,7 @@ public class ShiroProperty {
     /** 不拦截的URL */
     private List<String> exclude;
 
-    private String tokenName;
+    private String tokenName = "jwtToken";
 
     private String rememberMeTokenName;
 }

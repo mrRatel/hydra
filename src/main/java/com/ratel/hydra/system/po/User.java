@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 用户表
@@ -15,6 +16,7 @@ import lombok.Data;
 @ApiModel(value = "com-ratel-hydra-system-po-User")
 @Data
 @TableName(value = "`user`")
+@Accessors(chain = true)
 public class User {
     @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty(value = "")

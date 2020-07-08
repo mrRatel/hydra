@@ -66,6 +66,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public WebResult authenticationExceptionExceptionHandler(AuthenticationException e){
         log.warn(AUTH1003.getMsg());
+        log.error(AUTH1003.getMsg(),e);
         return WebResultFactory.failed(AUTH1003.getMsg(),AUTH1003.toString());
     }
 
@@ -82,6 +83,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public WebResult illegalArgumentExceptionExceptionHandler(IllegalArgumentException e){
         log.info(e.getMessage());
+        log.error("IllegalArgumentException",e);
         return WebResultFactory.failed(e.getMessage(),"");
     }
 
@@ -95,6 +97,7 @@ public class GlobalExceptionHandler {
 //    @ResponseStatus(HttpStatus.FORBIDDEN)
     public WebResult UnauthorizedExceptionHandler(UnauthorizedException e){
         log.info(e.getMessage());
+        log.error("UnauthorizedException",e);
         return WebResultFactory.failed(e.getMessage(),HttpStatus.FORBIDDEN.value(),ViewUrlProperty.UNAUTHORIZED);
     }
 }

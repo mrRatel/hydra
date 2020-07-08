@@ -1,5 +1,6 @@
 package com.ratel.hydra.system.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.constant.ExceptionEnum;
 import com.ratel.hydra.common.execption.SystemException;
@@ -8,9 +9,12 @@ import com.ratel.hydra.common.mapstruct.LoginLogStruct;
 import com.ratel.hydra.common.properties.CaptchaProperty;
 import com.ratel.hydra.common.properties.PermissionProperty;
 import com.ratel.hydra.common.properties.RoleProperty;
+import com.ratel.hydra.common.properties.ShiroProperty;
 import com.ratel.hydra.common.utils.IpUtil;
+import com.ratel.hydra.common.utils.JwtTokenUtil;
 import com.ratel.hydra.common.utils.WebUtil;
 import com.ratel.hydra.common.pojo.WebResult;
+import com.ratel.hydra.security.token.JwtToken;
 import com.ratel.hydra.system.po.LoginLog;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.query.PageQuery;
@@ -24,15 +28,23 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.net.HttpCookie;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -51,6 +63,9 @@ public class UserController extends BaseController<UserServiceImpl,User>{
     @Autowired
     private LoginLogStruct loginLogStruct;
 
+    @Autowired
+    private ShiroProperty shiroProperty;
+
     @PostMapping("register")
     @OperatingInfo(operation = "注册")
     public WebResult add(@RequestBody @Valid User add,HttpServletRequest request){
@@ -64,7 +79,7 @@ public class UserController extends BaseController<UserServiceImpl,User>{
 
     @PostMapping("login")
     @OperatingInfo(operation = "登录")
-    public WebResult login(@RequestBody @Valid UserLoginRequest userLoginRequest, HttpServletRequest request){
+    public WebResult login(@RequestBody @Valid UserLoginRequest userLoginRequest, HttpServletRequest request,HttpServletResponse response){
         HttpSession session = request.getSession();
         String captcha = (String)session.getAttribute(CaptchaProperty.CAPTCHA);
         String uCaptcha = userLoginRequest.getCaptcha();
@@ -73,9 +88,23 @@ public class UserController extends BaseController<UserServiceImpl,User>{
             throw new SystemException(ExceptionEnum.AUTH1007);
         }
         //登录校验
-        UsernamePasswordToken token = new UsernamePasswordToken(userLoginRequest.getUsername(), userLoginRequest.getPassword(), userLoginRequest.isRememberMe());
+        JwtToken token = new JwtToken(userLoginRequest.getUsername(), userLoginRequest.getPassword());
+//        UsernamePasswordToken token = new UsernamePasswordToken(userLoginRequest.getUsername(), userLoginRequest.getPassword(), userLoginRequest.isRememberMe());
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);
+
+        //
+//        HttpServletResponse response = WebUtils.getHttpResponse(subject);
+
+        //添加 Token
+        Map<String, Object> payLoad = new HashMap<>(5);
+        payLoad.put("uid", 1);
+        payLoad.put("exp", null);
+        payLoad.put("user", JSON.toJSONString(subject.getPrincipal()));
+        Cookie cookie = new Cookie(shiroProperty.getTokenName(),JwtTokenUtil.generatorToken(payLoad));
+        cookie.setMaxAge(-1);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         //记录登录日志
         LoginLog loginLog = loginLogStruct.toLoginLog(currentUser(), request);

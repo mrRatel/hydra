@@ -2,6 +2,7 @@ package com.ratel.hydra.security.realm;
 
 import com.alibaba.fastjson.JSON;
 import com.ratel.hydra.common.utils.JwtTokenUtil;
+import com.ratel.hydra.security.token.JwtToken;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.po.User;
@@ -34,7 +35,7 @@ import static com.ratel.hydra.common.constant.ExceptionEnum.AUTH1005;
  * @date 2020-05-22
  */
 @Slf4j
-public class HydraRealm extends AuthorizingRealm  {
+public class HydraRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService service;
@@ -46,11 +47,11 @@ public class HydraRealm extends AuthorizingRealm  {
     private RoleService roleService;
 
     /**
+     * @param principalCollection
+     * @return org.apache.shiro.authz.AuthorizationInfo
      * @Description 授权
-     * @Author      ratel
-     * @Date        2020-05-22
-     * @param       principalCollection
-     * @return      org.apache.shiro.authz.AuthorizationInfo
+     * @Author ratel
+     * @Date 2020-05-22
      **/
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -69,27 +70,32 @@ public class HydraRealm extends AuthorizingRealm  {
         SimpleAuthorizationInfo authenticationInfo = new SimpleAuthorizationInfo();
         authenticationInfo.addRoles(roleCodeSet);
         authenticationInfo.addStringPermissions(permissionSet);
-        log.info("当前用户拥有角色【{}】",roleCodeSet.toString());
-        log.info("当前用户拥有权限【{}】",permissionSet.toString());
+        log.info("当前用户拥有角色【{}】", roleCodeSet.toString());
+        log.info("当前用户拥有权限【{}】", permissionSet.toString());
         return authenticationInfo;
     }
 
     /**
+     * @param authenticationToken
+     * @return org.apache.shiro.authc.AuthenticationInfo
      * @Description 认证
-     * @Author      ratel
-     * @Date        2020-05-22
-     * @param       authenticationToken
-     * @return      org.apache.shiro.authc.AuthenticationInfo
+     * @Author ratel
+     * @Date 2020-05-22
      **/
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = (String) authenticationToken.getPrincipal();
-        String password = new String(((char[]) authenticationToken.getCredentials()));
+        String password = (String) authenticationToken.getCredentials();
         User user = service.getByUsername(username);
-        Assert.notNull(user,AUTH1005.getMsg());
+        Assert.notNull(user, AUTH1005.getMsg());
         if (!user.getPassword().equals(password)) {
             throw new IncorrectCredentialsException();
         }
-        return new SimpleAuthenticationInfo(user,password,getName());
+        return new SimpleAuthenticationInfo(user, password, getName());
+    }
+
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof JwtToken;
     }
 }
