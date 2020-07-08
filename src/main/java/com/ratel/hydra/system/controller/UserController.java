@@ -72,9 +72,11 @@ public class UserController extends BaseController<UserServiceImpl,User>{
             session.removeAttribute(CaptchaProperty.CAPTCHA);
             throw new SystemException(ExceptionEnum.AUTH1007);
         }
+        //登录校验
         UsernamePasswordToken token = new UsernamePasswordToken(userLoginRequest.getUsername(), userLoginRequest.getPassword(), userLoginRequest.isRememberMe());
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);
+
         //记录登录日志
         LoginLog loginLog = loginLogStruct.toLoginLog(currentUser(), request);
         loginLog.setLocation(IpUtil.getCityInfo(loginLog.getIp()));

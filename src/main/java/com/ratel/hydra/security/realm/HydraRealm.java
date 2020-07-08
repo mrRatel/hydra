@@ -1,5 +1,7 @@
 package com.ratel.hydra.security.realm;
 
+import com.alibaba.fastjson.JSON;
+import com.ratel.hydra.common.utils.JwtTokenUtil;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.po.User;
@@ -17,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.Cookie;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;

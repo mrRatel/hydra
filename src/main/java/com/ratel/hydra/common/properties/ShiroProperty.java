@@ -18,4 +18,8 @@ import java.util.List;
 public class ShiroProperty {
     /** 不拦截的URL */
     private List<String> exclude;
+
+    private String tokenName;
+
+    private String rememberMeTokenName;
 }

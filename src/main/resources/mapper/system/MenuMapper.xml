@@ -24,7 +24,7 @@
     create_time, modify_time, permission_code
   </sql>
     <select id="findCurrentUserMenu" resultMap="BaseResultMap">
-      select t3.*
+      select t4.*
       from user t
       inner join
       user_role_relation t2

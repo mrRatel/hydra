@@ -1,7 +1,10 @@
 package com.ratel.hydra.common.configure;
 
+import com.alibaba.fastjson.JSON;
 import com.ratel.hydra.common.properties.ShiroProperty;
+import com.ratel.hydra.common.utils.JwtTokenUtil;
 import com.ratel.hydra.security.realm.HydraRealm;
+import com.ratel.hydra.security.token.JWTTokenManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.DefaultSecurityManager;
@@ -18,6 +21,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
+import javax.servlet.http.Cookie;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -47,7 +52,7 @@ public class ShiroConfiguration {
     public DefaultSecurityManager securityManager(Realm realm){
         DefaultSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
-//        securityManager.setRememberMeManager(rememberMeManager());
+        securityManager.setRememberMeManager(initJWTTokenManager());
         return securityManager;
     }
 
@@ -105,21 +110,36 @@ public class ShiroConfiguration {
 
     public SimpleCookie rememberMeCookie(){
         //设置cookie名称 对应 <input type="checkbox" name= "HydraRememberMe"/>
-        SimpleCookie cookie = new SimpleCookie("HydraRememberMe");
+        SimpleCookie cookie = new SimpleCookie("HydraToken");
         //指定cookie过期时间 单位s
-        cookie.setMaxAge(86400);
+        cookie.setMaxAge(-1);
         return cookie;
     }
 
 
-
-    public CookieRememberMeManager rememberMeManager(){
+    /*public CookieRememberMeManager rememberMeManager(){
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         cookieRememberMeManager.setCookie(rememberMeCookie());
         //rememberMe cookie 加密的秘钥
+        Map<String,Object> payLoad = new HashMap<>();
+        payLoad.put("uid",user.getId());
+        payLoad.put("exp",null);
+        payLoad.put("user", JSON.toJSONString(user));
+        Cookie token = new Cookie("token", JwtTokenUtil.generatorToken(payLoad));
         cookieRememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
         return cookieRememberMeManager;
-    }
+    }*/
 
+    /**
+     * @Description JWT token manager
+     * 负责 解密token  添加token 删除token
+     * @Author      ratel
+     * @Date        2020-07-08
+
+     * @return      com.ratel.hydra.security.token.JWTTokenManager
+     **/
+    private JWTTokenManager initJWTTokenManager(){
+        return new JWTTokenManager(rememberMeCookie());
+    }
 
 }
