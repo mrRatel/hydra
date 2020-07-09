@@ -10,6 +10,7 @@ import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.mapper.MenuMapper;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.User;
+import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.service.MenuService;
 import com.ratel.hydra.system.vo.MenuVO;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ import java.util.*;
  */
 @Slf4j
 @Service
-public class MenuServiceImpl extends IBaseServiceImpl<MenuMapper, Menu> implements MenuService {
+public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
     @Autowired
     private MenuTreeStruct menuTreeStruct;
@@ -38,11 +39,6 @@ public class MenuServiceImpl extends IBaseServiceImpl<MenuMapper, Menu> implemen
     @Override
     public List<Menu> list() {
         return super.list();
-    }
-
-    @Override
-    public boolean saveOrUpdate(Menu entity, Wrapper<Menu> updateWrapper) {
-        return false;
     }
 
     @Override
@@ -107,5 +103,15 @@ public class MenuServiceImpl extends IBaseServiceImpl<MenuMapper, Menu> implemen
             return Collections.emptyList();
         }
         return baseMapper.selectMenuVOS(userId);
+    }
+
+    @Override
+    public void delByIds(List<Long> ids) {
+        super.removeByIds(ids);
+    }
+
+    @Override
+    public IPage<Menu> page(PageQuery<Menu> setQuery) {
+        return super.page(new Page<>());
     }
 }

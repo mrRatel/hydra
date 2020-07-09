@@ -8,14 +8,14 @@ import com.ratel.hydra.system.vo.RoleVO;
 
 import java.util.List;
 
- public interface RoleService extends IBaseServiceImpl<Role> {
-     Role baseGetById(Long id);
+ public interface RoleService{
+     Role getById(Long id);
 
-     void baseDelById(Long id);
+     void delById(Long id);
 
-     IPage<Role> basePage(PageQuery<Role> query);
+     IPage<Role> page(PageQuery<Role> query);
 
-     void baseAddOrUpdate(Role role);
+     void addOrUpdate(Role role);
 
 
      void batchDelByIds(List<Long> ids);

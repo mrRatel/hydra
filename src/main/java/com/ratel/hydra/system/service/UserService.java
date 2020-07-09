@@ -8,7 +8,7 @@ import com.ratel.hydra.system.query.user.SavePremissionRequest;
 
 import java.util.List;
 
-public interface UserService extends IBaseServiceImpl<User>{
+public interface UserService{
 
     /**
      * @Description 通过用户名获取用户
@@ -20,16 +20,16 @@ public interface UserService extends IBaseServiceImpl<User>{
     User getByUsername(String username);
 
     
-    User baseGetById(Long id);
+    User getById(Long id);
 
     
-    void baseDelById(Long id);
+    void delById(Long id);
 
     
-    void baseAddOrUpdate(User po);
+    void addOrUpdate(User po);
 
     
-    IPage<User> basePage(PageQuery<User> query);
+    IPage<User> page(PageQuery<User> query);
 
     
     void batchDelByIds(List<Long> ids);

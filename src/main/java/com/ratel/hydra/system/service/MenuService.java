@@ -1,13 +1,16 @@
 package com.ratel.hydra.system.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ratel.hydra.system.dto.LayuiTree;
 import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.User;
+import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.vo.MenuVO;
+import org.apache.shiro.util.CollectionUtils;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author ratel
@@ -36,12 +39,9 @@ public interface MenuService {
 
     void addOrUpdate(Menu menu);
 
-    /**
-     * @Description 获取所有菜单
-     * @Author      ratel
-     * @Date        2020/7/5
-     * @param       userId
-     * @return      java.util.List<com.ratel.hydra.system.vo.MenuVO>
-     **/
     List<MenuVO> getMenuVOS(Long userId);
+
+    void delByIds(List<Long> ids);
+
+    IPage<Menu> page(PageQuery<Menu> setQuery);
 }

@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class AccessLogServiceImpl extends IBaseServiceImpl<AccessLogMapper, AccessLog> implements AccessLogService {
+public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLog> implements AccessLogService {
 
 
     @Override
@@ -35,7 +35,7 @@ public class AccessLogServiceImpl extends IBaseServiceImpl<AccessLogMapper, Acce
     }
 
     @Override
-    public IPage basePage(PageQuery query) {
+    public IPage page(PageQuery query) {
         AccessLogQuery accessLogQuery = (AccessLogQuery) query.getQuery();
         LambdaQueryWrapper<AccessLog> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByDesc(AccessLog::getAccessTime);

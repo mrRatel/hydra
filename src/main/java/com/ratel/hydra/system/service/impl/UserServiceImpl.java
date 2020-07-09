@@ -33,29 +33,29 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional()
-public class UserServiceImpl extends IBaseServiceImpl<UserMapper,User> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
 
     @Autowired
     private UserRoleRelationMapper userRoleRelationMapper;
 
 
     @Override
-    public User baseGetById(Long id) {
+    public User getById(Long id) {
         return getById(id);
     }
 
     @Override
-    public void baseDelById(Long id) {
+    public void delById(Long id) {
         removeById(id);
     }
 
     @Override
-    public void baseAddOrUpdate(User po) {
+    public void addOrUpdate(User po) {
         saveOrUpdate(po);
     }
 
     @Override
-    public IPage<User> basePage(PageQuery query) {
+    public IPage<User> page(PageQuery query) {
         User user = (User)query.getQuery();
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>().orderByDesc(User::getModifyTime);
         if (user != null){

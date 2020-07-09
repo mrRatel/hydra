@@ -2,6 +2,7 @@ package com.ratel.hydra.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.common.mapstruct.RoleStruct;
 import com.ratel.hydra.system.mapper.RoleMapper;
 import com.ratel.hydra.system.po.Role;
@@ -24,22 +25,22 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class RoleServiceImpl extends IBaseServiceImpl<RoleMapper, Role> implements RoleService {
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired
     private RoleStruct roleStruct;
     @Override
-    public Role baseGetById(Long id) {
+    public Role getById(Long id) {
         return super.getById(id);
     }
 
     @Override
-    public void baseDelById(Long id) {
+    public void delById(Long id) {
         removeById(id);
     }
 
     @Override
-    public IPage<Role> basePage(PageQuery query) {
+    public IPage<Role> page(PageQuery query) {
         LambdaQueryWrapper<Role> queryWrapper = new LambdaQueryWrapper<Role>().orderByDesc(Role::getModifyTime);
         if (query.getQuery() != null){
             Role role = (Role)query.getQuery();
@@ -57,7 +58,7 @@ public class RoleServiceImpl extends IBaseServiceImpl<RoleMapper, Role> implemen
     }
 
     @Override
-    public void baseAddOrUpdate(Role role) {
+    public void addOrUpdate(Role role) {
         saveOrUpdate(role);
     }
 

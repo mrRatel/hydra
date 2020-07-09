@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ratel.hydra.system.po.AccessLog;
 import com.ratel.hydra.system.query.AccessLogAdd;
+import com.ratel.hydra.system.query.PageQuery;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -30,4 +31,6 @@ public interface AccessLogService {
      **/
     @Async
     void asyncAdd(AccessLogAdd add);
+
+    IPage page(PageQuery query);
 }

@@ -27,10 +27,15 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class LoginLogServiceImpl extends IBaseServiceImpl<LoginLogMapper, LoginLog> implements LoginLogService, ExcelService<LoginLogExcelExport> {
+public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> implements LoginLogService, ExcelService<LoginLogExcelExport> {
 
     @Override
-    public IPage basePage(PageQuery page) {
+    public void add(LoginLog loginLog) {
+        save(loginLog);
+    }
+
+    @Override
+    public IPage page(PageQuery page) {
         LambdaQueryWrapper<LoginLog> wrapper = new LambdaQueryWrapper<>();
         LoginLogQuery query = (LoginLogQuery) page.getQuery();
         if (query != null) {
@@ -51,8 +56,23 @@ public class LoginLogServiceImpl extends IBaseServiceImpl<LoginLogMapper, LoginL
     }
 
     @Override
-    public void add(LoginLog loginLog) {
-        save(loginLog);
+    public void addOrUpdate(LoginLog po) {
+        super.saveOrUpdate(po);
+    }
+
+    @Override
+    public void batchDelByIds(List<Long> ids) {
+        super.removeByIds(ids);
+    }
+
+    @Override
+    public LoginLog getById(Long id) {
+        return super.getById(id);
+    }
+
+    @Override
+    public void delById(Long id) {
+        super.removeById(id);
     }
 
     @Override

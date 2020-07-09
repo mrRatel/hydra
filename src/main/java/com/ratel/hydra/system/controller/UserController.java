@@ -21,6 +21,7 @@ import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.query.user.SavePremissionRequest;
 import com.ratel.hydra.system.query.user.UserLoginRequest;
 import com.ratel.hydra.system.service.LoginLogService;
+import com.ratel.hydra.system.service.UserService;
 import com.ratel.hydra.system.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +56,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("user")
 @Api(tags = "用户")
-public class UserController extends BaseController<UserServiceImpl,User>{
+public class UserController extends BaseController{
 
     @Autowired
     private LoginLogService loginLogService;
@@ -65,12 +66,15 @@ public class UserController extends BaseController<UserServiceImpl,User>{
 
     @Autowired
     private ShiroProperty shiroProperty;
+    
+    @Autowired
+    private UserService userService;
 
     @PostMapping("register")
     @OperatingInfo(operation = "注册")
     public WebResult add(@RequestBody @Valid User add,HttpServletRequest request){
         add.setRegisterFrom(WebUtil.getOperatingSystem(request));
-        iBaseService.baseAddOrUpdate(add);
+        userService.addOrUpdate(add);
         UsernamePasswordToken token = new UsernamePasswordToken(add.getUsername(), add.getPassword(),false);
         Subject subject = SecurityUtils.getSubject();
         subject.login(token);
@@ -113,43 +117,46 @@ public class UserController extends BaseController<UserServiceImpl,User>{
         return WebResultFactory.ok("/index","登录成功");
     }
 
-    @Override
+    @GetMapping("get/{id}")
     @OperatingInfo(operation = "获取用户")
-    public WebResult getById(Long id) {
-        return super.getById(id);
+    public WebResult getById(@PathVariable("id")Long id) {
+        return WebResultFactory.ok(userService.getById(id));
     }
 
-    @Override
+    @PostMapping("del/{id}")
     @OperatingInfo(operation = "删除用户")
     @RequiresPermissions(PermissionProperty.USER_DEL)
-    public WebResult delById(Long id) {
-        return super.delById(id);
+    public WebResult delById(@PathVariable("id")Long id) {
+        userService.delById(id);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @PostMapping("addOrUpdate")
     @OperatingInfo(operation = "保存用户")
     public WebResult addOrUpdate(@RequestBody User po) {
-        return super.addOrUpdate(po);
+        userService.addOrUpdate(po);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @PostMapping("batchDel")
     @OperatingInfo(operation = "批量删除用户")
     public WebResult batchDel(@RequestBody List<Long> ids) {
-        return super.batchDel(ids);
+        userService.batchDelByIds(ids);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @GetMapping("page")
     @OperatingInfo(operation = "分页获取用户")
     @RequiresRoles(RoleProperty.ROLE_CODER)
     public WebResult page(PageQuery<User> query, User po) {
-        return super.page(query, po);
+        return WebResultFactory.ok(userService.page(query.setQuery(po)));
     }
 
     @OperatingInfo(operation = "保存权限")
     @RequiresRoles(RoleProperty.ROLE_CODER)
     public WebResult savePremission(@NotNull(message = "请求参数不能为空") SavePremissionRequest savePremissionRequest) {
         savePremissionRequest.setUser(currentUser());
-        iBaseService.savePremission(savePremissionRequest);
+        userService.savePremission(savePremissionRequest);
         return WebResultFactory.ok();
     }
 }

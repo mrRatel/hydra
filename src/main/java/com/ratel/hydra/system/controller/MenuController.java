@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("menu")
 @Api(tags = "菜单")
-public class MenuController extends BaseController<MenuServiceImpl,Menu> {
+public class MenuController extends BaseController {
 
     @Autowired
     private MenuService service;
@@ -55,19 +55,20 @@ public class MenuController extends BaseController<MenuServiceImpl,Menu> {
         return WebResultFactory.ok(null);
     }
 
-    @Override
+    @GetMapping("get/{id}")
     @OperatingInfo(operation = "获取菜单")
-    public WebResult getById(Long id) {
-        return super.getById(id);
+    public WebResult getById(@PathVariable("id")Long id) {
+        return WebResultFactory.ok(service.findById(id));
     }
 
-    @Override
+    @PostMapping("del/{id}")
     @OperatingInfo(operation = "删除菜单")
-    public WebResult delById(Long id) {
-        return super.delById(id);
+    public WebResult delById(@PathVariable("id")Long id) {
+        service.delById(id);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @PostMapping("addOrUpdate")
     @OperatingInfo(operation = "保存菜单")
     public WebResult addOrUpdate(@RequestBody Menu po) {
         User user = currentUser();
@@ -75,19 +76,21 @@ public class MenuController extends BaseController<MenuServiceImpl,Menu> {
             po.setCreator(user.getId());
         }
         po.setModifier(user.getId());
-        return super.addOrUpdate(po);
+        service.addOrUpdate(po);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @PostMapping("batchDel")
     @OperatingInfo(operation = "批量删除菜单")
     public WebResult batchDel(@RequestBody List<Long> ids) {
-        return super.batchDel(ids);
+        service.delByIds(ids);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @GetMapping("page")
     @OperatingInfo(operation = "分页获取菜单")
     public WebResult page(PageQuery<Menu> query, Menu po) {
-        return super.page(query, po);
+        return WebResultFactory.ok(service.page(query.setQuery(po)));
     }
 
     @GetMapping("permission")

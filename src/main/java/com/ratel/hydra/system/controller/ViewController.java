@@ -1,14 +1,11 @@
 package com.ratel.hydra.system.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ratel.hydra.common.mapstruct.MenuTreeStruct;
 import com.ratel.hydra.common.properties.RoleProperty;
 import com.ratel.hydra.common.properties.ViewUrlProperty;
 import com.ratel.hydra.common.utils.WebUtil;
-import com.ratel.hydra.system.dto.MenuTree;
 import com.ratel.hydra.system.po.Menu;
 import com.ratel.hydra.system.po.Role;
-import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.service.MenuService;
 import com.ratel.hydra.system.service.RoleService;
 import com.ratel.hydra.system.service.UserService;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +62,7 @@ public class ViewController extends BaseController{
 
     @GetMapping("/view/role/{id}")
     public ModelAndView roleGetById(@PathVariable("id") Long id, ModelAndView view){
-        view.addObject("data",roleService.baseGetById(id));
+        view.addObject("data",roleService.getById(id));
         view.setViewName(ViewUrlProperty.ROLE_EDIT);
         return  view;
     }
@@ -79,7 +75,7 @@ public class ViewController extends BaseController{
     @GetMapping("/view/user/{id}")
     @RequiresRoles(RoleProperty.ROLE_CODER)
     public ModelAndView userGetById(@PathVariable("id") Long id, ModelAndView view){
-        view.addObject("data",userService.baseGetById(id));
+        view.addObject("data",userService.getById(id));
         view.setViewName(ViewUrlProperty.USER_EDIT);
         return  view;
     }

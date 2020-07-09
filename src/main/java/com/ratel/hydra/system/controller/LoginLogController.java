@@ -1,14 +1,16 @@
 package com.ratel.hydra.system.controller;
 
 import com.ratel.hydra.common.annotation.OperatingInfo;
+import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.pojo.WebResult;
+import com.ratel.hydra.system.po.LoginLog;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.query.loginLog.LoginLogQuery;
+import com.ratel.hydra.system.service.LoginLogService;
 import com.ratel.hydra.system.service.impl.LoginLogServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,35 +21,40 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("loginLog")
-public class LoginLogController extends BaseController<LoginLogServiceImpl,LoginLogQuery> {
+public class LoginLogController extends BaseController{
+    @Autowired
+    private LoginLogService loginLogService;
 
-    @Override
+    @GetMapping("get/{id}")
     @OperatingInfo(operation = "获取登录日志")
-    public WebResult getById(Long id) {
-        return super.getById(id);
+    public WebResult getById(@PathVariable("id")Long id) {
+        return WebResultFactory.ok(loginLogService.getById(id));
     }
 
-    @Override
+    @PostMapping("del/{id}")
     @OperatingInfo(operation = "删除登录日志")
-    public WebResult delById(Long id) {
-        return super.delById(id);
+    public WebResult delById(@PathVariable("id")Long id) {
+        loginLogService.delById(id);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @PostMapping("addOrUpdate")
     @OperatingInfo(operation = "保存登录日志")
-    public WebResult addOrUpdate(@RequestBody LoginLogQuery po) {
-        return super.addOrUpdate(po);
+    public WebResult addOrUpdate(@RequestBody LoginLog po) {
+        loginLogService.addOrUpdate(po);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @PostMapping("batchDel")
     @OperatingInfo(operation = "批量删除登录日志")
     public WebResult batchDel(@RequestBody List<Long> ids) {
-        return super.batchDel(ids);
+        loginLogService.batchDelByIds(ids);
+        return WebResultFactory.ok("操作成功");
     }
 
-    @Override
+    @GetMapping("page")
     @OperatingInfo(operation = "分页获取登录日志")
-    public WebResult page(PageQuery<LoginLogQuery> query, LoginLogQuery po) {
-        return super.page(query, po);
+    public WebResult page(PageQuery<LoginLogQuery> query, LoginLogQuery param) {
+        return WebResultFactory.ok(loginLogService.page(query.setQuery(param)));
     }
 }
