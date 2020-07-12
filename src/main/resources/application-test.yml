@@ -10,4 +10,18 @@ spring:
       initial-size: 5 #初始化连接数
       max-total: 5 #最大连接数
       max-wait-millis: 200 #等待获取连接的最大超时时间
+  redis:
+    host: 129.204.172.25
+    password: redis@0804
+    port: 6379
 
+#  redis:
+#    host: 129.204.172.25
+#    password: redis@0804
+#    port: 6379
+#    pool:
+#      max-active: 8
+#      max-wait: -1
+#      max-idle: 8
+#      min-idle: 0
+#    timeout: 0

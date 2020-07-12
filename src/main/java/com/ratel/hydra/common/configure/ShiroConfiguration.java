@@ -18,6 +18,8 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -54,10 +56,12 @@ public class ShiroConfiguration {
     }
 
     @Bean
-    public DefaultSecurityManager securityManager(Realm realm) {
+    public DefaultSecurityManager securityManager(Realm realm,RedisCacheManager redisCacheManager) {
         DefaultSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
         securityManager.setRememberMeManager(initJWTTokenManager());
+        //添加缓存管理
+        securityManager.setCacheManager(redisCacheManager);
         return securityManager;
     }
 
@@ -182,5 +186,22 @@ public class ShiroConfiguration {
         proxy.setTargetBeanName("shiroFilter");
         filterRegistrationBean.setFilter(proxy);
         return filterRegistrationBean;
+    }
+
+
+    @Bean
+    public RedisManager initRedisManager(){
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost("129.204.172.25");
+        redisManager.setPort(6379);
+        redisManager.setPassword("redis@0804");
+        return redisManager;
+    }
+
+    @Bean
+    public RedisCacheManager initRedisCacheManager(RedisManager redisManager){
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager);
+        return redisCacheManager;
     }
 }
