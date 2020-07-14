@@ -154,8 +154,8 @@ public class UserController extends BaseController{
 
     @OperatingInfo(operation = "保存权限")
     @RequiresRoles(RoleProperty.ROLE_CODER)
-    public WebResult savePremission(@NotNull(message = "请求参数不能为空") SavePremissionRequest savePremissionRequest) {
-        savePremissionRequest.setUser(currentUser());
+    @PostMapping("savePremission")
+    public WebResult savePremission(@RequestBody @NotNull(message = "请求参数不能为空") SavePremissionRequest savePremissionRequest) {
         userService.savePremission(savePremissionRequest);
         return WebResultFactory.ok();
     }

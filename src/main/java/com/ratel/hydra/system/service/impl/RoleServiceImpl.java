@@ -14,7 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,10 +28,13 @@ import java.util.List;
  */
 @Slf4j
 @Service
+//@Transactional(rollbackFor = Exception.class)
+@CacheConfig(cacheNames = "role") //缓存名字
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired
     private RoleStruct roleStruct;
+
     @Override
     public Role getById(Long id) {
         return super.getById(id);
@@ -40,6 +46,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
+    @Cacheable(key = "#p0.query") //表示用参数列表 第一参数的query对象作为缓存的 key
     public IPage<Role> page(PageQuery query) {
         LambdaQueryWrapper<Role> queryWrapper = new LambdaQueryWrapper<Role>().orderByDesc(Role::getModifyTime);
         if (query.getQuery() != null){

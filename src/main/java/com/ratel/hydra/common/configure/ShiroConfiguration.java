@@ -1,13 +1,10 @@
 package com.ratel.hydra.common.configure;
 
-import com.alibaba.fastjson.JSON;
 import com.ratel.hydra.common.properties.ShiroProperty;
-import com.ratel.hydra.common.utils.JwtTokenUtil;
 import com.ratel.hydra.security.filter.HydraAuthcFilter;
 import com.ratel.hydra.security.realm.HydraRealm;
 import com.ratel.hydra.security.token.JWTTokenManager;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
@@ -15,7 +12,6 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.crazycake.shiro.RedisCacheManager;

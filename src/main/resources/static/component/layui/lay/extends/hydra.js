@@ -55,7 +55,9 @@ layui.define(['jquery','layer','table'], function (exports) {
                 layer.close(loading)
                 if (res.status){
                     //后置处理
-                    func(res);
+                    if (func) {
+                        func(res);
+                    }
                 }else {
                     if (res.code == 'AUTH1008') {
                         location.href = '/login';

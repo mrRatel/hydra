@@ -26,7 +26,7 @@
                     </div>
 
                 </div>
-                <div class="layui-card">
+               <!-- <div class="layui-card">
                     <div class="layui-card-header">
                         权限
                     </div>
@@ -34,14 +34,14 @@
                         <select name="premission" xm-select="select" xm-select-skin="default">
                             <option th:each="item:${premission}" th:value="${item.id}" th:text="${item.menuName}"
                                     th:selected="${item.have}"/>
-                            <!--<option value="2" selected="selected">上海</option>
+                            &lt;!&ndash;<option value="2" selected="selected">上海</option>
                             <option value="3">广州</option>
                             <option value="4" selected="selected">深圳</option>
-                            <option value="5">天津</option>-->
+                            <option value="5">天津</option>&ndash;&gt;
                         </select>
                     </div>
 
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
@@ -72,10 +72,11 @@
         premissionMap[id] = true;
     }
     //JavaScript代码区域
-    layui.use(['formSelects', 'code', 'form', 'jquery'], function () {
+    layui.use(['formSelects', 'code', 'form', 'jquery','hydra'], function () {
         var formSelects = layui.formSelects;
         var form = layui.form;
         var $ = layui.jquery;
+        var hydra = layui.hydra;
 
         // console.log("roleArray" + JSON.stringify(roleArray));
         // console.log("roleMap" + JSON.stringify(roleMap));
@@ -93,11 +94,11 @@
             }
             // console.log("roleIdMap" + JSON.stringify(roleIdMap))
 
-            let premissionIds = data.field.premission.split(',');
-            let premissionIdMap = {};
-            for (let premissionId of premissionIds) {
-                premissionIdMap[premissionId] = true;
-            }
+            // let premissionIds = data.field.premission.split(',');
+            // let premissionIdMap = {};
+            // for (let premissionId of premissionIds) {
+            //     premissionIdMap[premissionId] = true;
+            // }
             // console.log("premissionIdMap" + JSON.stringify(premissionIdMap))
 
             //获取删除的角色
@@ -108,12 +109,12 @@
                 }
             }
             //获取删除的权限
-            let delPremissionIds = [];
-            for (let id of menuArray) {
-                if (!premissionIdMap[id]) {
-                    delPremissionIds.push(id);
-                }
-            }
+            // let delPremissionIds = [];
+            // for (let id of menuArray) {
+            //     if (!premissionIdMap[id]) {
+            //         delPremissionIds.push(id);
+            //     }
+            // }
 
             //获取新增的角色
             let newRoleIds = [];
@@ -125,19 +126,24 @@
             }
 
             //获取新增的权限
-            let newPremissionIds = [];
-            for (let id of premissionIds) {
-                if (!premissionMap[id]) {
-                    newPremissionIds.push(id);
-                }
-            }
+            // let newPremissionIds = [];
+            // for (let id of premissionIds) {
+            //     if (!premissionMap[id]) {
+            //         newPremissionIds.push(id);
+            //     }
+            // }
 
-            // console.log("删除的角色" + JSON.stringify(delRoleIds))
+            console.log("删除的角色" + JSON.stringify(delRoleIds))
             // console.log("删除的权限" + JSON.stringify(delPremissionIds))
-            // console.log("新增的角色" + JSON.stringify(newRoleIds))
+            console.log("新增的角色" + JSON.stringify(newRoleIds))
             // console.log("新增的权限" + JSON.stringify(newPremissionIds))
             // hydra.update('/menu/addOrUpdate', ac, parent);
             // window.render();
+            var href = window.location + "";
+            console.log("href = " + href)
+            let id = href.substr(href.lastIndexOf("/") + 1,href.length)
+            hydra.post("/user/savePremission",JSON.stringify({addRoleIds:newRoleIds,delRoleIds:delRoleIds,user:{id:id}}))
+            parent.layer.close(parent.layer.getFrameIndex(window.name))
             return false;
         });
 
