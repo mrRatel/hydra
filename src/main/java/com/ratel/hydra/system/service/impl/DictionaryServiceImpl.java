@@ -1,17 +1,14 @@
 package com.ratel.hydra.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.system.mapper.DictionaryDetailMapper;
 import com.ratel.hydra.system.mapper.DictionaryMapper;
 import com.ratel.hydra.system.po.Dictionary;
-import com.ratel.hydra.system.po.DictionaryDetail;
 import com.ratel.hydra.system.service.DictionaryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +18,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Transactional(rollbackFor = RuntimeException.class)
 public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper,Dictionary> implements DictionaryService {
     @Autowired
     private DictionaryDetailMapper detailMapper;

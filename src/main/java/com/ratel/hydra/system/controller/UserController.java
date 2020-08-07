@@ -3,7 +3,7 @@ package com.ratel.hydra.system.controller;
 import com.alibaba.fastjson.JSON;
 import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemException;
+import com.ratel.hydra.common.execption.SystemBusinessException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.mapstruct.LoginLogStruct;
 import com.ratel.hydra.common.properties.CaptchaProperty;
@@ -22,17 +22,13 @@ import com.ratel.hydra.system.query.user.SavePremissionRequest;
 import com.ratel.hydra.system.query.user.UserLoginRequest;
 import com.ratel.hydra.system.service.LoginLogService;
 import com.ratel.hydra.system.service.UserService;
-import com.ratel.hydra.system.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.codec.Base64;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.servlet.SimpleCookie;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +84,7 @@ public class UserController extends BaseController{
         String uCaptcha = userLoginRequest.getCaptcha();
         if (!uCaptcha.equals(captcha)){
             session.removeAttribute(CaptchaProperty.CAPTCHA);
-            throw new SystemException(ExceptionEnum.AUTH1007);
+            throw new SystemBusinessException(ExceptionEnum.AUTH1007);
         }
         //登录校验
         JwtToken token = new JwtToken(userLoginRequest.getUsername(), userLoginRequest.getPassword());

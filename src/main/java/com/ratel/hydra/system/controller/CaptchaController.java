@@ -1,7 +1,7 @@
 package com.ratel.hydra.system.controller;
 
 import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemException;
+import com.ratel.hydra.common.execption.SystemBusinessException;
 import com.ratel.hydra.common.properties.CaptchaProperty;
 import com.ratel.hydra.common.properties.HydraProperties;
 import com.ratel.hydra.system.service.CaptchaService;
@@ -40,7 +40,7 @@ public class CaptchaController {
             captcha.out(response.getOutputStream());
         } catch (Exception e) {
             log.error("返回验证码IO异常",e);
-            throw new SystemException(ExceptionEnum.SYS1002);
+            throw new SystemBusinessException(ExceptionEnum.SYS1002);
         }
     }
 }

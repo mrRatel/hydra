@@ -1,15 +1,12 @@
 package com.ratel.hydra.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemException;
+import com.ratel.hydra.common.execption.SystemBusinessException;
 import com.ratel.hydra.system.mapper.UserMapper;
 import com.ratel.hydra.system.mapper.UserRoleRelationMapper;
-import com.ratel.hydra.system.po.Role;
 import com.ratel.hydra.system.po.User;
 import com.ratel.hydra.system.po.UserRoleRelation;
 import com.ratel.hydra.system.query.PageQuery;
@@ -17,7 +14,6 @@ import com.ratel.hydra.system.query.user.SavePremissionRequest;
 import com.ratel.hydra.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +28,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@Transactional()
+@Transactional(rollbackFor = RuntimeException.class)
 public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
 
     @Autowired
@@ -85,7 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         log.debug("execute savePremission");
         User user = savePremissionRequest.getUser();
         if (user == null){
-             throw new SystemException(ExceptionEnum.AUTH1008);
+             throw new SystemBusinessException(ExceptionEnum.AUTH1008);
         }
         //绑定角色
         List<Long> addRoleIds = savePremissionRequest.getAddRoleIds();

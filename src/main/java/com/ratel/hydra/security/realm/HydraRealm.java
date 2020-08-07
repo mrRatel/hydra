@@ -17,6 +17,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -38,12 +39,15 @@ import static com.ratel.hydra.common.constant.ExceptionEnum.AUTH1005;
 public class HydraRealm extends AuthorizingRealm {
 
     @Autowired
+    @Lazy
     private UserService service;
 
     @Autowired
+    @Lazy
     private MenuService menuService;
 
     @Autowired
+    @Lazy
     private RoleService roleService;
 
     /**

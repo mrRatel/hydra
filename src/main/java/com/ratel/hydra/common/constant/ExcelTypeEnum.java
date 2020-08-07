@@ -1,7 +1,7 @@
 package com.ratel.hydra.common.constant;
 
 
-import com.ratel.hydra.common.execption.SystemException;
+import com.ratel.hydra.common.execption.SystemBusinessException;
 
 public enum ExcelTypeEnum {
     LOGIN_LOG("登录日志"),
@@ -24,6 +24,6 @@ public enum ExcelTypeEnum {
                 return value;
             }
         }
-        throw new SystemException(ExceptionEnum.SYS1005,type);
+        throw new SystemBusinessException(ExceptionEnum.SYS1005,type);
     }
 }

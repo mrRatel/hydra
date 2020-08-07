@@ -5,12 +5,14 @@ import org.slf4j.MDC;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @MapperScan("com.ratel.hydra.**.mapper")
 @EnableConfigurationProperties
 @EnableTransactionManagement(order = 2000)
+@EnableCaching
 public class HydraApplication {
 
     public static void main(String[] args) {
