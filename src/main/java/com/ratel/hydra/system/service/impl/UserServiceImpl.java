@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ratel
@@ -37,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     public User getById(Long id) {
-        return getById(id);
+        return super.getById(id);
     }
 
     @Override
@@ -52,14 +53,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     public IPage<User> page(PageQuery query) {
-        User user = (User)query.getQuery();
+        User user = (User) query.getQuery();
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>().orderByDesc(User::getModifyTime);
-        if (user != null){
+        if (user != null) {
             if (StringUtils.isNoneBlank(user.getUsername())) {
-                wrapper.likeRight(User::getUsername,user.getUsername());
+                wrapper.likeRight(User::getUsername, user.getUsername());
             }
-            if (StringUtils.isNoneBlank(user.getRealName())){
-                wrapper.likeRight(User::getRealName,user.getRealName());
+            if (StringUtils.isNoneBlank(user.getRealName())) {
+                wrapper.likeRight(User::getRealName, user.getRealName());
             }
         }
         return page(query.getPage(), wrapper);
@@ -73,7 +74,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     public User getByUsername(String username) {
-        return getOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username));
+        return getOne(new LambdaQueryWrapper<User>().eq(User::getUsername, username));
     }
 
     @Override
@@ -87,14 +88,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         List<Long> addRoleIds = savePremissionRequest.getAddRoleIds();
         if (!CollectionUtils.isEmpty(addRoleIds)) {
             List<UserRoleRelation> userRoleRelations = new ArrayList<>();
-            addRoleIds.forEach(id -> userRoleRelations.add(new UserRoleRelation().setUserId(user.getId()).setRoleId(id)));
-            userRoleRelationMapper.insertList(userRoleRelations);
+            addRoleIds.forEach(id -> {
+                if (id == null) {
+                    return;
+                }
+                userRoleRelations.add(new UserRoleRelation().setUserId(user.getId()).setRoleId(id));
+            });
+            if (!CollectionUtils.isEmpty(userRoleRelations)) {
+                userRoleRelationMapper.insertList(userRoleRelations);
+            }
         }
 
         //解绑角色
         List<Long> delRoleIds = savePremissionRequest.getDelRoleIds();
+        delRoleIds = delRoleIds.stream().filter(id -> id != null).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(delRoleIds)) {
-            userRoleRelationMapper.delete(new LambdaQueryWrapper<UserRoleRelation>().in(UserRoleRelation::getId, delRoleIds));
+            userRoleRelationMapper.delete(new LambdaQueryWrapper<UserRoleRelation>().eq(UserRoleRelation::getUserId, user.getId()).in(UserRoleRelation::getRoleId, delRoleIds));
         }
 
        /* //绑定权限

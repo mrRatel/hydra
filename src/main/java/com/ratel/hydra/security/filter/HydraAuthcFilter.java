@@ -19,7 +19,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -46,14 +45,12 @@ public class HydraAuthcFilter extends BasicHttpAuthenticationFilter {
      **/
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
-        log.info("===========isLoginAttempt==========");
         //判断请求头中是否携带 指定 token
         HttpServletRequest req = (HttpServletRequest) request;
 
         //过滤无需登录的请求
         List<String> exclude = shiroProperty.getExclude();
         for (String uri : exclude) {
-            log.debug("请求 {} 无需拦截",uri);
             if (antPathMatcher.match(uri,req.getRequestURI())) {
                 return false;
             }
@@ -72,9 +69,6 @@ public class HydraAuthcFilter extends BasicHttpAuthenticationFilter {
      **/
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-        log.info("===========executeLogin==========");
-//        String token = getToken((HttpServletRequest) request);
-//        return StringUtils.isNotEmpty(token);
         //获取token
         String token = getToken((HttpServletRequest) request);
         if (StringUtils.isEmpty(token)) {
@@ -109,7 +103,6 @@ public class HydraAuthcFilter extends BasicHttpAuthenticationFilter {
      **/
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        log.info("===========isAccessAllowed==========");
         //如果请求不带 token 则直接跳过
         if (!isLoginAttempt(request, response)){
             return true;
@@ -125,34 +118,6 @@ public class HydraAuthcFilter extends BasicHttpAuthenticationFilter {
         return true;
     }
 
-    /**
-     * @Description 校验 Token 是否有效或过期
-     * @Author      ratel
-     * @Date        2020-07-08
-     * @param       request
-     * @param       response
-     * @param       mappedValue
-     * @return      boolean
-     **//*
-    @Override
-    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        String token = getToken((HttpServletRequest)request);
-        if (token == null){
-            return false;
-        }
-        Claims claims = JwtTokenUtil.parseToken(token);
-//        JwtTokenUtil.iis(claims.getExpiration())
-        return true;
-    }
-
-
-    @Override
-    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        return  isLoginRequest(request,response) && isLoginSubmission(request,response);
-    }
-*/
-
-
 
     private String getToken(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
@@ -165,17 +130,5 @@ public class HydraAuthcFilter extends BasicHttpAuthenticationFilter {
             }
         }
         return null;
-    }
-
-    /**
-     * @Description 重定向至登录页面
-     * @Author      ratel
-     * @Date        2020/7/8
-     * @param       response
-     * @return      void
-     **/
-    private void response401(HttpServletResponse response){
-        response.setStatus(HttpStatus.FOUND.value());
-        response.setHeader("location","/login.html");
     }
 }

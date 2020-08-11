@@ -52,8 +52,8 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
             }
         }
         Page<LoginLog> queryPage = new Page<>();
-        page.setPage(null);
-        BeanUtils.copyProperties(page, queryPage);
+//        page.setPage(null);
+        BeanUtils.copyProperties(page.getPage(), queryPage);
         return super.page(queryPage, wrapper);
     }
 

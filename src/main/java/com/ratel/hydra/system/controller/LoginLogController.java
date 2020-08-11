@@ -10,6 +10,8 @@ import com.ratel.hydra.system.service.LoginLogService;
 import com.ratel.hydra.system.service.impl.LoginLogServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("loginLog")
+@CacheConfig(cacheNames = "loginLog")
 public class LoginLogController extends BaseController{
     @Autowired
     private LoginLogService loginLogService;
@@ -54,7 +57,8 @@ public class LoginLogController extends BaseController{
 
     @GetMapping("page")
     @OperatingInfo(operation = "分页获取登录日志")
-    public WebResult page(PageQuery<LoginLogQuery> query, LoginLogQuery param) {
-        return WebResultFactory.ok(loginLogService.page(query.setQuery(param)));
+    @Cacheable(key = "#p1")
+    public WebResult page(PageQuery<LoginLogQuery> page, LoginLogQuery param) {
+        return WebResultFactory.ok(loginLogService.page(page.setQuery(param)));
     }
 }
