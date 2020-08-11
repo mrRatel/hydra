@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemBusinessException;
+import com.ratel.hydra.common.execption.BusinessException;
 import com.ratel.hydra.system.mapper.UserMapper;
 import com.ratel.hydra.system.mapper.UserRoleRelationMapper;
 import com.ratel.hydra.system.po.User;
@@ -82,7 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         log.debug("execute savePremission");
         User user = savePremissionRequest.getUser();
         if (user == null){
-             throw new SystemBusinessException(ExceptionEnum.AUTH1008);
+             throw new BusinessException(ExceptionEnum.AUTH1008);
         }
         //绑定角色
         List<Long> addRoleIds = savePremissionRequest.getAddRoleIds();

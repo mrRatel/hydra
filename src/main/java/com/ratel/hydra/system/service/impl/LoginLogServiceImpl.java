@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ratel.hydra.common.constant.ExcelTypeEnum;
+import com.ratel.hydra.common.constant.ExceptionEnum;
+import com.ratel.hydra.common.execption.BaseRunTimeException;
+import com.ratel.hydra.common.execption.BusinessException;
 import com.ratel.hydra.system.dto.ExcelExportDTO;
 import com.ratel.hydra.system.mapper.LoginLogMapper;
 import com.ratel.hydra.system.po.LoginLog;
-import com.ratel.hydra.system.query.ExcelExportQuery;
 import com.ratel.hydra.system.query.PageQuery;
 import com.ratel.hydra.system.query.loginLog.LoginLogExcelExport;
 import com.ratel.hydra.system.query.loginLog.LoginLogQuery;
@@ -38,6 +40,8 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
 
     @Override
     public IPage page(PageQuery page) {
+        if (true)
+            throw new BusinessException(ExceptionEnum.SYS1003,"测试堆栈信息");
         LambdaQueryWrapper<LoginLog> wrapper = new LambdaQueryWrapper<>();
         LoginLogQuery query = (LoginLogQuery) page.getQuery();
         if (query != null) {

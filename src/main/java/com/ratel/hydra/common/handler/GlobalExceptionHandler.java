@@ -1,7 +1,7 @@
 package com.ratel.hydra.common.handler;
 
 import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemBusinessException;
+import com.ratel.hydra.common.execption.BusinessException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.properties.ViewUrlProperty;
 import com.ratel.hydra.common.pojo.WebResult;
@@ -37,10 +37,8 @@ public class GlobalExceptionHandler {
      **/
     @ExceptionHandler(Exception.class)
     public WebResult exceptionHandler(Exception e){
-//        WebResultFactory.failed()
         log.error("系统异常",e);
         return WebResultFactory.failed(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR.value(), ViewUrlProperty.ERROR);
-
     }
 
     /**
@@ -50,8 +48,8 @@ public class GlobalExceptionHandler {
      * @param       e
      * @return      com.ratel.hydra.common.pojo.WebResult
      **/
-    @ExceptionHandler(SystemBusinessException.class)
-    public WebResult systemExceptionHandler(SystemBusinessException e){
+    @ExceptionHandler(BusinessException.class)
+    public WebResult systemExceptionHandler(BusinessException e){
         if (!ExceptionEnum.AUTH1007.equals(e.getEn())) {
             log.error(e.getMessage(), e);
         }

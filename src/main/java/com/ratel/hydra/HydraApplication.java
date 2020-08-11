@@ -11,8 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @MapperScan("com.ratel.hydra.**.mapper")
 @EnableConfigurationProperties
-@EnableCaching
-@EnableTransactionManagement(order = 2000)
+@EnableTransactionManagement
 @EnableCaching
 public class HydraApplication {
     public static void main(String[] args) {

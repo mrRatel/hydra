@@ -1,7 +1,7 @@
 package com.ratel.hydra.common.utils;
 
 import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemBusinessException;
+import com.ratel.hydra.common.execption.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
@@ -41,7 +41,7 @@ public class ConvertUtils {
                 tempList.add(cast);
             } catch (Exception e) {
                 log.error("------------------------------反射 调用方法失败{}----------------------------",e);
-                throw new SystemBusinessException(ExceptionEnum.SYS1003,readMethod.getName());
+                throw new BusinessException(ExceptionEnum.SYS1003,readMethod.getName());
             }
         }
         return tempList;
@@ -56,7 +56,7 @@ public class ConvertUtils {
      * @param <T>
      * @param <V>
      * @return
-     * @throws SystemBusinessException
+     * @throws BusinessException
      */
     public  static <T,V> Map<T,V> toMap(List list, String fieldName, Class<T> kClass, Class<V> vClass){
         Map<T,V> map = new HashMap<>();
@@ -71,7 +71,7 @@ public class ConvertUtils {
                 map.put(cast,cast1);
             } catch (Exception e) {
                 log.error("------------------------------反射 调用方法失败{}----------------------------",e);
-                throw new SystemBusinessException(ExceptionEnum.SYS1003,readMethod.getName());
+                throw new BusinessException(ExceptionEnum.SYS1003,readMethod.getName());
             }
         }
         return map;
@@ -105,7 +105,7 @@ public class ConvertUtils {
                 vList.add(v);
             } catch (Exception e) {
                 log.error("------------------------------反射 调用方法失败{}----------------------------",e);
-                throw new SystemBusinessException(ExceptionEnum.SYS1003,readMethod.getName());
+                throw new BusinessException(ExceptionEnum.SYS1003,readMethod.getName());
             }
         }
         return map;

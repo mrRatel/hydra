@@ -3,7 +3,7 @@ package com.ratel.hydra.system.controller;
 import com.alibaba.fastjson.JSON;
 import com.ratel.hydra.common.annotation.OperatingInfo;
 import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemBusinessException;
+import com.ratel.hydra.common.execption.BusinessException;
 import com.ratel.hydra.common.factory.WebResultFactory;
 import com.ratel.hydra.common.mapstruct.LoginLogStruct;
 import com.ratel.hydra.common.properties.CaptchaProperty;
@@ -84,7 +84,7 @@ public class UserController extends BaseController{
         String uCaptcha = userLoginRequest.getCaptcha();
         if (!uCaptcha.equals(captcha)){
             session.removeAttribute(CaptchaProperty.CAPTCHA);
-            throw new SystemBusinessException(ExceptionEnum.AUTH1007);
+            throw new BusinessException(ExceptionEnum.AUTH1007);
         }
         //登录校验
         JwtToken token = new JwtToken(userLoginRequest.getUsername(), userLoginRequest.getPassword());

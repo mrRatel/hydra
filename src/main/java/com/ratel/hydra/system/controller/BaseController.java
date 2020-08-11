@@ -1,7 +1,7 @@
 package com.ratel.hydra.system.controller;
 
 import com.ratel.hydra.common.constant.ExceptionEnum;
-import com.ratel.hydra.common.execption.SystemBusinessException;
+import com.ratel.hydra.common.execption.BusinessException;
 import com.ratel.hydra.system.po.User;
 import org.apache.shiro.SecurityUtils;
 
@@ -14,7 +14,7 @@ public class BaseController{
     protected User currentUser() {
         User principal = (User) SecurityUtils.getSubject().getPrincipal();
         if (principal == null) {
-            throw new SystemBusinessException(ExceptionEnum.AUTH1008);
+            throw new BusinessException(ExceptionEnum.AUTH1008);
         }
         return principal;
     }

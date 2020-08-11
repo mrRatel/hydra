@@ -16,6 +16,8 @@ import com.ratel.hydra.system.vo.MenuVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,7 @@ import java.util.*;
 @Slf4j
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
+@CacheConfig(cacheNames = "menu")
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
     @Autowired
@@ -44,6 +47,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
+    @Cacheable
     public List<MenuTree> findMenuTreeList(User user) {
         List<Menu> currentUserMenu = baseMapper.findCurrentUserMenu(user.getId());
         Map<Long, MenuTree> map = new HashMap<>();

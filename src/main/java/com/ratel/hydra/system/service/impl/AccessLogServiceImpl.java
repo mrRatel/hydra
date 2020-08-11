@@ -17,9 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.annotations.Cacheable;
 
 /**
  * @author ratel
@@ -28,7 +28,7 @@ import springfox.documentation.annotations.Cacheable;
 @Slf4j
 @Service
 @Transactional(rollbackFor = RuntimeException.class)
-@CacheConfig(cacheNames = "accessLog")
+@CacheConfig(cacheNames = "accessLog",keyGenerator = "keyGenerator")
 public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLog> implements AccessLogService {
 
 
@@ -40,7 +40,7 @@ public class AccessLogServiceImpl extends ServiceImpl<AccessLogMapper, AccessLog
     }
 
     @Override
-    @Cacheable("page")
+    @Cacheable(cacheManager = "ehCacheCacheManager")
     public IPage page(PageQuery query) {
         AccessLogQuery accessLogQuery = (AccessLogQuery) query.getQuery();
         LambdaQueryWrapper<AccessLog> wrapper = new LambdaQueryWrapper<>();

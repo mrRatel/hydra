@@ -6,22 +6,22 @@ import com.ratel.hydra.common.constant.ExceptionEnum;
  * @author ratel
  * @date 2020-05-21
  */
-public class BaseBusinessException extends RuntimeException{
+public class BaseRunTimeException extends RuntimeException{
     private ExceptionEnum en;
 
     public ExceptionEnum getEn() {
         return en;
     }
 
-    public BaseBusinessException() {
+    public BaseRunTimeException() {
     }
 
-    public BaseBusinessException(ExceptionEnum en, String msg) {
+    public BaseRunTimeException(ExceptionEnum en, String msg) {
         super(String.format(en.getMsg(),msg));
         this.en = en;
     }
 
-    public BaseBusinessException(ExceptionEnum en) {
+    public BaseRunTimeException(ExceptionEnum en) {
         this.en = en;
     }
 
